@@ -54,22 +54,12 @@ export function RegistrationView(props) {
   );
 }
 
-const isEmail = function (props, propName, componentName) {
-  const regex =
-    /^((([^<>()[]\.,;:s@"]+(.[^<>()[]\.,;:s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,})))?$/;
-  if (!regex.test(props[propName])) {
-    return new Error(
-      `Invalid prop ${propName} passed to ${componentName}. Expected a valid email address.`
-    );
-  }
-};
-
 RegistrationView.propTypes = {
   register: PropTypes.shape({
     Username: PropTypes.string.isRequired,
     Password: PropTypes.string.isRequired,
-    Email: isEmail,
-    Birthday: PropTypes.instanceOf(Date).isRequired,
+    Email: PropTypes.string.isRequired,
+    Birthday: PropTypes.string.isRequired,
   }).isRequired,
   onRegistration: PropTypes.func.isRequired,
 };
