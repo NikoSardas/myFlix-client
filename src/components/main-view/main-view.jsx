@@ -13,7 +13,7 @@ export default class MainView extends React.Component {
       movies: [],
       selectedMovie: null,
       user: null,
-      // register: false,
+      register: false,
     };
   }
 
@@ -49,7 +49,7 @@ export default class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovie, user } = this.state;
+    const { movies, selectedMovie, user, register } = this.state;
     if (!user) return <LoginView onLoggedIn={(user) => this.onLoggedIn(user)} />;
     if (register)
       return (

@@ -991,7 +991,8 @@ class MainView extends _reactDefault.default.Component {
         this.state = {
             movies: [],
             selectedMovie: null,
-            user: null
+            user: null,
+            register: false
         };
     }
     componentDidMount() {
@@ -1019,7 +1020,7 @@ class MainView extends _reactDefault.default.Component {
         });
     }
     render() {
-        const { movies , selectedMovie , user  } = this.state;
+        const { movies , selectedMovie , user , register  } = this.state;
         if (!user) return(/*#__PURE__*/ _jsxRuntime.jsx(_loginView.LoginView, {
             onLoggedIn: (user1)=>this.onLoggedIn(user1)
             ,
@@ -1030,7 +1031,7 @@ class MainView extends _reactDefault.default.Component {
             __self: this
         }));
         if (register) return(/*#__PURE__*/ _jsxRuntime.jsx(_registrationView.RegistrationView, {
-            onRegistration: (register)=>this.onRegistration(register)
+            onRegistration: (register1)=>this.onRegistration(register1)
             ,
             __source: {
                 fileName: "src/components/main-view/main-view.jsx",
