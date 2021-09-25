@@ -62,4 +62,5 @@ export function RegistrationView(props) {
 
 RegistrationView.propTypes = {
   onRegistration: PropTypes.func.isRequired,
+  onBackClick: PropTypes.func.isRequired,
 };
