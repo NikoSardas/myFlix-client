@@ -12,7 +12,7 @@ export function LoginView(props) {
   };
 
   const handleRegister = () => {
-    props.onRegistration(true); 
+    props.goToRegistration(true); 
   };
 
   return (

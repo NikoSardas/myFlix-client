@@ -1021,22 +1021,36 @@ class MainView extends _reactDefault.default.Component {
     }
     render() {
         const { movies , selectedMovie , user , register  } = this.state;
-        if (!user) return(/*#__PURE__*/ _jsxRuntime.jsx(_loginView.LoginView, {
-            onRegistration: (register1)=>this.onRegistration(register1)
-            ,
-            onLoggedIn: (user1)=>this.onLoggedIn(user1)
-            ,
-            __source: {
-                fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 55
-            },
-            __self: this
-        }));
+        if (!user) {
+            if (register) return(/*#__PURE__*/ _jsxRuntime.jsx(_registrationView.RegistrationView, {
+                onBackClick: (registrationState)=>{
+                    this.register(registrationState);
+                },
+                onRegistration: (register1)=>this.onRegistration(register1)
+                ,
+                __source: {
+                    fileName: "src/components/main-view/main-view.jsx",
+                    lineNumber: 56
+                },
+                __self: this
+            }));
+            else return(/*#__PURE__*/ _jsxRuntime.jsx(_loginView.LoginView, {
+                goToRegistration: (register1)=>this.onRegistration(register1)
+                ,
+                onLoggedIn: (user1)=>this.onLoggedIn(user1)
+                ,
+                __source: {
+                    fileName: "src/components/main-view/main-view.jsx",
+                    lineNumber: 65
+                },
+                __self: this
+            }));
+        }
         if (movies.length === 0) return(/*#__PURE__*/ _jsxRuntime.jsx("div", {
             className: "main-view",
             __source: {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 61
+                lineNumber: 72
             },
             __self: this
         }));
@@ -1044,7 +1058,7 @@ class MainView extends _reactDefault.default.Component {
             className: "main-view",
             __source: {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 63
+                lineNumber: 74
             },
             __self: this,
             children: selectedMovie ? /*#__PURE__*/ _jsxRuntime.jsx(_movieView.MovieView, {
@@ -1054,7 +1068,7 @@ class MainView extends _reactDefault.default.Component {
                 },
                 __source: {
                     fileName: "src/components/main-view/main-view.jsx",
-                    lineNumber: 65
+                    lineNumber: 76
                 },
                 __self: this
             }) : movies.map((movie)=>/*#__PURE__*/ _jsxRuntime.jsx(_movieCard.MovieCard, {
@@ -1064,7 +1078,7 @@ class MainView extends _reactDefault.default.Component {
                     },
                     __source: {
                         fileName: "src/components/main-view/main-view.jsx",
-                        lineNumber: 73
+                        lineNumber: 84
                     },
                     __self: this
                 }, movie._id)
@@ -5093,7 +5107,7 @@ function LoginView(props) {
         props.onLoggedIn(username);
     };
     const handleRegister = ()=>{
-        props.onRegistration(true);
+        props.goToRegistration(true);
     };
     return(/*#__PURE__*/ _jsxRuntime.jsxs("form", {
         __source: {
@@ -6029,7 +6043,7 @@ var _propTypesDefault = parcelHelpers.interopDefault(_propTypes);
 class MovieCard extends _reactDefault.default.Component {
     render() {
         const { movie , onMovieClick  } = this.props;
-        return(/*#__PURE__*/ _jsxRuntime.jsxs("div", {
+        return(/*#__PURE__*/ _jsxRuntime.jsx("div", {
             className: "movie-card",
             onClick: ()=>{
                 onMovieClick(movie);
@@ -6039,10 +6053,7 @@ class MovieCard extends _reactDefault.default.Component {
                 lineNumber: 8
             },
             __self: this,
-            children: [
-                movie.Title,
-                movie.ImagePath
-            ]
+            children: movie.Title
         }));
     }
 }
@@ -6316,6 +6327,17 @@ function RegistrationView(props) {
                 },
                 __self: this,
                 children: "Submit"
+            }),
+            /*#__PURE__*/ _jsxRuntime.jsx("button", {
+                onClick: ()=>{
+                    props.onBackClick(false);
+                },
+                __source: {
+                    fileName: "src/components/registration-view/registration-view.jsx",
+                    lineNumber: 52
+                },
+                __self: this,
+                children: "Cancel"
             })
         ]
     }));

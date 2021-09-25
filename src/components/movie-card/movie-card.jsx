@@ -12,7 +12,6 @@ export class MovieCard extends React.Component {
         }}
       >
         {movie.Title}
-        {movie.ImagePath}
       </div>
     );
   }
