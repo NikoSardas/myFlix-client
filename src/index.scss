@@ -1,5 +1,10 @@
-$color: steelblue;
 
-.my-flix {
-  color: $color;
+$font-family: "Yaldevi", sans-serif;
+
+body {
+    user-select: none;
+  }
+
+.app-container{
+    font-family: $font-family;
 }

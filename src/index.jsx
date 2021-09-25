@@ -7,7 +7,7 @@ import "./index.scss";
 class myFlixApplication extends React.Component {
   render() {
     return (
-      <Container>
+      <Container fluid>
         <MainView />
       </Container>
     );

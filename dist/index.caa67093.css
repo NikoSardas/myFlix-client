@@ -1,4 +1,8 @@
-.my-flix {
-  color: steelblue;
+body {
+  user-select: none;
+}
+
+.app-container {
+  font-family: "Yaldevi", sans-serif;
 }
 /*# sourceMappingURL=index.caa67093.css.map */

@@ -33,10 +33,10 @@ export function LoginView(props) {
           onChange={(e) => setPassword(e.target.value)}
         />
       </Form.Group>
-      <Button variant="primary" type="submit" onClick={handleSubmit}>
+      <Button variant="outline-light" type="submit" onClick={handleSubmit}>
         Submit
       </Button>
-      <button onClick={handleRegister}>Register</button>
+      <Button variant="outline-light" onClick={handleRegister}>Register</Button>
     </Form>
   );
 }

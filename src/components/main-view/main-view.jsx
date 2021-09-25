@@ -57,7 +57,7 @@ export default class MainView extends React.Component {
         return (
           <RegistrationView
             onBackClick={(registrationState) => {
-              this.register(registrationState);
+              this.onRegistration(registrationState);
             }}
             onRegistration={(register) => this.onRegistration(register)}
           />
@@ -74,19 +74,28 @@ export default class MainView extends React.Component {
     if (movies.length === 0) return <div className="main-view" />;
     return (
       <Row className="main-view justify-content-md-center">
-      {selectedMovie
-        ? (
+        {selectedMovie ? (
           <Col md={8}>
-            <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
+            <MovieView
+              movie={selectedMovie}
+              onBackClick={(newSelectedMovie) => {
+                this.setSelectedMovie(newSelectedMovie);
+              }}
+            />
           </Col>
-        )
-        : movies.map(movie => (
-          <Col md={3} key={movie._id} >
-            <MovieCard movie={movie} onMovieClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }}/>
-          </Col>
-        ))
-      }
-    </Row>
+        ) : (
+          movies.map((movie) => (
+            <Col md={3} key={movie._id}>
+              <MovieCard
+                movie={movie}
+                onMovieClick={(newSelectedMovie) => {
+                  this.setSelectedMovie(newSelectedMovie);
+                }}
+              />
+            </Col>
+          ))
+        )}
+      </Row>
     );
   }
 }

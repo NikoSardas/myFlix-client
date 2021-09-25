@@ -1,18 +1,19 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import Button from "react-bootstrap/Button";
 
 export class MovieView extends React.Component {
   render() {
     const { movie, onBackClick } = this.props;
     return (
       <div className="movie-view">
-        <button
+        <Button variant="outline-light"
           onClick={() => {
             onBackClick(null);
           }}
         >
           Back
-        </button>
+        </Button>
         <div className="movie-poster">
           <img src={movie.ImagePath} />
         </div>

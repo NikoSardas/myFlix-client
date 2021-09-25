@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 export function RegistrationView(props) {
   const [username, setUsername] = useState("");
@@ -13,50 +15,53 @@ export function RegistrationView(props) {
   };
 
   return (
-    <form>
-      <label>
-        Username:
-        <input
+    <Form>
+      <Form.Group controlId="formUsername">
+        <Form.Label>Username:</Form.Label>
+        <Form.Control
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-      </label>
-      <label>
-        Password:
-        <input
-          type="password"
+      </Form.Group>
+      <Form.Group controlId="formPassword">
+        <Form.Label>Password:</Form.Label>
+        <Form.Control
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-      </label>
-      <label>
-        Email:
-        <input
-          type="email"
+      </Form.Group>
+      <Form.Group controlId="formEmail">
+        <Form.Label>Email:</Form.Label>
+        <Form.Control
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-      </label>
-      <label>
-        Birthday:
-        <input
-          type="birthday"
+      </Form.Group>
+      <Form.Group controlId="formBirthday">
+        <Form.Label>Birthday:</Form.Label>
+        <Form.Control
           value={birthday}
           onChange={(e) => setBirthday(e.target.value)}
         />
-      </label>
-      <button className="register-submit" type="submit" onClick={handleSubmit}>
+      </Form.Group>
+      <Button
+        variant="outline-light"
+        className="register-submit"
+        type="submit"
+        onClick={handleSubmit}
+      >
         Submit
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="outline-light"
         onClick={() => {
           props.onBackClick(false);
         }}
       >
         Cancel
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 }
 
