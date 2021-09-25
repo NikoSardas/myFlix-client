@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export function LoginView(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
-    e.preventDefault();
+    // e.preventDefault();
     console.log(username, password);
     props.onLoggedIn(username);
+  };
+
+  const handleRegister = () => {
+    props.onRegistration(true); 
   };
 
   return (
@@ -29,17 +33,12 @@ export function LoginView(props) {
           onChange={(e) => setPassword(e.target.value)}
         />
       </label>
-      <button type="submit" onClick={handleSubmit}>
-        Submit
-      </button>
+      <button type="submit" onClick={handleSubmit}>Submit</button>
+      <button onClick={handleRegister}>Register</button>
     </form>
   );
 }
 
 LoginView.propTypes = {
-  user: PropTypes.shape({
-    Username: PropTypes.string.isRequired,
-    Password: PropTypes.string.isRequired,
-  }).isRequired,
   onLoggedIn: PropTypes.func.isRequired,
 };
