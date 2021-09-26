@@ -1,25 +1,75 @@
 import React from "react";
 import axios from "axios";
+
+import { LoginView } from "../login-view/login-view";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
+import { RegistrationView } from "../registration-view/registration-view";
 
-class MainView extends React.Component {
+export default class MainView extends React.Component {
   constructor() {
     super();
     this.state = {
-      movies: [parcel],
+      movies: [],
       selectedMovie: null,
+      username: null,
+      register: false,
     };
   }
-  setSelectedMovie(newSelectedMovie) {
+
+  componentDidMount() {
+    axios
+      .get("https://nikosardas-myflixdb.herokuapp.com/movies")
+      .then((response) => {
+        this.setState({
+          movies: response.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  setSelectedMovie(movie) {
     this.setState({
-      selectedMovie: newSelectedMovie,
+      selectedMovie: movie,
     });
   }
+
+  onLoggedIn(user) {
+    this.setState({
+      user,
+    });
+  }
+
+  onRegistration(register) {
+    this.setState({
+      register,
+    });
+  }
+
   render() {
-    const { movies, selectedMovie } = this.state;
-    if (movies.length === 0)
-      return <div className="main-view">The list is empty!</div>;
+    const { movies, selectedMovie, username, register } = this.state;
+    if (!username) {
+      if (register) {
+        return (
+          <RegistrationView
+            onBackClick={(registrationState) => {
+              this.register(registrationState);
+            }}
+            onRegistration={(register) => this.onRegistration(register)}
+          />
+        );
+      } else {
+        return (
+          <LoginView
+            goToRegistration={(register) => this.onRegistration(register)}
+            onLoggedIn={(username) => this.onLoggedIn(username)}
+          />
+        );
+      }
+    }
+    if (movies.length === 0) return <div className="main-view" />;
     return (
       <div className="main-view">
         {selectedMovie ? (
@@ -34,8 +84,8 @@ class MainView extends React.Component {
             <MovieCard
               key={movie._id}
               movie={movie}
-              onMovieClick={(movie) => {
-                this.setSelectedMovie(movie);
+              onMovieClick={(newSelectedMovie) => {
+                this.setSelectedMovie(newSelectedMovie);
               }}
             />
           ))
@@ -44,5 +94,3 @@ class MainView extends React.Component {
     );
   }
 }
-
-export default MainView;
