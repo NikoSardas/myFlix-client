@@ -7,6 +7,7 @@ import { MovieView } from "../movie-view/movie-view";
 import { RegistrationView } from "../registration-view/registration-view";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import "./main-view.scss";
 
 export default class MainView extends React.Component {
   constructor() {
@@ -14,7 +15,7 @@ export default class MainView extends React.Component {
     this.state = {
       movies: [],
       selectedMovie: null,
-      user: null,
+      authenticatedUser: null,
       register: false,
     };
   }
@@ -38,9 +39,9 @@ export default class MainView extends React.Component {
     });
   }
 
-  onLoggedIn(user) {
+  onLoggedIn(authenticatedUser) {
     this.setState({
-      user,
+      authenticatedUser,
     });
   }
 
@@ -51,8 +52,8 @@ export default class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovie, user, register } = this.state;
-    if (!user) {
+    const { movies, selectedMovie, authenticatedUser, register } = this.state;
+    if (!authenticatedUser) {
       if (register) {
         return (
           <RegistrationView
@@ -66,14 +67,16 @@ export default class MainView extends React.Component {
         return (
           <LoginView
             goToRegistration={(register) => this.onRegistration(register)}
-            onLoggedIn={(user) => this.onLoggedIn(user)}
+            onLoggedIn={(authenticatedUser) =>
+              this.onLoggedIn(authenticatedUser)
+            }
           />
         );
       }
     }
     if (movies.length === 0) return <div className="main-view" />;
     return (
-      <Row className="main-view justify-content-md-center">
+      <Row className="main-view">
         {selectedMovie ? (
           <Col md={8}>
             <MovieView
@@ -85,13 +88,13 @@ export default class MainView extends React.Component {
           </Col>
         ) : (
           movies.map((movie) => (
-            <Col md={3} key={movie._id}>
+            <Col className="card-wrapper" md={3} key={movie._id}>
               <MovieCard
                 movie={movie}
                 onMovieClick={(newSelectedMovie) => {
                   this.setSelectedMovie(newSelectedMovie);
                 }}
-              />
+              ></MovieCard>
             </Col>
           ))
         )}
