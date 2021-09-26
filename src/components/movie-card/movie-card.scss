@@ -1,0 +1,17 @@
+@import "../../styles.scss";
+
+.movie-card {
+  height: 100%;
+}
+
+.card-body{
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+}
+
+.card-title{
+  text-align: center;
+  color: $secondary-color !important;
+}
+

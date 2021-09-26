@@ -5,8 +5,10 @@ import { LoginView } from "../login-view/login-view";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { RegistrationView } from "../registration-view/registration-view";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Button } from "react-bootstrap";
+import { Col } from "react-bootstrap";
+import { Row } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 import "./main-view.scss";
 
 export default class MainView extends React.Component {
@@ -15,7 +17,7 @@ export default class MainView extends React.Component {
     this.state = {
       movies: [],
       selectedMovie: null,
-      authenticatedUser: null,
+      loggedUsername: null,
       register: false,
     };
   }
@@ -39,9 +41,9 @@ export default class MainView extends React.Component {
     });
   }
 
-  onLoggedIn(authenticatedUser) {
+  onLoggedIn(loggedUsername) {
     this.setState({
-      authenticatedUser,
+      loggedUsername,
     });
   }
 
@@ -52,8 +54,8 @@ export default class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovie, authenticatedUser, register } = this.state;
-    if (!authenticatedUser) {
+    const { movies, selectedMovie, loggedUsername, register } = this.state;
+    if (!loggedUsername) {
       if (register) {
         return (
           <RegistrationView
@@ -67,9 +69,7 @@ export default class MainView extends React.Component {
         return (
           <LoginView
             goToRegistration={(register) => this.onRegistration(register)}
-            onLoggedIn={(authenticatedUser) =>
-              this.onLoggedIn(authenticatedUser)
-            }
+            onLoggedIn={(loggedUsername) => this.onLoggedIn(loggedUsername)}
           />
         );
       }
@@ -78,7 +78,7 @@ export default class MainView extends React.Component {
     return (
       <Row className="main-view">
         {selectedMovie ? (
-          <Col md={8}>
+          <Col className="movie-view-wrapper" md={8}>
             <MovieView
               movie={selectedMovie}
               onBackClick={(newSelectedMovie) => {

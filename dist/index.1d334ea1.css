@@ -13,23 +13,30 @@
 
 .login-view h1 {
   position: absolute;
-  top: 20%;
+  top: 25%;
   text-decoration-line: underline;
 }
-
-.movie-view-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.movie-card {
   height: 100%;
 }
 
 .card-body {
   display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+}
+
+.card-title {
+  text-align: center;
+  color: #ffc107 !important;
+}
+.movie-view-wrapper {
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
+  margin: auto;
 }
 .registration-view {
   display: flex;
@@ -49,8 +56,12 @@
   top: 10%;
 }
 .card-wrapper {
-  padding: 0 !important;
-  margin: 10px;
+  padding: 2px !important;
+}
+
+.main-view {
+  min-height: 100%;
+  background-color: #252525;
 }
 body {
   user-select: none;
@@ -68,7 +79,8 @@ body {
   height: 100%;
 }
 
-.app-container h1 {
+.app-container h1,
+.app-container h2 {
   color: white;
 }
 
@@ -77,12 +89,12 @@ body {
 }
 
 form {
-  width: 50%;
+  width: 80%;
 }
 
 @media all and (max-width: 750px) {
   form {
-    width: 90%;
+    width: 100%;
   }
 }
 input[type=text],

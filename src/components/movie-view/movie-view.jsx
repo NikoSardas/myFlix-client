@@ -8,23 +8,21 @@ export class MovieView extends React.Component {
   render() {
     const { movie, onBackClick } = this.props;
     return (
-      <div className="movie-view-container">
-        <Card border="light" bg="dark" text="white">
-          {/* <Card.Img variant="top" src={movie.ImagePath} /> */}
-          <Card.Body>
-            <Card.Title>{movie.Title}</Card.Title>
-            <Card.Text>{movie.Description}</Card.Text>
-            <Button
-              variant="outline-light"
-              onClick={() => {
-                onBackClick(null);
-              }}
-            >
-              Back
-            </Button>
-          </Card.Body>
-        </Card>
-      </div>
+      <Card border="light" bg="dark" text="white">
+        {/* <Card.Img variant="top" src={movie.ImagePath} /> */}
+        <Card.Body>
+          <Card.Title>{movie.Title}</Card.Title>
+          <Card.Text>{movie.Description}</Card.Text>
+          <Button
+            variant="outline-light"
+            onClick={() => {
+              onBackClick(null);
+            }}
+          >
+            Back
+          </Button>
+        </Card.Body>
+      </Card>
     );
   }
 }

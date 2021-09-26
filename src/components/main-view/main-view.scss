@@ -1,5 +1,9 @@
-.card-wrapper{
-    padding:0 !important;
-    margin:10px;
+@import "../../styles.scss";
+.card-wrapper {
+  padding: 2px !important;
 }
 
+.main-view {
+  min-height: 100%;
+  background-color: rgb(37, 37, 37);
+}

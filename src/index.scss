@@ -1,4 +1,4 @@
-$font-family: "Yaldevi", sans-serif;
+@import "./styles.scss";
 
 body {
   user-select: none;
@@ -10,14 +10,15 @@ body {
 }
 
 .app-container {
-  background-color: rgb(37, 37, 37);
-  color: rgb(216, 216, 216);
+  background-color: $background-color;
+  color: $text-color;
   font-family: $font-family;
   height: 100%;
 }
 
-.app-container h1 {
-  color: white;
+.app-container h1,
+.app-container h2 {
+  color: $heading-color;
 }
 
 .container-fluid {
@@ -25,12 +26,12 @@ body {
 }
 
 form {
-  width: 50%;
+  width: 80%;
 }
 
 @media all and (max-width: 750px) {
   form {
-    width: 90%;
+    width: 100%;
   }
 }
 
