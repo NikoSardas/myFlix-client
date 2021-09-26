@@ -1,5 +1,43 @@
-$color: steelblue;
+@import "./styles.scss";
 
-.my-flix {
-  color: $color;
+body {
+  user-select: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.app-container {
+  background-color: $background-color;
+  color: $text-color;
+  font-family: $font-family;
+  height: 100%;
+}
+
+.app-container h1,
+.app-container h2 {
+  color: $heading-color;
+}
+
+.container-fluid {
+  height: 100%;
+}
+
+form {
+  width: 80%;
+}
+
+@media all and (max-width: 750px) {
+  form {
+    width: 100%;
+  }
+}
+
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="password"] {
+  background-color: transparent;
 }

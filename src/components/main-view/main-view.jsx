@@ -5,6 +5,11 @@ import { LoginView } from "../login-view/login-view";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { RegistrationView } from "../registration-view/registration-view";
+import { Button } from "react-bootstrap";
+import { Col } from "react-bootstrap";
+import { Row } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
+import "./main-view.scss";
 
 export default class MainView extends React.Component {
   constructor() {
@@ -12,7 +17,11 @@ export default class MainView extends React.Component {
     this.state = {
       movies: [],
       selectedMovie: null,
+<<<<<<< HEAD
       username: null,
+=======
+      loggedUsername: null,
+>>>>>>> c15bea0166dcce133009f277991e058f6a161691
       register: false,
     };
   }
@@ -36,9 +45,9 @@ export default class MainView extends React.Component {
     });
   }
 
-  onLoggedIn(user) {
+  onLoggedIn(loggedUsername) {
     this.setState({
-      user,
+      loggedUsername,
     });
   }
 
@@ -49,13 +58,18 @@ export default class MainView extends React.Component {
   }
 
   render() {
+<<<<<<< HEAD
     const { movies, selectedMovie, username, register } = this.state;
     if (!username) {
+=======
+    const { movies, selectedMovie, loggedUsername, register } = this.state;
+    if (!loggedUsername) {
+>>>>>>> c15bea0166dcce133009f277991e058f6a161691
       if (register) {
         return (
           <RegistrationView
             onBackClick={(registrationState) => {
-              this.register(registrationState);
+              this.onRegistration(registrationState);
             }}
             onRegistration={(register) => this.onRegistration(register)}
           />
@@ -64,33 +78,40 @@ export default class MainView extends React.Component {
         return (
           <LoginView
             goToRegistration={(register) => this.onRegistration(register)}
+<<<<<<< HEAD
             onLoggedIn={(username) => this.onLoggedIn(username)}
+=======
+            onLoggedIn={(loggedUsername) => this.onLoggedIn(loggedUsername)}
+>>>>>>> c15bea0166dcce133009f277991e058f6a161691
           />
         );
       }
     }
     if (movies.length === 0) return <div className="main-view" />;
     return (
-      <div className="main-view">
+      <Row className="main-view">
         {selectedMovie ? (
-          <MovieView
-            movie={selectedMovie}
-            onBackClick={(newSelectedMovie) => {
-              this.setSelectedMovie(newSelectedMovie);
-            }}
-          />
-        ) : (
-          movies.map((movie) => (
-            <MovieCard
-              key={movie._id}
-              movie={movie}
-              onMovieClick={(newSelectedMovie) => {
+          <Col className="movie-view-wrapper" md={8}>
+            <MovieView
+              movie={selectedMovie}
+              onBackClick={(newSelectedMovie) => {
                 this.setSelectedMovie(newSelectedMovie);
               }}
             />
+          </Col>
+        ) : (
+          movies.map((movie) => (
+            <Col className="card-wrapper" md={3} key={movie._id}>
+              <MovieCard
+                movie={movie}
+                onMovieClick={(newSelectedMovie) => {
+                  this.setSelectedMovie(newSelectedMovie);
+                }}
+              ></MovieCard>
+            </Col>
           ))
         )}
-      </div>
+      </Row>
     );
   }
 }
