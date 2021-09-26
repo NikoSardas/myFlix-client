@@ -991,7 +991,7 @@ class MainView extends _reactDefault.default.Component {
         this.state = {
             movies: [],
             selectedMovie: null,
-            user: null,
+            username: null,
             register: false
         };
     }
@@ -1020,8 +1020,8 @@ class MainView extends _reactDefault.default.Component {
         });
     }
     render() {
-        const { movies , selectedMovie , user , register  } = this.state;
-        if (!user) {
+        const { movies , selectedMovie , username , register  } = this.state;
+        if (!username) {
             if (register) return(/*#__PURE__*/ _jsxRuntime.jsx(_registrationView.RegistrationView, {
                 onBackClick: (registrationState)=>{
                     this.register(registrationState);
@@ -1037,7 +1037,7 @@ class MainView extends _reactDefault.default.Component {
             else return(/*#__PURE__*/ _jsxRuntime.jsx(_loginView.LoginView, {
                 goToRegistration: (register1)=>this.onRegistration(register1)
                 ,
-                onLoggedIn: (user1)=>this.onLoggedIn(user1)
+                onLoggedIn: (username1)=>this.onLoggedIn(username1)
                 ,
                 __source: {
                     fileName: "src/components/main-view/main-view.jsx",
@@ -5183,7 +5183,8 @@ function LoginView(props) {
 _s(LoginView, "Lrw7JeD9zj6OUWhT/IH4OIvPKEk=");
 _c = LoginView;
 LoginView.propTypes = {
-    onLoggedIn: _propTypesDefault.default.func.isRequired
+    onLoggedIn: _propTypesDefault.default.func.isRequired,
+    goToRegistration: _propTypesDefault.default.func.isRequired
 };
 var _c;
 $RefreshReg$(_c, "LoginView");
@@ -6345,7 +6346,8 @@ function RegistrationView(props) {
 _s(RegistrationView, "jsOQN3GC2XlBG9ITlzCdpyJOnso=");
 _c = RegistrationView;
 RegistrationView.propTypes = {
-    onRegistration: _propTypesDefault.default.func.isRequired
+    onRegistration: _propTypesDefault.default.func.isRequired,
+    onBackClick: _propTypesDefault.default.func.isRequired
 };
 var _c;
 $RefreshReg$(_c, "RegistrationView");
