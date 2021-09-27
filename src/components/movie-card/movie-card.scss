@@ -15,3 +15,12 @@
   color: $secondary-color !important;
 }
 
+.card-img-top{
+  height:300px;
+}
+
+@media all and (max-width: 750px) {
+  .card-img-top{
+    height:400px;
+    }
+}

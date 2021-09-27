@@ -7311,7 +7311,7 @@ var _movieCardScss = require("./movie-card.scss");
 class MovieCard extends _reactDefault.default.Component {
     render() {
         const { movie , onMovieClick  } = this.props;
-        return(/*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default, {
+        return(/*#__PURE__*/ _jsxRuntime.jsxs(_cardDefault.default, {
             className: "movie-card",
             border: "light",
             bg: "dark",
@@ -7320,42 +7320,53 @@ class MovieCard extends _reactDefault.default.Component {
                 lineNumber: 11
             },
             __self: this,
-            children: /*#__PURE__*/ _jsxRuntime.jsxs(_cardDefault.default.Body, {
-                __source: {
-                    fileName: "src/components/movie-card/movie-card.jsx",
-                    lineNumber: 13
-                },
-                __self: this,
-                children: [
-                    /*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default.Title, {
-                        __source: {
-                            fileName: "src/components/movie-card/movie-card.jsx",
-                            lineNumber: 14
-                        },
-                        __self: this,
-                        children: movie.Title
-                    }),
-                    /*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default.Text, {
-                        __source: {
-                            fileName: "src/components/movie-card/movie-card.jsx",
-                            lineNumber: 15
-                        },
-                        __self: this,
-                        children: movie.Description
-                    }),
-                    /*#__PURE__*/ _jsxRuntime.jsx(_buttonDefault.default, {
-                        onClick: ()=>onMovieClick(movie)
-                        ,
-                        variant: "outline-light",
-                        __source: {
-                            fileName: "src/components/movie-card/movie-card.jsx",
-                            lineNumber: 16
-                        },
-                        __self: this,
-                        children: "Open"
-                    })
-                ]
-            })
+            children: [
+                /*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default.Img, {
+                    variant: "top",
+                    src: movie.ImagePath,
+                    __source: {
+                        fileName: "src/components/movie-card/movie-card.jsx",
+                        lineNumber: 12
+                    },
+                    __self: this
+                }),
+                /*#__PURE__*/ _jsxRuntime.jsxs(_cardDefault.default.Body, {
+                    __source: {
+                        fileName: "src/components/movie-card/movie-card.jsx",
+                        lineNumber: 13
+                    },
+                    __self: this,
+                    children: [
+                        /*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default.Title, {
+                            __source: {
+                                fileName: "src/components/movie-card/movie-card.jsx",
+                                lineNumber: 14
+                            },
+                            __self: this,
+                            children: movie.Title
+                        }),
+                        /*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default.Text, {
+                            __source: {
+                                fileName: "src/components/movie-card/movie-card.jsx",
+                                lineNumber: 15
+                            },
+                            __self: this,
+                            children: movie.Description
+                        }),
+                        /*#__PURE__*/ _jsxRuntime.jsx(_buttonDefault.default, {
+                            onClick: ()=>onMovieClick(movie)
+                            ,
+                            variant: "outline-light",
+                            __source: {
+                                fileName: "src/components/movie-card/movie-card.jsx",
+                                lineNumber: 16
+                            },
+                            __self: this,
+                            children: "Open"
+                        })
+                    ]
+                })
+            ]
         }));
     }
 }
@@ -7542,7 +7553,7 @@ var _movieViewScss = require("./movie-view.scss");
 class MovieView extends _reactDefault.default.Component {
     render() {
         const { movie , onBackClick  } = this.props;
-        return(/*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default, {
+        return(/*#__PURE__*/ _jsxRuntime.jsxs(_cardDefault.default, {
             border: "light",
             bg: "dark",
             text: "white",
@@ -7551,43 +7562,54 @@ class MovieView extends _reactDefault.default.Component {
                 lineNumber: 11
             },
             __self: this,
-            children: /*#__PURE__*/ _jsxRuntime.jsxs(_cardDefault.default.Body, {
-                __source: {
-                    fileName: "src/components/movie-view/movie-view.jsx",
-                    lineNumber: 13
-                },
-                __self: this,
-                children: [
-                    /*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default.Title, {
-                        __source: {
-                            fileName: "src/components/movie-view/movie-view.jsx",
-                            lineNumber: 14
-                        },
-                        __self: this,
-                        children: movie.Title
-                    }),
-                    /*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default.Text, {
-                        __source: {
-                            fileName: "src/components/movie-view/movie-view.jsx",
-                            lineNumber: 15
-                        },
-                        __self: this,
-                        children: movie.Description
-                    }),
-                    /*#__PURE__*/ _jsxRuntime.jsx(_buttonDefault.default, {
-                        variant: "outline-light",
-                        onClick: ()=>{
-                            onBackClick(null);
-                        },
-                        __source: {
-                            fileName: "src/components/movie-view/movie-view.jsx",
-                            lineNumber: 16
-                        },
-                        __self: this,
-                        children: "Back"
-                    })
-                ]
-            })
+            children: [
+                /*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default.Img, {
+                    variant: "top",
+                    src: movie.ImagePath,
+                    __source: {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 12
+                    },
+                    __self: this
+                }),
+                /*#__PURE__*/ _jsxRuntime.jsxs(_cardDefault.default.Body, {
+                    __source: {
+                        fileName: "src/components/movie-view/movie-view.jsx",
+                        lineNumber: 13
+                    },
+                    __self: this,
+                    children: [
+                        /*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default.Title, {
+                            __source: {
+                                fileName: "src/components/movie-view/movie-view.jsx",
+                                lineNumber: 14
+                            },
+                            __self: this,
+                            children: movie.Title
+                        }),
+                        /*#__PURE__*/ _jsxRuntime.jsx(_cardDefault.default.Text, {
+                            __source: {
+                                fileName: "src/components/movie-view/movie-view.jsx",
+                                lineNumber: 15
+                            },
+                            __self: this,
+                            children: movie.Description
+                        }),
+                        /*#__PURE__*/ _jsxRuntime.jsx(_buttonDefault.default, {
+                            variant: "outline-light",
+                            onClick: ()=>{
+                                onBackClick(null);
+                            },
+                            __source: {
+                                fileName: "src/components/movie-view/movie-view.jsx",
+                                lineNumber: 16
+                            },
+                            __self: this,
+                            children: "Back"
+                        })
+                    ]
+                })
+            ]
         }));
     }
 }
