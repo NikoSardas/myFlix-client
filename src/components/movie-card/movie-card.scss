@@ -2,12 +2,15 @@
 
 .movie-card {
   height: 100%;
+  padding: 0 !important;
+  margin:0 !important;
 }
 
 .card-body{
   display: flex;
   flex-flow: column wrap;
   justify-content: space-between;
+  
 }
 
 .card-title{

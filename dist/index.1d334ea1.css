@@ -18,6 +18,8 @@
 }
 .movie-card {
   height: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .card-body {
@@ -71,12 +73,43 @@
   top: 10%;
 }
 .card-wrapper {
-  padding: 2px !important;
+  padding: 5px !important;
 }
 
 .main-view {
   min-height: 100%;
   background-color: #252525;
+}
+
+.logout-button {
+  position: absolute;
+  right: 5px;
+}
+
+nav {
+  padding: 5px !important;
+}
+
+@media all and (max-width: 750px) {
+  .signed-in-name {
+    display: none;
+  }
+}
+.genre-view-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: auto;
+}
+.director-view-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: auto;
 }
 body {
   user-select: none;
