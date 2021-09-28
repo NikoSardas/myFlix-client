@@ -2,12 +2,14 @@ import React from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-import { Button, Card } from "react-bootstrap/Button";
+import { Button, Card } from "react-bootstrap";
 
 import "./movie-view.scss";
 
 export function MovieView(props) {
+  console.log("movieview props", props);
   const { movie, onBackClick } = props;
+
   addToFavorites = () => {
     axios
       .post(
@@ -24,6 +26,7 @@ export function MovieView(props) {
         console.log(error);
       });
   };
+
   return (
     <Card border="light" bg="dark" text="white">
       <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
