@@ -7,16 +7,15 @@ import { Link } from "react-router-dom";
 
 import "./registration-view.scss";
 
-export function RegistrationView(props) {
-  console.log(props);
+export function RegistrationView() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [birthday, setBirthday] = useState("");
 
-  handleRegister = () => {
+  handleRegister = (e) => {
     axios
-      .post("https://dashboard.heroku.com/apps/nikosardas-myflixdb/users", {
+      .post("https://nikosardas-myflixdb.herokuapp.com/users", {
         Username: username,
         Password: password,
         Email: email,
@@ -72,8 +71,8 @@ export function RegistrationView(props) {
           <Button
             variant="outline-light"
             className="register-submit"
-            type="submit"
-            onClick={handleRegister}
+            // type="submit"
+            onClick={()=>{handleRegister()}}
           >
             Submit
           </Button>

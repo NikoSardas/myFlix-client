@@ -13,7 +13,7 @@ export function MovieView(props) {
   removeFromFavorites = () => {
     axios
       .delete(
-        `https:nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
           "username"
         )}/FavoriteMovies/${movie._id}`,
         {},
@@ -21,7 +21,7 @@ export function MovieView(props) {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       )
-      .then((response) => {
+      .then(() => {
         alert(`${movie.Title} Removed from Favorites List!`);
       })
       .catch(function (error) {
@@ -32,7 +32,7 @@ export function MovieView(props) {
   addToFavorites = () => {
     axios
       .post(
-        `https:nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
           "username"
         )}/FavoriteMovies/${movie._id}`,
         {},

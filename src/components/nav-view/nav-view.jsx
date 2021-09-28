@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 import { Navbar, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -6,7 +7,6 @@ import { Link } from "react-router-dom";
 import "./nav-view.scss";
 
 export function NavView(props) {
-
   const { username, onLoggedOut } = props;
 
   if (!username) return null;
@@ -21,7 +21,7 @@ export function NavView(props) {
         </Navbar.Text>
         <Navbar.Text className="logout-button">
           <Link to={`/users/${username}`}>
-            <Button variant="outline-light" onClick={() => {}}>
+            <Button variant="outline-light">
               User Profile
             </Button>
           </Link>

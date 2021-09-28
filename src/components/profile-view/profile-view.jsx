@@ -7,47 +7,80 @@ import { Link } from "react-router-dom";
 
 import "./profile-view.scss";
 
-export function ProfileView(props) {
-    console.log(props)
+export function ProfileView() {
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [birthday, setBirthday] = useState("");
+  axios
+    .get(`https:nikosardas-myflixdb.herokuapp.com/users`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((response) => {
+      response.data.map((user) => {
+        if (user.Username === localStorage.getItem("username")) {
+          setUsername(user.Username);
+          setEmail(user.Email);
+          //password needs to be unhashed
+          //date requests another format
+        }
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   handleUpdate = () => {
+    console.log("handleUpdate");
     axios
-      .put("https://dashboard.heroku.com/apps/nikosardas-myflixdb/users", {
-        Username: username,
-        Password: password,
-        Email: email,
-        Birthday: birthday,
-      })
+      .put(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+          "username"
+        )}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          data: {
+            Username: username,
+            Email: email,
+          },
+        }
+      )
       .then((response) => {
-        const data = response.data;
-        console.log(data);
+        alert("Saved Changes");
+        setEmail(response.data.Email);
+        setUsername(response.data.Username);
+        window.open(`/users/${localStorage.getItem("username")}`, "_self");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  handleDeregister = () => {
+    console.log("handleDeregister");
+    axios
+      .delete(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+          "username"
+        )}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        //how to use onloggedout from mainview.jsx?
+        onLoggedOut();
         window.open("/", "_self");
       })
-      .catch((e) => {
-        console.log("error updating user info");
+      .catch((error) => {
+        console.log(error);
       });
   };
 
-  handleDeregister = () => {
-    axios
-      .delete("https://dashboard.heroku.com/apps/nikosardas-myflixdb/users", {
-        Username: username,
-        Password: password,
-        Email: email,
-        Birthday: birthday,
-      })
-      .then((response) => {
-        const data = response.data;
-        console.log(data);
-        window.open("/", "_self");
-      })
-      .catch((e) => {
-        console.log("error Deregistering the user");
-      });
+  onLoggedOut = () => {
+    console.log("mainview onLoggedOut");
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
   };
 
   return (
@@ -62,44 +95,37 @@ export function ProfileView(props) {
             onChange={(e) => setUsername(e.target.value)}
           />
         </Form.Group>
-        <Form.Group controlId="formPassword">
+        {/* <Form.Group controlId="formPassword">
           <Form.Label>Password:</Form.Label>
           <Form.Control
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-        </Form.Group>
+        </Form.Group> */}
         <Form.Group controlId="formEmail">
           <Form.Label>Email:</Form.Label>
           <Form.Control
             type="email"
-            value={email}
+            // value={email}
             onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group controlId="formBirthday">
-          <Form.Label>Birthday:</Form.Label>
-          <Form.Control
-            type="date"
-            value={birthday}
-            onChange={(e) => setBirthday(e.target.value)}
           />
         </Form.Group>
         <div className="profile-view-buttons">
           <Button
             variant="outline-light"
             className="update-submit"
-            type="submit"
-            onClick={handleUpdate}
+            onClick={() => {
+              handleUpdate();
+            }}
           >
             Update
           </Button>
           <Button
-            variant="outline-warning"
-            className="update-submit"
-            type="submit"
-            onClick={handleDeregister}
+            variant="danger"
+            onClick={() => {
+              handleDeregister();
+            }}
           >
             Delete User
           </Button>
@@ -107,7 +133,7 @@ export function ProfileView(props) {
             <Button
               variant="outline-light"
               onClick={() => {
-                props.onBackClick(false);
+                history.back();
               }}
             >
               Cancel
