@@ -6,6 +6,7 @@ import { Button, Card } from "react-bootstrap";
 import "./director-view.scss";
 
 export function DirectorView(props) {
+  console.log("DirectorView props", props);
   const { director, onBackClick } = props;
   return (
     <Card border="light" bg="dark" text="white">

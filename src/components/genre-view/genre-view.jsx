@@ -6,6 +6,7 @@ import { Button, Card } from "react-bootstrap";
 import "./genre-view.scss";
 
 export function GenreView(props) {
+  console.log("GenreView props", props);
   const { genre, onBackClick } = props;
   return (
     <Card border="light" bg="dark" text="white">

@@ -7,21 +7,20 @@ import { Link } from "react-router-dom";
 import "./movie-card.scss";
 
 export function MovieCard(props) {
-  showMovieDetails = () => {
-    console.log(props);
-    window.open(`/movies/${movie._id}`, `_self`);
-  };
-
   const { movie } = props;
   return (
-    <Card onClick={() => {
-      showMovieDetails();
-    }}className="movie-card" border="light" bg="dark">
+    <Card className="movie-card" border="light" bg="dark">
       <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
       <Card.Body>
         <Card.Title>{movie.Title}</Card.Title>
         <Card.Text>{movie.Description}</Card.Text>
         <div className="card-links">
+          <Link to={`/movies/${movie._id}`}>
+            {/* how is the movie being passed to the movieview? */}
+            <Button onClick={() => movie} variant="outline-light">
+              Open
+            </Button>
+          </Link>
           <Link to={`/directors/${movie.Director.Name}`}>
             <Button variant="outline-light">{movie.Director.Name}</Button>
           </Link>

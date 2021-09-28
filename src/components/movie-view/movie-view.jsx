@@ -10,17 +10,38 @@ export function MovieView(props) {
   console.log("movieview props", props);
   const { movie, onBackClick } = props;
 
-  addToFavorites = () => {
+  removeFromFavorites = () => {
     axios
-      .post(
-        `https:nikosardas-myflixdb.herokuapp.com/users/${localstorage.username}/movies/${movie._id}`,
+      .delete(
+        `https:nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+          "username"
+        )}/FavoriteMovies/${movie._id}`,
         {},
         {
-          headers: { Authorization: `Bearer ${localStorage.token}` },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       )
       .then((response) => {
-        alert(`${movie.Title} Added to Favorites List`);
+        alert(`${movie.Title} Removed from Favorites List!`);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  addToFavorites = () => {
+    axios
+      .post(
+        `https:nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+          "username"
+        )}/FavoriteMovies/${movie._id}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      .then((response) => {
+        alert(`${movie.Title} Added to Favorites List!`);
       })
       .catch(function (error) {
         console.log(error);
@@ -33,13 +54,22 @@ export function MovieView(props) {
       <Card.Body>
         <Card.Title>{movie.Title}</Card.Title>
         <Card.Text>{movie.Description}</Card.Text>
+        {/* how to create an interactive button? */}
         <Button
           variant="outline-light"
           onClick={() => {
             addToFavorites();
           }}
         >
-          Back
+          Add to favorites
+        </Button>
+        <Button
+          variant="outline-light"
+          onClick={() => {
+            removeFromFavorites();
+          }}
+        >
+          Remove from favorites
         </Button>
         <Button variant="outline-light" onClick={onBackClick}>
           Back

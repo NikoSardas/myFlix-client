@@ -5,18 +5,18 @@ import PropTypes from "prop-types";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import "./registration-view.scss";
+import "./profile-view.scss";
 
-export function RegistrationView(props) {
-  console.log(props);
+export function ProfileView(props) {
+    console.log(props)
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [birthday, setBirthday] = useState("");
 
-  handleRegister = () => {
+  handleUpdate = () => {
     axios
-      .post("https://dashboard.heroku.com/apps/nikosardas-myflixdb/users", {
+      .put("https://dashboard.heroku.com/apps/nikosardas-myflixdb/users", {
         Username: username,
         Password: password,
         Email: email,
@@ -28,13 +28,31 @@ export function RegistrationView(props) {
         window.open("/", "_self");
       })
       .catch((e) => {
-        console.log("error registering the user");
+        console.log("error updating user info");
+      });
+  };
+
+  handleDeregister = () => {
+    axios
+      .delete("https://dashboard.heroku.com/apps/nikosardas-myflixdb/users", {
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday,
+      })
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+        window.open("/", "_self");
+      })
+      .catch((e) => {
+        console.log("error Deregistering the user");
       });
   };
 
   return (
-    <div className="registration-view">
-      <h2>User Registration</h2>
+    <div className="profile-view">
+      <h2>User Profile</h2>
       <Form>
         <Form.Group controlId="formUsername">
           <Form.Label>Username:</Form.Label>
@@ -68,20 +86,28 @@ export function RegistrationView(props) {
             onChange={(e) => setBirthday(e.target.value)}
           />
         </Form.Group>
-        <div className="registration-view-buttons">
+        <div className="profile-view-buttons">
           <Button
             variant="outline-light"
-            className="register-submit"
+            className="update-submit"
             type="submit"
-            onClick={handleRegister}
+            onClick={handleUpdate}
           >
-            Submit
+            Update
+          </Button>
+          <Button
+            variant="outline-warning"
+            className="update-submit"
+            type="submit"
+            onClick={handleDeregister}
+          >
+            Delete User
           </Button>
           <Link to={`/`}>
             <Button
               variant="outline-light"
               onClick={() => {
-                history.back();
+                props.onBackClick(false);
               }}
             >
               Cancel
@@ -92,3 +118,8 @@ export function RegistrationView(props) {
     </div>
   );
 }
+
+// RegistrationView.propTypes = {
+//   onRegistration: PropTypes.func.isRequired,
+//   onBackClick: PropTypes.func.isRequired,
+// };

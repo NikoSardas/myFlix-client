@@ -10,9 +10,10 @@ import { MovieView } from "../movie-view/movie-view";
 import { RegistrationView } from "../registration-view/registration-view";
 import { DirectorView } from "../director-view/director-view";
 import { GenreView } from "../genre-view/genre-view";
-// import { NavView } from "../nav-view/nav-view";
+import { NavView } from "../nav-view/nav-view";
 
 import "./main-view.scss";
+import { ProfileView } from "../profile-view/profile-view";
 
 export default class MainView extends React.Component {
   constructor() {
@@ -56,7 +57,7 @@ export default class MainView extends React.Component {
   }
 
   onLoggedIn(authData) {
-    console.log(authData);
+    console.log("main-view onLoggedIn authData", authData);
     this.setState({
       loggedUsername: authData.user.Username,
     });
@@ -67,6 +68,7 @@ export default class MainView extends React.Component {
   }
 
   onLoggedOut() {
+    console.log('mainview onLoggedOut')
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     this.setState({
@@ -78,7 +80,7 @@ export default class MainView extends React.Component {
     const { movies, loggedUsername } = this.state;
     return (
       <Router>
-        {/* <NavView username={loggedUsername} /> */}
+        <NavView username={loggedUsername} onLoggedOut={()=>{this.onLoggedOut()}} />
 
         <Row className="main-view">
           <Route
@@ -109,6 +111,17 @@ export default class MainView extends React.Component {
               return (
                 <Col>
                   <RegistrationView />
+                </Col>
+              );
+            }}
+          />
+            <Route
+            path="/users/:username"
+            exact
+            render={() => {
+              return (
+                <Col>
+                  <ProfileView />
                 </Col>
               );
             }}

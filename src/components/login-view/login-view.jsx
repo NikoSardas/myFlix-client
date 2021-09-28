@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import "./login-view.scss";
 
 export function LoginView(props) {
+  console.log("function LoginView");
+  const { onLoggedIn } = props;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,7 +22,7 @@ export function LoginView(props) {
       })
       .then((response) => {
         const data = response.data;
-        props.onLoggedIn(data);
+        onLoggedIn(data);
       })
       .catch((e) => {
         console.log("no such user");
