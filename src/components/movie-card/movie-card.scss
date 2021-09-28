@@ -4,6 +4,7 @@
   height: 100%;
   padding: 0 !important;
   margin:0 !important;
+  text-align: center;
 }
 
 .card-body{
@@ -14,12 +15,16 @@
 }
 
 .card-title{
-  text-align: center;
   color: $secondary-color !important;
 }
 
 .card-img-top{
   height:300px;
+}
+
+.card-links{
+  display: flex;
+  justify-content: space-between;
 }
 
 @media all and (max-width: 750px) {

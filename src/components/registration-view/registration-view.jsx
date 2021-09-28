@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import axios from "axios";
 import PropTypes from "prop-types";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+
+import { Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
 import "./registration-view.scss";
 
 export function RegistrationView(props) {
@@ -10,9 +13,22 @@ export function RegistrationView(props) {
   const [email, setEmail] = useState("");
   const [birthday, setBirthday] = useState("");
 
-  const handleSubmit = () => {
-    console.log(username, password, email, birthday);
-    props.onRegistration(username);
+  handleRegister = () => {
+    axios
+      .post("https://dashboard.heroku.com/apps/nikosardas-myflixdb/users", {
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday,
+      })
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+        window.open("/", "_self"); // the second argument '_self' is necessary so that the page will open in the current tab
+      })
+      .catch((e) => {
+        console.log("error registering the user");
+      });
   };
 
   return (
@@ -56,18 +72,20 @@ export function RegistrationView(props) {
             variant="outline-light"
             className="register-submit"
             type="submit"
-            onClick={handleSubmit}
+            onClick={handleRegister}
           >
             Submit
           </Button>
-          <Button
-            variant="outline-light"
-            onClick={() => {
-              props.onBackClick(false);
-            }}
-          >
-            Cancel
-          </Button>
+          <Link to={`/`}>
+            <Button
+              variant="outline-light"
+              onClick={() => {
+                props.onBackClick(false);
+              }}
+            >
+              Cancel
+            </Button>
+          </Link>
         </div>
       </Form>
     </div>

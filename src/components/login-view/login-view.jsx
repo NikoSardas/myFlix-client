@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import { Button, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import "./login-view.scss";
 
@@ -13,7 +13,6 @@ export function LoginView(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    /* Send a request to the server for authentication */
     axios
       .post("https://nikosardas-myflixdb.herokuapp.com/login", {
         Username: username,
@@ -26,10 +25,6 @@ export function LoginView(props) {
       .catch((e) => {
         console.log("no such user");
       });
-  };
-
-  const handleRegister = () => {
-    props.goToRegistration(true);
   };
 
   return (
@@ -56,13 +51,11 @@ export function LoginView(props) {
           <Button variant="outline-light" type="submit" onClick={handleSubmit}>
             Submit
           </Button>
-          <Button
-            variant="outline-warning"
-            className="register-button"
-            onClick={handleRegister}
-          >
-            Register
-          </Button>
+          <Link to={`/register`}>
+            <Button variant="outline-warning" className="register-button">
+              Register
+            </Button>
+          </Link>
         </div>
       </Form>
     </div>
@@ -71,5 +64,4 @@ export function LoginView(props) {
 
 LoginView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired,
-  goToRegistration: PropTypes.func.isRequired,
 };

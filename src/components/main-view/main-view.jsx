@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 
 import { LoginView } from "../login-view/login-view";
 import { MovieCard } from "../movie-card/movie-card";
@@ -8,10 +10,7 @@ import { MovieView } from "../movie-view/movie-view";
 import { RegistrationView } from "../registration-view/registration-view";
 import { DirectorView } from "../director-view/director-view";
 import { GenreView } from "../genre-view/genre-view";
-
-import { Button, Col } from "react-bootstrap";
-import { Row } from "react-bootstrap";
-import { Navbar } from "react-bootstrap";
+// import { NavView } from "../nav-view/nav-view";
 
 import "./main-view.scss";
 
@@ -22,7 +21,6 @@ export default class MainView extends React.Component {
       movies: [],
       selectedMovie: null,
       loggedUsername: null,
-      register: false,
     };
   }
 
@@ -48,7 +46,6 @@ export default class MainView extends React.Component {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        // Assign the result to the state
         this.setState({
           movies: response.data,
         });
@@ -69,12 +66,6 @@ export default class MainView extends React.Component {
     this.getMovies(authData.token);
   }
 
-  onRegistration(register) {
-    this.setState({
-      register,
-    });
-  }
-
   onLoggedOut() {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
@@ -84,65 +75,56 @@ export default class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovie, loggedUsername, register } = this.state;
-    if (!loggedUsername) {
-      if (register) {
-        return (
-          <RegistrationView
-            onBackClick={(registrationState) => {
-              this.onRegistration(registrationState);
-            }}
-            onRegistration={(register) => this.onRegistration(register)}
-          />
-        );
-      } else {
-        return (
-          <LoginView
-            goToRegistration={(register) => this.onRegistration(register)}
-            onLoggedIn={(loggedUsername) => this.onLoggedIn(loggedUsername)}
-          />
-        );
-      }
-    }
-    if (movies.length === 0) return <div className="main-view" />;
+    const { movies, loggedUsername } = this.state;
     return (
       <Router>
-        <Navbar className="nav-bar" variant="dark">
-          <Navbar.Brand>myFlix</Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="">
-            <Navbar.Text>
-              <span className="signed-in-name">
-                Signed in as: {localStorage.getItem("username")}
-              </span>
-            </Navbar.Text>
-            <Navbar.Text className="logout-button">
-              <Button
-                variant="outline-light"
-                onClick={() => {
-                  this.onLoggedOut();
-                }}
-              >
-                Sign Out
-              </Button>
-            </Navbar.Text>
-          </Navbar.Collapse>
-        </Navbar>
+        {/* <NavView username={loggedUsername} /> */}
+
         <Row className="main-view">
           <Route
             exact
             path="/"
             render={() => {
+              if (!loggedUsername)
+                return (
+                  <Col>
+                    <LoginView
+                      onLoggedIn={(authData) => this.onLoggedIn(authData)}
+                    />
+                  </Col>
+                );
+              if (movies.length === 0) return <div className="main-view" />;
               return movies.map((m) => (
-                <Col md={4} key={m._id} className="card-wrapper">
-                  <MovieCard movie={m}  />
+                <Col md={6} lg={4} xl={3} key={m._id} className="card-wrapper">
+                  <MovieCard movie={m} />
                 </Col>
               ));
             }}
           />
           <Route
+            path="/register"
+            exact
+            render={() => {
+              if (loggedUsername) return <Redirect to="/" />;
+              return (
+                <Col>
+                  <RegistrationView />
+                </Col>
+              );
+            }}
+          />
+          <Route
             path="/movies/:movieId"
+            exact
             render={({ match }) => {
+              if (!loggedUsername)
+                return (
+                  <Col>
+                    <LoginView
+                      onLoggedIn={(authData) => this.onLoggedIn(authData)}
+                    />
+                  </Col>
+                );
               return (
                 <Col md={8} className="movie-view-wrapper">
                   <MovieView
@@ -155,8 +137,16 @@ export default class MainView extends React.Component {
           />
           <Route
             path="/directors/:name"
+            exact
             render={({ match }) => {
-              if (movies.length === 0) return <div className="main-view" />;
+              if (!loggedUsername)
+                return (
+                  <Col>
+                    <LoginView
+                      onLoggedIn={(authData) => this.onLoggedIn(authData)}
+                    />
+                  </Col>
+                );
               return (
                 <Col md={8} className="director-view-wrapper">
                   <DirectorView
@@ -172,8 +162,16 @@ export default class MainView extends React.Component {
           />
           <Route
             path="/genres/:name"
+            exact
             render={({ match }) => {
-              if (movies.length === 0) return <div className="main-view" />;
+              if (!loggedUsername)
+                return (
+                  <Col>
+                    <LoginView
+                      onLoggedIn={(authData) => this.onLoggedIn(authData)}
+                    />
+                  </Col>
+                );
               return (
                 <Col md={8} className="genre-view-wrapper">
                   <GenreView
