@@ -89,8 +89,8 @@ export default class MainView extends React.Component {
 
         <Row className="main-view">
           <Route
-            exact
             path="/"
+            exact
             render={() => {
               if (!loggedUsername)
                 return (
@@ -146,6 +146,7 @@ export default class MainView extends React.Component {
             }}
           />
           <Route
+          //? API requires get /:title 
             path="/movies/:movieId"
             exact
             render={({ match }) => {
@@ -181,6 +182,7 @@ export default class MainView extends React.Component {
               return (
                 <Col md={8} className="director-view-wrapper">
                   <DirectorView
+                    movies={movies}
                     director={
                       movies.find((m) => m.Director.Name === match.params.name)
                         .Director
@@ -205,6 +207,7 @@ export default class MainView extends React.Component {
               return (
                 <Col md={8} className="genre-view-wrapper">
                   <GenreView
+                    movies={movies}
                     genre={
                       movies.find((m) => m.Genre.Name === match.params.name)
                         .Genre

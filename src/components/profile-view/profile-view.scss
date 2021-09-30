@@ -18,10 +18,10 @@
 }
 
 .favs-row {
-  margin: 20%;
+  margin: 10% 0 0 0;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 50%;
 }
 
 .fav-item {
@@ -33,6 +33,5 @@
 }
 
 .delete-user {
-  margin: 20% 0 5% 0 ;
-  width: 100%;
+  margin: 10% 0 1% 0 ;
 }

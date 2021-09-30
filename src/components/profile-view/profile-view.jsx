@@ -175,7 +175,7 @@ export class ProfileView extends React.Component {
         <ListGroup className="favs-row">
           <h5 className="text-center">Favorite Movies</h5>
           {favorites.length === 0 ? (
-            <div>No Favorite Movies</div>
+            <div className="text-center">No Favorite Movies</div>
           ) : (
             favorites.map((favMovie) => {
               return (

@@ -45,7 +45,7 @@ export class RegistrationView extends React.Component {
     });
   }
   handleRegister = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     axios
       .post("https://nikosardas-myflixdb.herokuapp.com/users", {
         Username: this.state.username,
@@ -111,7 +111,7 @@ export class RegistrationView extends React.Component {
             <Button
               variant="outline-light"
               className="register-submit"
-              // type="submit"
+              type="submit"
               onClick={(e) => {
                 this.validate();
                 this.handleRegister(e);
