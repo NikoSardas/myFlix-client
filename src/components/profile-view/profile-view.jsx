@@ -2,7 +2,6 @@
 
 import React from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
 
 import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -23,11 +22,15 @@ export class ProfileView extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.getInitialStates();
+  }
+
   validate() {
     return this.form.current.reportValidity();
   }
 
-  populateFields() {
+  getInitialStates() {
     axios
       .get(
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
@@ -51,20 +54,37 @@ export class ProfileView extends React.Component {
       });
   }
 
-  handleUpdate(username) {
+  handleUpdate() {
+    console.log(
+      "updated data:",
+      this.state.username,
+      this.state.password,
+      this.state.email,
+      this.state.birthday
+    );
+
     axios
-      .put(`https://nikosardas-myflixdb.herokuapp.com/users/${username}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        data: {
-          Username: this.state.username,
-          Password: this.state.password,
-          Email: this.state.email,
-          Birthday: this.state.birthday,
-        },
-      })
-      .then((response) => {
+      .put(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+          "username"
+        )}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              localStorage.getItem("token")
+            )}`,
+          },
+          data: {
+            Username: this.state.username,
+            Password: this.state.password,
+            Email: this.state.email,
+            Birthday: this.state.birthday,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
         localStorage.setItem("username", this.state.username);
-        console.log(response);
         window.open(`/users/${localStorage.getItem("username")}`, "_self");
       })
       .catch(function (error) {
@@ -72,13 +92,19 @@ export class ProfileView extends React.Component {
       });
   }
 
-  handleDeregister(username) {
+  handleDeregister() {
     axios
-      .delete(`https://nikosardas-myflixdb.herokuapp.com/users/${username}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        // headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-      .then(() => {
+      .delete(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+          "username"
+        )}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          // headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      .then((res) => {
+        console.log(res);
         this.onLoggedOut();
         window.open("/", "_self");
       })
@@ -86,7 +112,7 @@ export class ProfileView extends React.Component {
         console.log(error);
       });
   }
-  
+
   removeFromFavorites = (id, username) => {
     axios
       .delete(
@@ -95,7 +121,8 @@ export class ProfileView extends React.Component {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       )
-      .then(() => {
+      .then((res) => {
+        console.log(res);
         this.componentDidMount();
       })
       .catch(function (error) {
@@ -108,41 +135,32 @@ export class ProfileView extends React.Component {
     window.open("/", "_self");
   }
 
-  componentDidMount() {
-    this.populateFields();
-  }
-
   setUsername(username) {
-    console.log(this.state.username);
     this.setState({
       username,
     });
   }
 
   setPassword(password) {
-    console.log(this.state.password);
     this.setState({
       password,
     });
   }
 
   setEmail(email) {
-    console.log(this.state.email);
     this.setState({
       email,
     });
   }
 
   setBirthday(birthday) {
-    console.log(this.state.birthday);
     this.setState({
       birthday,
     });
   }
-  
+
   render() {
     const { username, password, email, birthday, favorites } = this.state;
-    // const { movies } = this.props;
     return (
       <div className="profile-view">
         <h2>User Profile</h2>
@@ -242,7 +260,3 @@ export class ProfileView extends React.Component {
     );
   }
 }
-
-// ProfileView.propTypes = {
-//   movies: PropTypes.array.isRequired,
-// };
