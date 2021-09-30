@@ -1,3 +1,5 @@
+//TODO Unchecked runtime.lastError: The message port closed before a response was received
+
 import React from "react";
 import axios from "axios";
 
@@ -11,6 +13,7 @@ import { RegistrationView } from "../registration-view/registration-view";
 import { DirectorView } from "../director-view/director-view";
 import { GenreView } from "../genre-view/genre-view";
 import { NavView } from "../nav-view/nav-view";
+import { ProfileView } from "../profile-view/profile-view";
 
 import "./main-view.scss";
 import { ProfileView } from "../profile-view/profile-view";
@@ -57,7 +60,6 @@ export default class MainView extends React.Component {
   }
 
   onLoggedIn(authData) {
-    console.log("main-view onLoggedIn authData", authData);
     this.setState({
       loggedUsername: authData.user.Username,
     });
@@ -68,7 +70,6 @@ export default class MainView extends React.Component {
   }
 
   onLoggedOut() {
-    console.log('mainview onLoggedOut')
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     this.setState({
@@ -80,7 +81,11 @@ export default class MainView extends React.Component {
     const { movies, loggedUsername } = this.state;
     return (
       <Router>
-        <NavView username={loggedUsername} onLoggedOut={()=>{this.onLoggedOut()}} />
+        <NavView
+          onLoggedOut={() => {
+            this.onLoggedOut();
+          }}
+        />
 
         <Row className="main-view">
           <Route
@@ -97,7 +102,14 @@ export default class MainView extends React.Component {
                 );
               if (movies.length === 0) return <div className="main-view" />;
               return movies.map((m) => (
-                <Col md={6} lg={4} xl={3} key={m._id} className="card-wrapper">
+                <Col
+                  sm={12}
+                  md={6}
+                  lg={4}
+                  xl={3}
+                  key={m._id}
+                  className="card-wrapper"
+                >
                   <MovieCard movie={m} />
                 </Col>
               ));
@@ -115,13 +127,20 @@ export default class MainView extends React.Component {
               );
             }}
           />
-            <Route
+          <Route
             path="/users/:username"
-            exact
             render={() => {
+              if (!loggedUsername)
+                return (
+                  <Col>
+                    <LoginView
+                      onLoggedIn={(authData) => this.onLoggedIn(authData)}
+                    />
+                  </Col>
+                );
               return (
                 <Col>
-                  <ProfileView />
+                  <ProfileView movies={movies} />
                 </Col>
               );
             }}
@@ -142,7 +161,6 @@ export default class MainView extends React.Component {
                 <Col md={8} className="movie-view-wrapper">
                   <MovieView
                     movie={movies.find((m) => m._id === match.params.movieId)}
-                    onBackClick={() => history.back()}
                   />
                 </Col>
               );
@@ -167,7 +185,6 @@ export default class MainView extends React.Component {
                       movies.find((m) => m.Director.Name === match.params.name)
                         .Director
                     }
-                    onBackClick={() => history.back()}
                   />
                 </Col>
               );
@@ -192,7 +209,6 @@ export default class MainView extends React.Component {
                       movies.find((m) => m.Genre.Name === match.params.name)
                         .Genre
                     }
-                    onBackClick={() => history.back()}
                   />
                 </Col>
               );

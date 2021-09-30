@@ -5,20 +5,26 @@ import { Button, Card } from "react-bootstrap";
 
 import "./director-view.scss";
 
-export function DirectorView(props) {
-  console.log("DirectorView props", props);
-  const { director, onBackClick } = props;
-  return (
-    <Card border="light" bg="dark" text="white">
-      <Card.Body>
-        <Card.Title>{director.Name}</Card.Title>
-        <Card.Text>{director.Bio}</Card.Text>
-        <Button variant="outline-light" onClick={onBackClick}>
-          Back
-        </Button>
-      </Card.Body>
-    </Card>
-  );
+export class DirectorView extends React.Component {
+  render() {
+    const { director } = this.props;
+    return (
+      <Card border="light" bg="dark" text="white">
+        <Card.Body>
+          <Card.Title>{director.Name}</Card.Title>
+          <Card.Text>{director.Bio}</Card.Text>
+          <Button
+            variant="outline-light"
+            onClick={() => {
+              history.back();
+            }}
+          >
+            Back
+          </Button>
+        </Card.Body>
+      </Card>
+    );
+  }
 }
 
 DirectorView.propTypes = {
@@ -26,5 +32,4 @@ DirectorView.propTypes = {
     Name: PropTypes.string.isRequired,
     Bio: PropTypes.string.isRequired,
   }).isRequired,
-  onBackClick: PropTypes.func.isRequired,
 };

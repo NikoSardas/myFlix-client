@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
@@ -7,61 +7,85 @@ import { Link } from "react-router-dom";
 
 import "./login-view.scss";
 
-export function LoginView(props) {
-  console.log("function LoginView");
-  const { onLoggedIn } = props;
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export class LoginView extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      username: null,
+      password: null,
+    };
+  }
 
-  const handleSubmit = (e) => {
+  handleSubmit(e) {
     e.preventDefault();
     axios
       .post("https://nikosardas-myflixdb.herokuapp.com/login", {
-        Username: username,
-        Password: password,
+        Username: this.state.username,
+        Password: this.state.password,
       })
       .then((response) => {
-        const data = response.data;
-        onLoggedIn(data);
+        console.log(response.data);
+        this.props.onLoggedIn(response.data);
       })
       .catch((e) => {
-        console.log("no such user");
+        console.log("no such user", e);
       });
-  };
+  }
 
-  return (
-    <div className="login-view">
-      <h1>MyFlix</h1>
-      <Form>
-        <Form.Group controlId="formUsername">
-          <Form.Label>Username:</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Your Username.."
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group controlId="formPassword">
-          <Form.Label>Password:</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Your password.."
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-        <div className="login-view-buttons">
-          <Button variant="outline-light" type="submit" onClick={handleSubmit}>
-            Submit
-          </Button>
-          <Link to={`/register`}>
-            <Button variant="outline-warning" className="register-button">
-              Register
+  setUsername(username) {
+    this.setState({
+      username,
+    });
+  }
+
+  setPassword(password) {
+    this.setState({
+      password,
+    });
+  }
+
+  render() {
+    const { username, password } = this.state;
+    return (
+      <div className="login-view">
+        <h1>MyFlix</h1>
+        <Form>
+          <Form.Group controlId="formUsername">
+            <Form.Label>Username:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Your Username.."
+              onChange={(e) => this.setUsername(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group controlId="formPassword">
+            <Form.Label>Password:</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Your password.."
+              onChange={(e) => this.setPassword(e.target.value)}
+            />
+          </Form.Group>
+          <div className="login-view-buttons">
+            <Button
+              variant="outline-light"
+              type="submit"
+              onClick={(e) => {
+                this.handleSubmit(e);
+              }}
+            >
+              Submit
             </Button>
-          </Link>
-        </div>
-      </Form>
-    </div>
-  );
+            <Link to={`/register`}>
+              <Button variant="outline-warning" className="register-button">
+                Register
+              </Button>
+            </Link>
+          </div>
+        </Form>
+      </div>
+    );
+  }
 }
 
 LoginView.propTypes = {

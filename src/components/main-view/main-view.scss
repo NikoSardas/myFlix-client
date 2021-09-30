@@ -2,7 +2,6 @@
 
 .card-wrapper {
   padding: 5px !important;
- 
 }
 
 .main-view {
@@ -10,12 +9,7 @@
   background-color: rgb(37, 37, 37);
 }
 
-.logout-button {
-  position: absolute;
-  right: 5px;
-}
-
-@media all and (max-width: 750px) {
+@media all and (max-width: 500px) {
   .signed-in-name {
     display: none;
   }

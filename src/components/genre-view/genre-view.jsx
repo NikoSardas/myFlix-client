@@ -5,20 +5,26 @@ import { Button, Card } from "react-bootstrap";
 
 import "./genre-view.scss";
 
-export function GenreView(props) {
-  console.log("GenreView props", props);
-  const { genre, onBackClick } = props;
-  return (
-    <Card border="light" bg="dark" text="white">
-      <Card.Body>
-        <Card.Title>{genre.Name}</Card.Title>
-        <Card.Text>{genre.Description}</Card.Text>
-        <Button variant="outline-light" onClick={onBackClick}>
-          Back
-        </Button>
-      </Card.Body>
-    </Card>
-  );
+export class GenreView extends React.Component {
+  render() {
+    const { genre, onBackClick } = this.props;
+    return (
+      <Card border="light" bg="dark" text="white">
+        <Card.Body>
+          <Card.Title>{genre.Name}</Card.Title>
+          <Card.Text>{genre.Description}</Card.Text>
+          <Button
+            variant="outline-light"
+            onClick={() => {
+              history.back();
+            }}
+          >
+            Back
+          </Button>
+        </Card.Body>
+      </Card>
+    );
+  }
 }
 
 GenreView.propTypes = {

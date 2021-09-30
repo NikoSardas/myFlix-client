@@ -6,30 +6,9 @@ import { Button, Card } from "react-bootstrap";
 
 import "./movie-view.scss";
 
-export function MovieView(props) {
-  console.log("movieview props", props);
-  const { movie, onBackClick } = props;
-
-  removeFromFavorites = () => {
-    axios
-      .delete(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          "username"
-        )}/FavoriteMovies/${movie._id}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      )
-      .then(() => {
-        alert(`${movie.Title} Removed from Favorites List!`);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
-  addToFavorites = () => {
+export class MovieView extends React.Component {
+ 
+  addToFavorites = (movie) => {
     axios
       .post(
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
@@ -47,36 +26,36 @@ export function MovieView(props) {
         console.log(error);
       });
   };
-
-  return (
-    <Card border="light" bg="dark" text="white">
-      <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
-      <Card.Body>
-        <Card.Title>{movie.Title}</Card.Title>
-        <Card.Text>{movie.Description}</Card.Text>
-        {/* how to create an interactive button? */}
-        <Button
-          variant="outline-light"
-          onClick={() => {
-            addToFavorites();
-          }}
-        >
-          Add to favorites
-        </Button>
-        <Button
-          variant="outline-light"
-          onClick={() => {
-            removeFromFavorites();
-          }}
-        >
-          Remove from favorites
-        </Button>
-        <Button variant="outline-light" onClick={onBackClick}>
-          Back
-        </Button>
-      </Card.Body>
-    </Card>
-  );
+  render() {
+    const { movie } = this.props;
+    console.log(movie)
+    return (
+      <Card border="light" bg="dark" text="white">
+        <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
+        <Card.Body>
+          <Card.Title>{movie.Title}</Card.Title>
+          <Card.Text>{movie.Description}</Card.Text>
+          {/* how to create an interactive button? */}
+          <Button
+            variant="outline-light"
+            onClick={() => {
+              this.addToFavorites(movie);
+            }}
+          >
+            Add to favorites
+          </Button>
+          <Button
+            variant="outline-light"
+            onClick={() => {
+              history.back();
+            }}
+          >
+            Back
+          </Button>
+        </Card.Body>
+      </Card>
+    );
+  }
 }
 
 MovieView.propTypes = {
@@ -84,6 +63,5 @@ MovieView.propTypes = {
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
     ImagePath: PropTypes.string.isRequired,
-  }).isRequired,
-  onBackClick: PropTypes.func.isRequired,
+  }).isRequired
 };

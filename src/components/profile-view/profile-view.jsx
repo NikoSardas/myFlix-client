@@ -1,151 +1,219 @@
-import React, { useState } from "react";
+//TODO hide navbar
+
+import React from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import "./profile-view.scss";
 
-export function ProfileView() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  axios
-    .get(`https:nikosardas-myflixdb.herokuapp.com/users`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((response) => {
-      response.data.map((user) => {
-        if (user.Username === localStorage.getItem("username")) {
-          setUsername(user.Username);
-          setEmail(user.Email);
-          //password needs to be unhashed
-          //date requests another format
-        }
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+export class ProfileView extends React.Component {
+  constructor() {
+    super();
+    this.form = React.createRef();
+    this.validate = this.validate.bind(this);
+    this.state = {
+      username: "",
+      password: "",
+      email: "",
+      birthday: "",
+      favorites: [],
+    };
+  }
 
-  handleUpdate = () => {
-    console.log("handleUpdate");
+  validate() {
+    return this.form.current.reportValidity();
+  }
+
+  populateFields() {
     axios
-      .put(
+      .get(
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
           "username"
         )}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          data: {
-            Username: username,
-            Email: email,
-          },
         }
       )
       .then((response) => {
-        alert("Saved Changes");
-        setEmail(response.data.Email);
-        setUsername(response.data.Username);
+        this.setState({
+          username: response.data.Username,
+          password: response.data.Password,
+          email: response.data.Email,
+          birthday: response.data.Birthday.substr(0, 10),
+          favorites: response.data.FavoriteMovies,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  handleUpdate(username) {
+    axios
+    .put(`https://nikosardas-myflixdb.herokuapp.com/users/${username}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      data: {
+          Username: this.state.username,
+          Password: this.state.password,
+          Email: this.state.email,
+          Birthday: this.state.birthday,
+        },
+      })
+      .then((response) => {
+        localStorage.setItem("username", this.state.username);
+        console.log(response);
         window.open(`/users/${localStorage.getItem("username")}`, "_self");
       })
       .catch(function (error) {
         console.log(error);
       });
-  };
-  handleDeregister = () => {
-    console.log("handleDeregister");
+  }
+
+  handleDeregister(username) {
     axios
-      .delete(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          "username"
-        )}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        //how to use onloggedout from mainview.jsx?
-        onLoggedOut();
+      .delete(`https://nikosardas-myflixdb.herokuapp.com/users/${username}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        // headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then(() => {
+        this.onLoggedOut();
         window.open("/", "_self");
       })
       .catch((error) => {
         console.log(error);
       });
+  }
+  removeFromFavorites = (id, username) => {
+    axios
+      .delete(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${username}/FavoriteMovies/${id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      .then(() => {
+        this.componentDidMount();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
-  onLoggedOut = () => {
-    console.log("mainview onLoggedOut");
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-  };
+  onLoggedOut() {
+    localStorage.clear();
+    window.open("/", "_self");
+  }
 
-  return (
-    <div className="profile-view">
-      <h2>User Profile</h2>
-      <Form>
-        <Form.Group controlId="formUsername">
-          <Form.Label>Username:</Form.Label>
-          <Form.Control
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </Form.Group>
-        {/* <Form.Group controlId="formPassword">
-          <Form.Label>Password:</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group> */}
-        <Form.Group controlId="formEmail">
-          <Form.Label>Email:</Form.Label>
-          <Form.Control
-            type="email"
-            // value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-        <div className="profile-view-buttons">
-          <Button
-            variant="outline-light"
-            className="update-submit"
-            onClick={() => {
-              handleUpdate();
-            }}
-          >
-            Update
-          </Button>
-          <Button
-            variant="danger"
-            onClick={() => {
-              handleDeregister();
-            }}
-          >
-            Delete User
-          </Button>
-          <Link to={`/`}>
+  componentDidMount() {
+    this.populateFields();
+  }
+
+  render() {
+    const { username, password, email, birthday, favorites } = this.state;
+    const { movies } = this.props;
+    return (
+      <div className="profile-view">
+        <h2>User Profile</h2>
+        <Form ref={this.form}>
+          <Form.Group controlId="formUsername">
+            <Form.Label>Username:</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              pattern="[A-Za-z0-9_]{3,42}"
+              placeholder="Only letters, numbers, and underscore"
+              value={username}
+              onChange={(e) => this.setUsername(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group controlId="formPassword">
+            <Form.Label>Password:</Form.Label>
+            <Form.Control
+              type="password"
+              required
+              value={password}
+              onChange={(e) => this.setPassword(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group controlId="formEmail">
+            <Form.Label>Email:</Form.Label>
+            <Form.Control
+              type="email"
+              required
+              value={email}
+              onChange={(e) => this.setEmail(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group controlId="formBirthday">
+            <Form.Label>Birthday:</Form.Label>
+            <Form.Control
+              type="date"
+              required
+              value={birthday}
+              onChange={(e) => this.setBirthday(e.target.value)}
+            />
+          </Form.Group>
+          <div className="profile-view-buttons">
             <Button
-              variant="outline-light"
+              variant="outline-warning"
+              className="update-submit"
               onClick={() => {
-                history.back();
+                this.validate();
+                this.handleUpdate(username);
               }}
             >
-              Cancel
+              Update
             </Button>
-          </Link>
-        </div>
-      </Form>
-    </div>
-  );
+
+            <Link to={`/`}>
+              <Button variant="outline-light">Cancel</Button>
+            </Link>
+          </div>
+        </Form>
+        <ListGroup className="favs-row">
+          <h5 className="text-center">Favorite Movies</h5>
+          {favorites.length === 0 ? (
+            <div>No Favorite Movies</div>
+          ) : (
+            favorites.map((favMovie) => {
+              return (
+                <ListGroupItem
+                  className="fav-item"
+                  variant="Success"
+                  key={favMovie._id}
+                >
+                  {favMovie.Title}
+                  <Button
+                    variant="outline-danger"
+                    className="remove-fav"
+                    onClick={() => {
+                      this.removeFromFavorites(favMovie._id, username);
+                    }}
+                  >
+                    X
+                  </Button>
+                </ListGroupItem>
+              );
+            })
+          )}
+        </ListGroup>
+        <Button
+          className="delete-user"
+          variant="danger"
+          onClick={() => {
+            this.handleDeregister(username);
+          }}
+        >
+          Delete User
+        </Button>
+      </div>
+    );
+  }
 }
 
-// RegistrationView.propTypes = {
-//   onRegistration: PropTypes.func.isRequired,
-//   onBackClick: PropTypes.func.isRequired,
-// };
+ProfileView.propTypes = {
+  movies: PropTypes.array.isRequired,
+};

@@ -1,40 +1,35 @@
 import React from "react";
-import axios from "axios";
+import PropTypes from "prop-types";
 
-import { Navbar, Button } from "react-bootstrap";
+import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import "./nav-view.scss";
 
-export function NavView(props) {
-  const { username, onLoggedOut } = props;
+export class NavView extends React.Component {
+  render() {
+    const { onLoggedOut } = this.props;
+    const username = localStorage.getItem("username");
+    
+    if (!username) return null;
 
-  if (!username) return null;
-
-  return (
-    <Navbar variant="dark">
-      <Navbar.Brand>myFlix</Navbar.Brand>
-      <Navbar.Toggle />
-      <Navbar.Collapse className="">
-        <Navbar.Text>
-          <span className="signed-in-name">Signed in as: {username}</span>
-        </Navbar.Text>
-        <Navbar.Text className="logout-button">
-          <Link to={`/users/${username}`}>
-            <Button variant="outline-light">
-              User Profile
-            </Button>
-          </Link>
-          <Button
-            variant="outline-light"
-            onClick={() => {
-              onLoggedOut();
-            }}
-          >
-            Sign Out
-          </Button>
-        </Navbar.Text>
-      </Navbar.Collapse>
-    </Navbar>
-  );
+    return (
+      <Navbar variant="dark" expand="lg">
+          <Navbar.Brand>myFlix</Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="nav-bar">
+            <Navbar.Text>
+              Signed in as: <Link to={`/users/${username}`}>{username}</Link>
+            </Navbar.Text>
+            <Nav>
+              <Nav.Link className="sign-out" onClick={onLoggedOut}>Sign Out</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+      </Navbar>
+    );
+  }
 }
+
+NavView.propTypes = {
+  onLoggedOut: PropTypes.func.isRequired,
+};

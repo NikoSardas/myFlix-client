@@ -6,31 +6,32 @@ import { Link } from "react-router-dom";
 
 import "./movie-card.scss";
 
-export function MovieCard(props) {
-  const { movie } = props;
-  return (
-    <Card className="movie-card" border="light" bg="dark">
-      <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
-      <Card.Body>
-        <Card.Title>{movie.Title}</Card.Title>
-        <Card.Text>{movie.Description}</Card.Text>
-        <div className="card-links">
-          <Link to={`/movies/${movie._id}`}>
-            {/* how is the movie being passed to the movieview? */}
-            <Button onClick={() => movie} variant="outline-light">
-              Open
-            </Button>
-          </Link>
-          <Link to={`/directors/${movie.Director.Name}`}>
-            <Button variant="outline-light">{movie.Director.Name}</Button>
-          </Link>
-          <Link to={`/genres/${movie.Genre.Name}`}>
-            <Button variant="outline-light">{movie.Genre.Name}</Button>
-          </Link>
-        </div>
-      </Card.Body>
-    </Card>
-  );
+export class MovieCard extends React.Component {
+  render() {
+    const { movie } = this.props;
+    return (
+      <Card className="movie-card" border="light" bg="dark">
+        <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
+        <Card.Body>
+          <Card.Title>{movie.Title}</Card.Title>
+          <Card.Text>{movie.Description}</Card.Text>
+          <div className="card-links">
+            <Link to={`/movies/${movie._id}`}>
+              <Button onClick={() => movie} variant="outline-light">
+                Open
+              </Button>
+            </Link>
+            <Link to={`/directors/${movie.Director.Name}`}>
+              <Button variant="outline-light">{movie.Director.Name}</Button>
+            </Link>
+            <Link to={`/genres/${movie.Genre.Name}`}>
+              <Button variant="outline-light">{movie.Genre.Name}</Button>
+            </Link>
+          </div>
+        </Card.Body>
+      </Card>
+    );
+  }
 }
 
 MovieCard.propTypes = {
