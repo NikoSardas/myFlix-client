@@ -28,7 +28,6 @@ export class MovieView extends React.Component {
   };
   render() {
     const { movie } = this.props;
-    console.log(movie)
     return (
       <Card border="light" bg="dark" text="white">
         <Card.Img draggable="false" variant="top" src={movie.ImagePath} />

@@ -2,7 +2,6 @@
 
 import React from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
 
 import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -113,7 +112,7 @@ export class ProfileView extends React.Component {
 
   render() {
     const { username, password, email, birthday, favorites } = this.state;
-    const { movies } = this.props;
+    // const { movies } = this.props;
     return (
       <div className="profile-view">
         <h2>User Profile</h2>
@@ -213,7 +212,3 @@ export class ProfileView extends React.Component {
     );
   }
 }
-
-ProfileView.propTypes = {
-  movies: PropTypes.array.isRequired,
-};
