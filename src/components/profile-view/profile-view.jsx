@@ -1,4 +1,5 @@
 //TODO hide navbar
+//TODO fix update
 
 import React from "react";
 import axios from "axios";
@@ -70,9 +71,7 @@ export class ProfileView extends React.Component {
         )}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              localStorage.getItem("token")
-            )}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           data: {
             Username: this.state.username,

@@ -75,6 +75,7 @@ export default class MainView extends React.Component {
     this.setState({
       loggedUsername: null,
     });
+
   }
 
   render() {
@@ -83,6 +84,7 @@ export default class MainView extends React.Component {
       <Router>
         <NavView
           onLoggedOut={() => {
+            //TODO nav sign out from profile goes back to profile on sign in
             this.onLoggedOut();
           }}
         />
