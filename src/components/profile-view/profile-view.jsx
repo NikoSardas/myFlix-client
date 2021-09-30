@@ -2,6 +2,7 @@
 
 import React from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -85,6 +86,7 @@ export class ProfileView extends React.Component {
         console.log(error);
       });
   }
+  
   removeFromFavorites = (id, username) => {
     axios
       .delete(
@@ -109,31 +111,35 @@ export class ProfileView extends React.Component {
   componentDidMount() {
     this.populateFields();
   }
+
   setUsername(username) {
     console.log(this.state.username);
     this.setState({
       username,
     });
   }
+
   setPassword(password) {
     console.log(this.state.password);
     this.setState({
       password,
     });
   }
+
   setEmail(email) {
     console.log(this.state.email);
     this.setState({
       email,
     });
   }
+
   setBirthday(birthday) {
     console.log(this.state.birthday);
     this.setState({
       birthday,
     });
   }
-
+  
   render() {
     const { username, password, email, birthday, favorites } = this.state;
     // const { movies } = this.props;
@@ -199,7 +205,7 @@ export class ProfileView extends React.Component {
         <ListGroup className="favs-row">
           <h5 className="text-center">Favorite Movies</h5>
           {favorites.length === 0 ? (
-            <div className="text-center">No Favorite Movies</div>
+            <div>No Favorite Movies</div>
           ) : (
             favorites.map((favMovie) => {
               return (
@@ -236,3 +242,7 @@ export class ProfileView extends React.Component {
     );
   }
 }
+
+// ProfileView.propTypes = {
+//   movies: PropTypes.array.isRequired,
+// };
