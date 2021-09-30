@@ -52,9 +52,9 @@ export class ProfileView extends React.Component {
 
   handleUpdate(username) {
     axios
-    .put(`https://nikosardas-myflixdb.herokuapp.com/users/${username}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      data: {
+      .put(`https://nikosardas-myflixdb.herokuapp.com/users/${username}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        data: {
           Username: this.state.username,
           Password: this.state.password,
           Email: this.state.email,
@@ -108,6 +108,30 @@ export class ProfileView extends React.Component {
 
   componentDidMount() {
     this.populateFields();
+  }
+  setUsername(username) {
+    console.log(this.state.username);
+    this.setState({
+      username,
+    });
+  }
+  setPassword(password) {
+    console.log(this.state.password);
+    this.setState({
+      password,
+    });
+  }
+  setEmail(email) {
+    console.log(this.state.email);
+    this.setState({
+      email,
+    });
+  }
+  setBirthday(birthday) {
+    console.log(this.state.birthday);
+    this.setState({
+      birthday,
+    });
   }
 
   render() {
