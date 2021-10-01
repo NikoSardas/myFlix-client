@@ -3,9 +3,10 @@
 
 import React from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 import "./profile-view.scss";
 
@@ -97,7 +98,7 @@ export class ProfileView extends React.Component {
         }
       )
       .then(() => {
-        this.onLoggedOut();
+        this.props.onLoggedOut;
       })
       .catch((error) => {
         console.log(error);
@@ -120,11 +121,6 @@ export class ProfileView extends React.Component {
         console.log(error);
       });
   };
-
-  onLoggedOut() {
-    localStorage.clear();
-    window.open("/", "_self");
-  }
 
   setUsername(username) {
     this.setState({
@@ -208,13 +204,10 @@ export class ProfileView extends React.Component {
             >
               Update
             </Button>
-            <Button onClick={onBackClick} variant="outline-light">
-              Cancel
-            </Button>
           </div>
         </Form>
         <ListGroup className="favs-row">
-          <h5 className="text-center">Favorite Movies</h5>
+          <h5 className="text-center">{localStorage.username}'s Favorite Movies</h5>
           {favorites.length === 0 ? (
             <div>No Favorite Movies</div>
           ) : (
@@ -240,20 +233,28 @@ export class ProfileView extends React.Component {
             })
           )}
         </ListGroup>
-        <Button
-          className="delete-user"
-          variant="danger"
-          onClick={() => {
-            if (confirm("Confirm?")) {
-              this.handleDeregister(username);
-            } else {
-              console.log("Cancelled.");
-            }
-          }}
-        >
-          Delete User
-        </Button>
+        <div className="footer">
+          <Button
+            className="delete-user"
+            variant="danger"
+            onClick={() => {
+              if (confirm("Confirm?")) {
+                this.handleDeregister(username);
+              } else {
+                console.log("Cancelled.");
+              }
+            }}
+          >
+            Delete User
+          </Button>
+          <Button onClick={onBackClick} variant="outline-light">
+            Back to main page
+          </Button>
+        </div>
       </div>
     );
   }
 }
+ProfileView.propTypes = {
+  onBackClick: PropTypes.func.isRequired,
+};

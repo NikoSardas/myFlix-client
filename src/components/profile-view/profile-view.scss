@@ -20,8 +20,8 @@
 .favs-row {
   margin: 10% 0 0 0;
   display: flex;
-  flex-direction: column;
-  width: 50%;
+  // flex-direction: column;
+  width: 100%;
   text-align: center;
 }
 
@@ -33,8 +33,9 @@
   align-items: center;
 }
 
-.delete-user {
-  position: absolute;
-  top:0;
-  right:10%;
+.footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 5%;
 }

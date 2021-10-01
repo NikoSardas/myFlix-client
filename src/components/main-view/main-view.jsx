@@ -75,15 +75,14 @@ export default class MainView extends React.Component {
     this.setState({
       loggedUsername: null,
     });
+    window.open("/", "_self");
   }
-
   render() {
     const { movies, loggedUsername } = this.state;
     return (
       <Router>
         <NavView
           onLoggedOut={() => {
-            //TODO nav sign out from profile goes back to profile on sign in
             this.onLoggedOut();
           }}
         />
@@ -117,8 +116,8 @@ export default class MainView extends React.Component {
             }}
           />
           <Route
-            path="/register"
             exact
+            path="/register"
             render={({ history }) => {
               if (loggedUsername) return <Redirect to="/" />;
               return (
@@ -133,6 +132,7 @@ export default class MainView extends React.Component {
             }}
           />
           <Route
+            exact
             path="/users/:username"
             render={({ history }) => {
               if (!loggedUsername)
@@ -145,18 +145,21 @@ export default class MainView extends React.Component {
                 );
               return (
                 <Col>
-                  <ProfileView token={localStorage.token} onBackClick={()=>{
-                    history.goBack();
-                  }} />
+                  <ProfileView
+                    token={localStorage.token}
+                    onLoggedOut={this.onLoggedOut}
+                    onBackClick={() => {
+                      history.goBack();
+                    }}
+                  />
                 </Col>
               );
             }}
           />
           <Route
-            //? API requires get /:title
-            path="/movies/:movieId"
             exact
-            render={({ match }) => {
+            path="/movies/:movieId"
+            render={({ match, history }) => {
               if (!loggedUsername)
                 return (
                   <Col>
@@ -168,6 +171,9 @@ export default class MainView extends React.Component {
               return (
                 <Col md={8} className="movie-view-wrapper">
                   <MovieView
+                    onBackClick={() => {
+                      history.goBack();
+                    }}
                     movie={movies.find((m) => m._id === match.params.movieId)}
                   />
                 </Col>
@@ -175,9 +181,9 @@ export default class MainView extends React.Component {
             }}
           />
           <Route
-            path="/directors/:name"
             exact
-            render={({ match }) => {
+            path="/directors/:name"
+            render={({ match, history }) => {
               if (!loggedUsername)
                 return (
                   <Col>
@@ -189,6 +195,9 @@ export default class MainView extends React.Component {
               return (
                 <Col md={8} className="director-view-wrapper">
                   <DirectorView
+                    onBackClick={() => {
+                      history.goBack();
+                    }}
                     movies={movies}
                     director={
                       movies.find((m) => m.Director.Name === match.params.name)
@@ -200,9 +209,9 @@ export default class MainView extends React.Component {
             }}
           />
           <Route
-            path="/genres/:name"
             exact
-            render={({ match }) => {
+            path="/genres/:name"
+            render={({ match, history }) => {
               if (!loggedUsername)
                 return (
                   <Col>
@@ -214,6 +223,9 @@ export default class MainView extends React.Component {
               return (
                 <Col md={8} className="genre-view-wrapper">
                   <GenreView
+                    onBackClick={() => {
+                      history.goBack();
+                    }}
                     movies={movies}
                     genre={
                       movies.find((m) => m.Genre.Name === match.params.name)

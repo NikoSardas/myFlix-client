@@ -1,3 +1,5 @@
+//TODO link to movies
+
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -7,7 +9,7 @@ import "./director-view.scss";
 
 export class DirectorView extends React.Component {
   render() {
-    const { director, movies } = this.props;
+    const { director, movies, onBackClick } = this.props;
     return (
       <div className="director-view-wrapper">
         <Card border="light" bg="dark" text="white">
@@ -27,10 +29,6 @@ export class DirectorView extends React.Component {
                       className="director-movie-item"
                       variant="outline-light"
                       key={movie._id}
-                      onClick={() => {
-                        // how to send movie param to :
-                        // window.open(`/movies/${movie._id}`, '_self');
-                      }}
                     >
                       {movie.Title}
                     </Button>
@@ -40,9 +38,7 @@ export class DirectorView extends React.Component {
             <Button
               className="directors-back text-warning"
               variant="outline-light"
-              onClick={() => {
-                history.back();
-              }}
+              onClick={onBackClick}
             >
               Back
             </Button>
@@ -59,4 +55,5 @@ DirectorView.propTypes = {
     Bio: PropTypes.string.isRequired,
   }).isRequired,
   movies: PropTypes.array.isRequired,
+  onBackClick: PropTypes.func.isRequired,
 };

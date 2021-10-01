@@ -1,3 +1,5 @@
+//TODO errors when refreshing page
+
 import React from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -7,7 +9,6 @@ import { Button, Card } from "react-bootstrap";
 import "./movie-view.scss";
 
 export class MovieView extends React.Component {
- 
   addToFavorites = (movie) => {
     axios
       .post(
@@ -27,7 +28,7 @@ export class MovieView extends React.Component {
       });
   };
   render() {
-    const { movie } = this.props;
+    const { movie, onBackClick } = this.props;
     return (
       <Card border="light" bg="dark" text="white">
         <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
@@ -42,12 +43,7 @@ export class MovieView extends React.Component {
           >
             Add to favorites
           </Button>
-          <Button
-            variant="outline-light"
-            onClick={() => {
-              history.back();
-            }}
-          >
+          <Button variant="outline-light" onClick={onBackClick}>
             Back
           </Button>
         </Card.Body>
@@ -61,5 +57,6 @@ MovieView.propTypes = {
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
     ImagePath: PropTypes.string.isRequired,
-  }).isRequired
+  }).isRequired,
+  onBackClick: PropTypes.func.isRequired,
 };

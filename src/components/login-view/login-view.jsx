@@ -1,3 +1,5 @@
+//TODO form validation
+
 import React from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -10,14 +12,19 @@ import "./login-view.scss";
 export class LoginView extends React.Component {
   constructor() {
     super();
+    this.form = React.createRef();
+    this.validate = this.validate.bind(this);
     this.state = {
       username: null,
       password: null,
     };
   }
 
+  validate() {
+    return this.form.current.reportValidity();
+  }
+
   handleSubmit(e) {
-    e.preventDefault();
     axios
       .post("https://nikosardas-myflixdb.herokuapp.com/login", {
         Username: this.state.username,
@@ -49,11 +56,12 @@ export class LoginView extends React.Component {
     return (
       <div className="login-view">
         <h1>MyFlix</h1>
-        <Form>
+        <Form ref={this.form}>
           <Form.Group controlId="formUsername">
             <Form.Label>Username:</Form.Label>
             <Form.Control
               type="text"
+              required
               placeholder="Your Username.."
               onChange={(e) => this.setUsername(e.target.value)}
             />
@@ -62,6 +70,7 @@ export class LoginView extends React.Component {
             <Form.Label>Password:</Form.Label>
             <Form.Control
               type="password"
+              required
               placeholder="Your password.."
               onChange={(e) => this.setPassword(e.target.value)}
             />
@@ -71,6 +80,8 @@ export class LoginView extends React.Component {
               variant="outline-light"
               type="submit"
               onClick={(e) => {
+                e.preventDefault();
+                this.validate();
                 this.handleSubmit(e);
               }}
             >
