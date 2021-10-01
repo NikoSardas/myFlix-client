@@ -16,13 +16,19 @@ body {
   height: 100%;
 }
 
+.h5,
+.h4,
+.h3,
+.h2,
+.h1,
 .app-container h1,
 .app-container h2,
 .app-container h3,
 .app-container h4,
 .app-container h5 {
   color: $heading-color;
-  margin:5%
+  // text-align: center;
+  // margin: 3%;
 }
 
 .container-fluid {

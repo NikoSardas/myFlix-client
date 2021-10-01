@@ -1,12 +1,13 @@
 //TODO hide navbar
 //TODO fix update
+// TODO fix onloggedout from profile view
 
 import React from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "./profile-view.scss";
 
@@ -32,6 +33,13 @@ export class ProfileView extends React.Component {
     return this.form.current.reportValidity();
   }
 
+  onLoggedOut() {
+    console.log("main view onLoggedOut");
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    window.open("/", "_self");
+  }
+
   getInitialStates() {
     axios
       .get(
@@ -45,7 +53,7 @@ export class ProfileView extends React.Component {
       .then((response) => {
         this.setState({
           username: response.data.Username,
-          password: response.data.Password,
+          // password: response.data.Password,
           email: response.data.Email,
           birthday: response.data.Birthday.substr(0, 10),
           favorites: response.data.FavoriteMovies,
@@ -78,9 +86,9 @@ export class ProfileView extends React.Component {
       )
       .then((res) => {
         console.log(res);
-        const username = this.state.username;
-        localStorage.setItem("username", username);
-        window.open(`/users/${username}`, "_self");
+        const userName = this.state.username;
+        localStorage.setItem("username", userName);
+        window.open(`/users/${userName}`, "_self");
       })
       .catch(function (error) {
         console.log(error);
@@ -98,7 +106,7 @@ export class ProfileView extends React.Component {
         }
       )
       .then(() => {
-        this.props.onLoggedOut;
+        this.onLoggedOut();
       })
       .catch((error) => {
         console.log(error);
@@ -114,7 +122,6 @@ export class ProfileView extends React.Component {
         }
       )
       .then((res) => {
-        console.log(res);
         this.componentDidMount();
       })
       .catch(function (error) {
@@ -169,6 +176,7 @@ export class ProfileView extends React.Component {
             <Form.Control
               type="password"
               required
+              placeholder="Password Required"
               value={password}
               onChange={(e) => this.setPassword(e.target.value)}
             />
@@ -190,24 +198,25 @@ export class ProfileView extends React.Component {
               value={birthday}
               onChange={(e) => this.setBirthday(e.target.value)}
             />
+            <div className="profile-buttons">
+              <Button
+                type="submit"
+                variant="outline-warning"
+                className="update-submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.validate() && this.handleUpdate();
+                }}
+              >
+                Update
+              </Button>
+              <Link to="/"></Link>
+              <Button variant="outline-light">Back to main page</Button>
+            </div>
           </Form.Group>
-          <div className="profile-view-buttons">
-            <Button
-              type="submit"
-              variant="outline-warning"
-              className="update-submit"
-              onClick={(e) => {
-                e.preventDefault();
-                this.validate();
-                this.handleUpdate();
-              }}
-            >
-              Update
-            </Button>
-          </div>
         </Form>
         <ListGroup className="favs-row">
-          <h5 className="text-center">{localStorage.username}'s Favorite Movies</h5>
+          <h3 className="text-center">Favorite Movies</h3>
           {favorites.length === 0 ? (
             <div>No Favorite Movies</div>
           ) : (
@@ -233,28 +242,20 @@ export class ProfileView extends React.Component {
             })
           )}
         </ListGroup>
-        <div className="footer">
-          <Button
-            className="delete-user"
-            variant="danger"
-            onClick={() => {
-              if (confirm("Confirm?")) {
-                this.handleDeregister(username);
-              } else {
-                console.log("Cancelled.");
-              }
-            }}
-          >
-            Delete User
-          </Button>
-          <Button onClick={onBackClick} variant="outline-light">
-            Back to main page
-          </Button>
-        </div>
+        <Button
+          className="delete-user"
+          variant="danger"
+          onClick={() => {
+            if (confirm("Confirm?")) {
+              this.handleDeregister();
+            } else {
+              console.log("Cancelled.");
+            }
+          }}
+        >
+          Delete User
+        </Button>
       </div>
     );
   }
 }
-ProfileView.propTypes = {
-  onBackClick: PropTypes.func.isRequired,
-};

@@ -2,12 +2,13 @@
 
 .genre-view-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  margin: 5% auto;
+  margin: auto;
+  text-align: center;
 }
 
 .genre-movie-item {
-  margin: 1px;
+  margin: 1% 0 0 0 ;
+}
+.genre-back {
+  margin: 2% 0 0 0 ;
 }

@@ -70,6 +70,7 @@ export default class MainView extends React.Component {
   }
 
   onLoggedOut() {
+    console.log("main view onLoggedOut");
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     this.setState({
@@ -134,7 +135,7 @@ export default class MainView extends React.Component {
           <Route
             exact
             path="/users/:username"
-            render={({ history }) => {
+            render={({}) => {
               if (!loggedUsername)
                 return (
                   <Col>
@@ -148,9 +149,6 @@ export default class MainView extends React.Component {
                   <ProfileView
                     token={localStorage.token}
                     onLoggedOut={this.onLoggedOut}
-                    onBackClick={() => {
-                      history.goBack();
-                    }}
                   />
                 </Col>
               );

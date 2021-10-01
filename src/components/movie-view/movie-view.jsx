@@ -33,7 +33,7 @@ export class MovieView extends React.Component {
       <Card border="light" bg="dark" text="white">
         <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
         <Card.Body>
-          <Card.Title>{movie.Title}</Card.Title>
+          <Card.Title className="text-center">{movie.Title}</Card.Title>
           <Card.Text>{movie.Description}</Card.Text>
           <Button
             variant="outline-light"

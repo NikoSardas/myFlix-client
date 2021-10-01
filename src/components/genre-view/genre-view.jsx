@@ -1,5 +1,4 @@
 //TODO link to movies
-//TODO errors when refreshing page
 
 import React from "react";
 import PropTypes from "prop-types";
@@ -7,6 +6,7 @@ import PropTypes from "prop-types";
 import { Button, Card } from "react-bootstrap";
 
 import "./genre-view.scss";
+
 export class GenreView extends React.Component {
   render() {
     const { genre, movies, onBackClick } = this.props;
@@ -16,11 +16,8 @@ export class GenreView extends React.Component {
           <Card.Body>
             <Card.Title className="text-center">{genre.Name}</Card.Title>
             <Card.Text>{genre.Description}</Card.Text>
-            <Card.Title className="text-center text-warning movies-header ">
-              Movie List
-            </Card.Title>
             {movies.length === 0 ? (
-              <div>No Movies</div>
+              <div>No Other Movies</div>
             ) : (
               movies.map((movie) => {
                 if (movie.Genre.Name === genre.Name)
@@ -36,9 +33,9 @@ export class GenreView extends React.Component {
               })
             )}
             <Button
+              className="genres-back"
+              variant="outline-warning"
               onClick={onBackClick}
-              className="genres-back text-warning"
-              variant="outline-light"
             >
               Back
             </Button>

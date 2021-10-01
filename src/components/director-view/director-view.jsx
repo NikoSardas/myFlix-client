@@ -16,9 +16,6 @@ export class DirectorView extends React.Component {
           <Card.Body>
             <Card.Title className="text-center">{director.Name}</Card.Title>
             <Card.Text>{director.Bio}</Card.Text>
-            <h5 className="text-center text-warning movies-header ">
-              Movie List
-            </h5>
             {movies.length === 0 ? (
               <div>No Other Movies</div>
             ) : (
@@ -36,8 +33,8 @@ export class DirectorView extends React.Component {
               })
             )}
             <Button
-              className="directors-back text-warning"
-              variant="outline-light"
+              className="directors-back"
+              variant="outline-warning"
               onClick={onBackClick}
             >
               Back

@@ -41,7 +41,6 @@ export class RegistrationView extends React.Component {
     });
   }
   handleRegister = (e) => {
-    e.preventDefault();
     axios
       .post("https://nikosardas-myflixdb.herokuapp.com/users", {
         Username: this.state.username,
@@ -63,7 +62,7 @@ export class RegistrationView extends React.Component {
   }
   render() {
     const { username, password, email, birthday } = this.state;
-    const {onBackClick} = this.props;
+    const { onBackClick } = this.props;
     return (
       <div className="registration-view">
         <h2>User Registration</h2>
@@ -110,17 +109,14 @@ export class RegistrationView extends React.Component {
               className="register-submit"
               type="submit"
               onClick={(e) => {
-                this.validate();
-                this.handleRegister(e);
+                e.preventDefault();
+                this.validate() && this.handleRegister(e);
               }}
             >
               Submit
             </Button>
             <Link to={`/`}>
-              <Button
-                variant="outline-light"
-                onClick={onBackClick}
-              >
+              <Button variant="outline-light" onClick={onBackClick}>
                 Cancel
               </Button>
             </Link>
