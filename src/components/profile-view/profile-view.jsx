@@ -56,14 +56,7 @@ export class ProfileView extends React.Component {
   }
 
   handleUpdate() {
-    console.log(
-      "updated data sent:",
-      this.state.username,
-      this.state.password,
-      this.state.email,
-      this.state.birthday
-    );
-
+   
     axios
       .put(
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
@@ -72,8 +65,8 @@ export class ProfileView extends React.Component {
         {},
         {
           headers: {
-            // "Content-Type": "application/json",
-            // Accept: "application/json",
+            "Content-Type": "application/json",
+            Accept: "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           data: {
@@ -86,6 +79,14 @@ export class ProfileView extends React.Component {
       )
       .then((res) => {
         console.log(res);
+        const userData = res.data;
+        this.state = {
+          username: userData.Username,
+          password: userData.Password,
+          email: userData.email,
+          birthday: userData.Birthday,
+          favorites: [],
+        };
         // localStorage.setItem("username", this.state.username);
         // window.open(`/users/${this.state.username}`, "_self");
       })
