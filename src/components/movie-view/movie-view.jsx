@@ -19,7 +19,7 @@ export class MovieView extends React.Component {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       )
-      .then((response) => {
+      .then(() => {
         alert(`${movie.Title} Added to Favorites List!`);
       })
       .catch(function (error) {
@@ -34,7 +34,6 @@ export class MovieView extends React.Component {
         <Card.Body>
           <Card.Title>{movie.Title}</Card.Title>
           <Card.Text>{movie.Description}</Card.Text>
-          {/* how to create an interactive button? */}
           <Button
             variant="outline-light"
             onClick={() => {

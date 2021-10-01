@@ -57,7 +57,7 @@ export class ProfileView extends React.Component {
 
   handleUpdate() {
     console.log(
-      "updated data:",
+      "updated data sent:",
       this.state.username,
       this.state.password,
       this.state.email,
@@ -69,8 +69,11 @@ export class ProfileView extends React.Component {
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
           "username"
         )}`,
+        {},
         {
           headers: {
+            // "Content-Type": "application/json",
+            // Accept: "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           data: {
@@ -83,8 +86,8 @@ export class ProfileView extends React.Component {
       )
       .then((res) => {
         console.log(res);
-        localStorage.setItem("username", this.state.username);
-        window.open(`/users/${localStorage.getItem("username")}`, "_self");
+        // localStorage.setItem("username", this.state.username);
+        // window.open(`/users/${this.state.username}`, "_self");
       })
       .catch(function (error) {
         console.log(error);
@@ -204,9 +207,11 @@ export class ProfileView extends React.Component {
           </Form.Group>
           <div className="profile-view-buttons">
             <Button
+              type="submit"
               variant="outline-warning"
               className="update-submit"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 this.validate();
                 this.handleUpdate(username);
               }}
@@ -250,7 +255,11 @@ export class ProfileView extends React.Component {
           className="delete-user"
           variant="danger"
           onClick={() => {
-            this.handleDeregister(username);
+            if (confirm("Confirm?")) {
+              this.handleDeregister(username);
+            } else {
+              console.log("Cancelled.");
+            }
           }}
         >
           Delete User
