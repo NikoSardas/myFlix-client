@@ -21,25 +21,21 @@ export class RegistrationView extends React.Component {
     };
   }
   setUsername(username) {
-    console.log(this.state.username);
     this.setState({
       username,
     });
   }
   setPassword(password) {
-    console.log(this.state.password);
     this.setState({
       password,
     });
   }
   setEmail(email) {
-    console.log(this.state.email);
     this.setState({
       email,
     });
   }
   setBirthday(birthday) {
-    console.log(this.state.birthday);
     this.setState({
       birthday,
     });
@@ -67,6 +63,7 @@ export class RegistrationView extends React.Component {
   }
   render() {
     const { username, password, email, birthday } = this.state;
+    const {onBackClick} = this.props;
     return (
       <div className="registration-view">
         <h2>User Registration</h2>
@@ -122,9 +119,7 @@ export class RegistrationView extends React.Component {
             <Link to={`/`}>
               <Button
                 variant="outline-light"
-                onClick={() => {
-                  history.back();
-                }}
+                onClick={onBackClick}
               >
                 Cancel
               </Button>

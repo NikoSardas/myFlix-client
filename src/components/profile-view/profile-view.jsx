@@ -61,31 +61,25 @@ export class ProfileView extends React.Component {
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
           "username"
         )}`,
-        {},
+        {
+          Username: this.state.username,
+          Password: this.state.password,
+          Email: this.state.email,
+          Birthday: this.state.birthday,
+        },
         {
           headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          data: {
-            Username: this.state.username,
-            Password: this.state.password,
-            Email: this.state.email,
-            Birthday: this.state.birthday,
-          },
-        },
-        )
+        }
+      )
       .then((res) => {
         console.log(res);
-        console.log(res.data);
-        const userData = res.data;
-        this.state = {
-          username: userData.Username,
-          password: userData.Password,
-          email: userData.Email,
-          birthday: userData.Birthday,
-        };
-        // localStorage.setItem("username", this.state.username);
-        // window.open(`/users/${this.state.username}`, "_self");
+        const username = this.state.username;
+        localStorage.setItem("username", username);
+        window.open(`/users/${username}`, "_self");
       })
       .catch(function (error) {
         console.log(error);
@@ -100,13 +94,10 @@ export class ProfileView extends React.Component {
         )}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          // headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       )
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         this.onLoggedOut();
-        window.open("/", "_self");
       })
       .catch((error) => {
         console.log(error);
@@ -161,6 +152,7 @@ export class ProfileView extends React.Component {
 
   render() {
     const { username, password, email, birthday, favorites } = this.state;
+    const { onBackClick } = this.props;
     return (
       <div className="profile-view">
         <h2>User Profile</h2>
@@ -216,10 +208,9 @@ export class ProfileView extends React.Component {
             >
               Update
             </Button>
-
-            <Link to={`/`}>
-              <Button variant="outline-light">Cancel</Button>
-            </Link>
+            <Button onClick={onBackClick} variant="outline-light">
+              Cancel
+            </Button>
           </div>
         </Form>
         <ListGroup className="favs-row">

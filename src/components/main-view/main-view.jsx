@@ -75,7 +75,6 @@ export default class MainView extends React.Component {
     this.setState({
       loggedUsername: null,
     });
-
   }
 
   render() {
@@ -120,18 +119,22 @@ export default class MainView extends React.Component {
           <Route
             path="/register"
             exact
-            render={() => {
+            render={({ history }) => {
               if (loggedUsername) return <Redirect to="/" />;
               return (
                 <Col>
-                  <RegistrationView />
+                  <RegistrationView
+                    onBackClick={() => {
+                      history.goBack();
+                    }}
+                  />
                 </Col>
               );
             }}
           />
           <Route
             path="/users/:username"
-            render={() => {
+            render={({ history }) => {
               if (!loggedUsername)
                 return (
                   <Col>
@@ -142,13 +145,15 @@ export default class MainView extends React.Component {
                 );
               return (
                 <Col>
-                  <ProfileView />
+                  <ProfileView token={localStorage.token} onBackClick={()=>{
+                    history.goBack();
+                  }} />
                 </Col>
               );
             }}
           />
           <Route
-          //? API requires get /:title 
+            //? API requires get /:title
             path="/movies/:movieId"
             exact
             render={({ match }) => {
