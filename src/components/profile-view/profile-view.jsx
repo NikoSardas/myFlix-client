@@ -83,7 +83,7 @@ export class ProfileView extends React.Component {
         this.state = {
           username: userData.Username,
           password: userData.Password,
-          email: userData.email,
+          email: userData.Email,
           birthday: userData.Birthday,
         };
         // localStorage.setItem("username", this.state.username);
