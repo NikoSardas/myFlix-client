@@ -15,7 +15,7 @@
 .favs-row {
   display: flex;
   // flex-direction: column;
-  width: 80%;
+  width: 60%;
   text-align: center;
 }
 
@@ -28,8 +28,7 @@
 }
 
 .delete-user {
-  margin: 3%;
-  width: 80%;
+  margin: 10% 0 5% 0;
 }
 
 .profile-buttons {
@@ -43,8 +42,7 @@
 @media all and (max-width: 750px) {
   .favs-row {
     display: flex;
-    // flex-direction: column;
-    width: 80%;
+    width: 100%;
     text-align: center;
   }
 }

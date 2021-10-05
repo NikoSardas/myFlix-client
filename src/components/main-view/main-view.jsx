@@ -59,6 +59,16 @@ export default class MainView extends React.Component {
       });
   }
 
+  gotoMovie(movieID) {
+    alert(movieID); //TODO open movie from main
+    // <MovieView
+    //   onBackClick={() => {
+    //     history.goBack();
+    //   }}
+    //   movie={this.state.movies.find((m) => m._id === movieID)}
+    // />
+  }
+
   onLoggedIn(authData) {
     this.setState({
       loggedUsername: authData.user.Username,
@@ -135,7 +145,7 @@ export default class MainView extends React.Component {
           <Route
             exact
             path="/users/:username"
-            render={({}) => {
+            render={({history }) => {
               if (!loggedUsername)
                 return (
                   <Col>
@@ -147,7 +157,9 @@ export default class MainView extends React.Component {
               return (
                 <Col>
                   <ProfileView
-                    token={localStorage.token}
+                    onBackClick={() => {
+                      history.goBack();
+                    }}
                     onLoggedOut={this.onLoggedOut}
                   />
                 </Col>
@@ -193,6 +205,9 @@ export default class MainView extends React.Component {
               return (
                 <Col md={8} className="director-view-wrapper">
                   <DirectorView
+                    gotoMovie={(movieID) => {
+                      this.gotoMovie(movieID);
+                    }}
                     onBackClick={() => {
                       history.goBack();
                     }}
@@ -221,6 +236,9 @@ export default class MainView extends React.Component {
               return (
                 <Col md={8} className="genre-view-wrapper">
                   <GenreView
+                    gotoMovie={(movieID) => {
+                      this.gotoMovie(movieID);
+                    }}
                     onBackClick={() => {
                       history.goBack();
                     }}

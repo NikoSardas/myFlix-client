@@ -9,7 +9,7 @@ import "./director-view.scss";
 
 export class DirectorView extends React.Component {
   render() {
-    const { director, movies, onBackClick } = this.props;
+    const { director, movies, onBackClick, gotoMovie } = this.props;
     return (
       <div className="director-view-wrapper">
         <Card border="light" bg="dark" text="white">
@@ -23,8 +23,11 @@ export class DirectorView extends React.Component {
                 if (movie.Director.Name === director.Name)
                   return (
                     <Button
+                      onClick={() => {
+                        gotoMovie(movie._id);
+                      }}
                       className="director-movie-item"
-                      variant="outline-light"
+                      variant="outline-light shadow-none"
                       key={movie._id}
                     >
                       {movie.Title}
@@ -34,7 +37,7 @@ export class DirectorView extends React.Component {
             )}
             <Button
               className="directors-back"
-              variant="outline-warning"
+              variant="outline-warning shadow-none"
               onClick={onBackClick}
             >
               Back
@@ -53,4 +56,5 @@ DirectorView.propTypes = {
   }).isRequired,
   movies: PropTypes.array.isRequired,
   onBackClick: PropTypes.func.isRequired,
+  gotoMovie: PropTypes.func.isRequired,
 };

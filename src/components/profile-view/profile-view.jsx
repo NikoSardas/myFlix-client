@@ -1,10 +1,8 @@
 //TODO hide navbar
-//TODO fix update
-// TODO fix onloggedout from profile view
 
 import React from "react";
 import axios from "axios";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -34,7 +32,6 @@ export class ProfileView extends React.Component {
   }
 
   onLoggedOut() {
-    console.log("main view onLoggedOut");
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     window.open("/", "_self");
@@ -53,7 +50,6 @@ export class ProfileView extends React.Component {
       .then((response) => {
         this.setState({
           username: response.data.Username,
-          // password: response.data.Password,
           email: response.data.Email,
           birthday: response.data.Birthday.substr(0, 10),
           favorites: response.data.FavoriteMovies,
@@ -201,7 +197,7 @@ export class ProfileView extends React.Component {
             <div className="profile-buttons">
               <Button
                 type="submit"
-                variant="outline-warning"
+                variant="outline-warning shadow-none"
                 className="update-submit"
                 onClick={(e) => {
                   e.preventDefault();
@@ -210,8 +206,9 @@ export class ProfileView extends React.Component {
               >
                 Update
               </Button>
-              <Link to="/"></Link>
-              <Button variant="outline-light">Back to main page</Button>
+              <Button onClick={onBackClick} variant="outline-light shadow-none">
+                Back to main page
+              </Button>
             </div>
           </Form.Group>
         </Form>
@@ -229,7 +226,7 @@ export class ProfileView extends React.Component {
                 >
                   {favMovie.Title}
                   <Button
-                    variant="outline-danger"
+                    variant="outline-danger shadow-none"
                     className="remove-fav"
                     onClick={() => {
                       this.removeFromFavorites(favMovie._id, username);
@@ -244,9 +241,9 @@ export class ProfileView extends React.Component {
         </ListGroup>
         <Button
           className="delete-user"
-          variant="danger"
+          variant="danger shadow-none"
           onClick={() => {
-            if (confirm("Confirm?")) {
+            if (confirm("Confirm user delete?")) {
               this.handleDeregister();
             } else {
               console.log("Cancelled.");
@@ -259,3 +256,7 @@ export class ProfileView extends React.Component {
     );
   }
 }
+
+ProfileView.propTypes = {
+  onBackClick: PropTypes.func.isRequired,
+};

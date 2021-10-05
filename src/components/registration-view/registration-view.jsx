@@ -116,7 +116,7 @@ export class RegistrationView extends React.Component {
               Submit
             </Button>
             <Link to={`/`}>
-              <Button variant="outline-light" onClick={onBackClick}>
+              <Button variant="outline-warning" onClick={onBackClick}>
                 Cancel
               </Button>
             </Link>

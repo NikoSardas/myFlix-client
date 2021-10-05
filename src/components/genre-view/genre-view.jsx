@@ -9,7 +9,7 @@ import "./genre-view.scss";
 
 export class GenreView extends React.Component {
   render() {
-    const { genre, movies, onBackClick } = this.props;
+    const { genre, movies, onBackClick, gotoMovie } = this.props;
     return (
       <div className="genre-view-wrapper">
         <Card border="light" bg="dark" text="white">
@@ -23,8 +23,11 @@ export class GenreView extends React.Component {
                 if (movie.Genre.Name === genre.Name)
                   return (
                     <Button
+                      onClick={() => {
+                        gotoMovie(movie._id);
+                      }}
                       className="genre-movie-item"
-                      variant="outline-light"
+                      variant="outline-light shadow-none"
                       key={movie._id}
                     >
                       {movie.Title}
@@ -33,7 +36,7 @@ export class GenreView extends React.Component {
               })
             )}
             <Button
-              className="genres-back"
+              className="genres-back shadow-none"
               variant="outline-warning"
               onClick={onBackClick}
             >
@@ -53,4 +56,5 @@ GenreView.propTypes = {
   }).isRequired,
   movies: PropTypes.array.isRequired,
   onBackClick: PropTypes.func.isRequired,
+  gotoMovie: PropTypes.func.isRequired,
 };

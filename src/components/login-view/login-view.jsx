@@ -77,7 +77,7 @@ export class LoginView extends React.Component {
           </Form.Group>
           <div className="login-view-buttons">
             <Button
-              variant="outline-light"
+              variant="outline-light shadow-none"
               type="submit"
               onClick={(e) => {
                 e.preventDefault();
@@ -88,7 +88,7 @@ export class LoginView extends React.Component {
               Submit
             </Button>
             <Link to={`/register`}>
-              <Button variant="outline-warning" className="register-button">
+              <Button  variant="outline-warning shadow-none" className="register-button">
                 Register
               </Button>
             </Link>

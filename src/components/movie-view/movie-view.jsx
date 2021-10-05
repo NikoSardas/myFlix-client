@@ -9,7 +9,35 @@ import { Button, Card } from "react-bootstrap";
 import "./movie-view.scss";
 
 export class MovieView extends React.Component {
-  addToFavorites = (movie) => {
+  constructor() {
+    super();
+    this.state = {
+      isFavorite: false,
+    };
+  }
+  async checkIfFavorite() {
+    const favs = await axios.get(
+      `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+        "username"
+      )}`,
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    );
+    if (favs) {
+      console.log(favs);
+      favs.data.FavoriteMovies.map((favMovie) => {
+        if (favMovie.Title === this.props.movie.Title) {
+          this.setState({
+            isFavorite: true,
+          });
+        }
+      });
+    } else {
+      console.log("error retrieving favorites");
+    }
+  }
+  addToFavorites(movie) {
     axios
       .post(
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
@@ -21,14 +49,39 @@ export class MovieView extends React.Component {
         }
       )
       .then(() => {
-        alert(`${movie.Title} Added to Favorites List!`);
+        this.setState({
+          isFavorite: true,
+        });
       })
       .catch(function (error) {
         console.log(error);
       });
-  };
+  }
+  removeFromFavorites(movie) {
+    axios
+      .delete(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+          "username"
+        )}/FavoriteMovies/${movie._id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      .then(() => {
+        this.setState({
+          isFavorite: false,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+  componentDidMount() {
+    this.checkIfFavorite();
+  }
   render() {
     const { movie, onBackClick } = this.props;
+    const { isFavorite } = this.state;
     return (
       <Card border="light" bg="dark" text="white">
         <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
@@ -36,14 +89,20 @@ export class MovieView extends React.Component {
           <Card.Title className="text-center">{movie.Title}</Card.Title>
           <Card.Text>{movie.Description}</Card.Text>
           <Button
-            variant="outline-light"
+            variant="outline-light shadow-none"
             onClick={() => {
-              this.addToFavorites(movie);
+              isFavorite
+                ? this.removeFromFavorites(movie)
+                : this.addToFavorites(movie);
             }}
           >
-            Add to favorites
+            {isFavorite ? "Remove from favorites" : "Add to favorites"}
           </Button>
-          <Button variant="outline-light" onClick={onBackClick}>
+          <Button
+            className="movie-view-back"
+            variant="outline-warning shadow-none"
+            onClick={onBackClick}
+          >
             Back
           </Button>
         </Card.Body>

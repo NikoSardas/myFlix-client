@@ -17,15 +17,15 @@ export class MovieCard extends React.Component {
           <Card.Text>{movie.Description}</Card.Text>
           <div className="card-links">
             <Link to={`/movies/${movie._id}`}>
-              <Button onClick={() => movie} variant="outline-light">
+              <Button onClick={() => movie} variant="outline-light shadow-none">
                 Open
               </Button>
             </Link>
             <Link to={`/directors/${movie.Director.Name}`}>
-              <Button variant="outline-light">{movie.Director.Name}</Button>
+              <Button variant="outline-light shadow-none">{movie.Director.Name}</Button>
             </Link>
             <Link to={`/genres/${movie.Genre.Name}`}>
-              <Button variant="outline-light">{movie.Genre.Name}</Button>
+              <Button variant="outline-light shadow-none">{movie.Genre.Name}</Button>
             </Link>
           </div>
         </Card.Body>
