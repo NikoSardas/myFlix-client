@@ -1,0 +1,50 @@
+@import "../../styles.scss";
+
+.profile-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.profile-view input {
+  color: $text-color;
+}
+
+.favs-row {
+  display: flex;
+  // flex-direction: column;
+  width: 80%;
+  text-align: center;
+}
+
+.fav-item {
+  background-color: transparent !important;
+  border: 1px solid $text-color !important;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-user {
+  margin: 3%;
+  width: 80%;
+}
+
+.profile-buttons {
+  margin: 2% 0;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media all and (max-width: 750px) {
+  .favs-row {
+    display: flex;
+    // flex-direction: column;
+    width: 80%;
+    text-align: center;
+  }
+}

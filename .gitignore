@@ -1,4 +1,8 @@
-node_modules
+dist
 .cache
 .parcel-cache
+<<<<<<< HEAD
 dist
+=======
+node_modules
+>>>>>>> task-6
