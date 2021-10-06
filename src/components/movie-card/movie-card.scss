@@ -5,31 +5,32 @@
   text-align: center;
 }
 
-.card-body{
+.card-body {
   display: flex;
   flex-flow: column wrap;
   justify-content: space-between;
 }
 
-.card-title{
+.card-title {
   color: $secondary-color !important;
 }
 
-.card-img-top{
-  height:300px;
+.card-img-top {
+  height: 300px;
 }
 
-.card-links{
+.card-links {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
-.card-links button{
+.card-links button {
   height: 100%;
 }
 
 @media all and (max-width: 750px) {
-  .card-img-top{
-    height:400px;
-    }
+  .card-img-top {
+    height: 400px;
+  }
 }

@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Button, Card, Link } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import "./genre-view.scss";
-import { Link } from "react-router-dom";
 
 export class GenreView extends React.Component {
   render() {

@@ -22,10 +22,14 @@ export class MovieCard extends React.Component {
               </Button>
             </Link>
             <Link to={`/directors/${movie.Director.Name}`}>
-              <Button variant="outline-light shadow-none">{movie.Director.Name}</Button>
+              <Button variant="outline-light shadow-none">
+                {movie.Director.Name}
+              </Button>
             </Link>
             <Link to={`/genres/${movie.Genre.Name}`}>
-              <Button variant="outline-light shadow-none">{movie.Genre.Name}</Button>
+              <Button variant="outline-light shadow-none">
+                {movie.Genre.Name}
+              </Button>
             </Link>
           </div>
         </Card.Body>

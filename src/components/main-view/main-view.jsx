@@ -1,3 +1,5 @@
+//TODO errors when refreshing director/genre/movie pages
+
 import React from "react";
 import axios from "axios";
 
@@ -27,7 +29,7 @@ class MainView extends React.Component {
     };
   }
 
-  //set movie server response to setMovies prop
+  //gets movies from server and sets them as a prop
   getMovies(token) {
     axios
       .get("https://nikosardas-myflixdb.herokuapp.com/movies", {
