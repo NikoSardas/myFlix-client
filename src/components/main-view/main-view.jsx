@@ -1,5 +1,3 @@
-//TODO Unchecked runtime.lastError: The message port closed before a response was received
-
 import React from "react";
 import axios from "axios";
 
@@ -14,52 +12,38 @@ import { DirectorView } from "../director-view/director-view";
 import { GenreView } from "../genre-view/genre-view";
 import { NavView } from "../nav-view/nav-view";
 import { ProfileView } from "../profile-view/profile-view";
-
-import "./main-view.scss";
+import { connect } from "react-redux";
+import { setMovies } from "../../actions/actions";
+import MoviesList from "../movies-list/movies-list";
 import { ProfileView } from "../profile-view/profile-view";
 
-export default class MainView extends React.Component {
+import "./main-view.scss";
+
+class MainView extends React.Component {
   constructor() {
     super();
     this.state = {
-      movies: [],
-      selectedMovie: null,
       loggedUsername: null,
     };
   }
 
-  componentDidMount() {
-    let accessToken = localStorage.getItem("token");
-    if (accessToken !== null) {
-      this.setState({
-        loggedUsername: localStorage.getItem("username"),
-      });
-      this.getMovies(accessToken);
-    }
-  }
-
-  setSelectedMovie(movie) {
-    this.setState({
-      selectedMovie: movie,
-    });
-  }
-
+  //set movie server response to setMovies prop
   getMovies(token) {
     axios
       .get("https://nikosardas-myflixdb.herokuapp.com/movies", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        this.setState({
-          movies: response.data,
-        });
+        this.props.setMovies(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
   }
 
+  // genre and director view links to movie page
   gotoMovie(movieID) {
+    //TODO
     alert(movieID); //TODO open movie from main
     // <MovieView
     //   onBackClick={() => {
@@ -69,6 +53,7 @@ export default class MainView extends React.Component {
     // />
   }
 
+  // set logged state and localstorage, then send token to getMovies
   onLoggedIn(authData) {
     this.setState({
       loggedUsername: authData.user.Username,
@@ -79,8 +64,8 @@ export default class MainView extends React.Component {
     this.getMovies(authData.token);
   }
 
+  //clear localstorage and user state then reopen root window
   onLoggedOut() {
-    console.log("main view onLoggedOut");
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     this.setState({
@@ -88,11 +73,27 @@ export default class MainView extends React.Component {
     });
     window.open("/", "_self");
   }
+
+  // set user params from localstorage then send token to getMovies
+  componentDidMount() {
+    let accessToken = localStorage.getItem("token");
+    if (accessToken !== null) {
+      this.setState({
+        loggedUsername: localStorage.getItem("username"),
+      });
+      this.getMovies(accessToken);
+    }
+  }
+
   render() {
-    const { movies, loggedUsername } = this.state;
+    const { loggedUsername } = this.state;
+    const { movies } = this.props;
+
     return (
       <Router>
         <NavView
+          className="navigation"
+          // variant="hidden" //TODO
           onLoggedOut={() => {
             this.onLoggedOut();
           }}
@@ -112,18 +113,7 @@ export default class MainView extends React.Component {
                   </Col>
                 );
               if (movies.length === 0) return <div className="main-view" />;
-              return movies.map((m) => (
-                <Col
-                  sm={12}
-                  md={6}
-                  lg={4}
-                  xl={3}
-                  key={m._id}
-                  className="card-wrapper"
-                >
-                  <MovieCard movie={m} />
-                </Col>
-              ));
+              return <MoviesList movies={movies} />;
             }}
           />
           <Route
@@ -145,7 +135,7 @@ export default class MainView extends React.Component {
           <Route
             exact
             path="/users/:username"
-            render={({history }) => {
+            render={({ history }) => {
               if (!loggedUsername)
                 return (
                   <Col>
@@ -257,3 +247,9 @@ export default class MainView extends React.Component {
     );
   }
 }
+
+let mapStateToProps = (state) => {
+  return { movies: state.movies };
+};
+
+export default connect(mapStateToProps, { setMovies })(MainView);

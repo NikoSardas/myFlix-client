@@ -1,5 +1,3 @@
-//TODO form validation
-
 import React from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -63,6 +61,7 @@ export class LoginView extends React.Component {
               type="text"
               required
               placeholder="Your Username.."
+              pattern="[A-Za-z0-9_]{3,42}"
               onChange={(e) => this.setUsername(e.target.value)}
             />
           </Form.Group>

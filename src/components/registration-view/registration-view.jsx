@@ -1,5 +1,3 @@
-//TODO onChange doesn't read auto-fill
-
 import React from "react";
 import axios from "axios";
 
@@ -72,7 +70,9 @@ export class RegistrationView extends React.Component {
             <Form.Control
               required
               pattern="[A-Za-z0-9_]{3,42}"
-              placeholder="Only letters, numbers, and underscore"
+              // placeholder=""
+              //TODO validations
+              title="Username should only contain Only letters, numbers, and underscore"
               type="text"
               onChange={(e) => this.setUsername(e.target.value)}
             />
