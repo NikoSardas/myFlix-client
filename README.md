@@ -9,13 +9,13 @@ personal information, and create a list of their favorite movies.
 ![Capture](https://user-images.githubusercontent.com/89710667/136125524-4ba969ea-ae39-4a70-9def-f58b1aa06c49.PNG)
 
 ## Built With
-React/Redux
+React / Redux
 
 ## Tools
 
 
-## Formatting
-Prettier/Eslint
+## Formatting / Validations
+Prettier / Eslint
 
 ## Documentation
 
