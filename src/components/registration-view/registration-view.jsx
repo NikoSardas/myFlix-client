@@ -48,11 +48,10 @@ export class RegistrationView extends React.Component {
       })
       .then((response) => {
         const data = response.data;
-        console.log(data);
         window.open("/", "_self");
       })
       .catch((e) => {
-        console.log("error registering the user", e);
+        console.error("error registering the user", e);
       });
   };
   validate() {
@@ -70,8 +69,7 @@ export class RegistrationView extends React.Component {
             <Form.Control
               required
               pattern="[A-Za-z0-9_]{3,42}"
-              // placeholder=""
-              //TODO validations
+              placeholder="Should only contain Only letters, numbers, and underscore"
               title="Username should only contain Only letters, numbers, and underscore"
               type="text"
               onChange={(e) => this.setUsername(e.target.value)}
@@ -81,7 +79,7 @@ export class RegistrationView extends React.Component {
             <Form.Label>Password:</Form.Label>
             <Form.Control
               required
-              placeholder="Password required"
+              placeholder="Please set your password.."
               type="password"
               onChange={(e) => this.setPassword(e.target.value)}
             />
@@ -90,7 +88,7 @@ export class RegistrationView extends React.Component {
             <Form.Label>Email:</Form.Label>
             <Form.Control
               required
-              placeholder="Email required"
+              placeholder="Please set your email address.."
               type="email"
               onChange={(e) => this.setEmail(e.target.value)}
             />

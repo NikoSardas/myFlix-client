@@ -29,11 +29,10 @@ export class LoginView extends React.Component {
         Password: this.state.password,
       })
       .then((response) => {
-        console.log(response.data);
         this.props.onLoggedIn(response.data);
       })
       .catch((e) => {
-        console.log("no such user", e);
+        console.error("no such user", e);
       });
   }
 
@@ -56,7 +55,7 @@ export class LoginView extends React.Component {
         <h1>MyFlix</h1>
         <Form ref={this.form}>
           <Form.Group controlId="formUsername">
-            <Form.Label>Username:</Form.Label>
+            {/* <Form.Label>Username:</Form.Label> */}
             <Form.Control
               type="text"
               required
@@ -66,7 +65,7 @@ export class LoginView extends React.Component {
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
-            <Form.Label>Password:</Form.Label>
+            {/* <Form.Label>Password:</Form.Label> */}
             <Form.Control
               type="password"
               required
@@ -87,7 +86,10 @@ export class LoginView extends React.Component {
               Submit
             </Button>
             <Link to={`/register`}>
-              <Button  variant="outline-warning shadow-none" className="register-button">
+              <Button
+                variant="outline-warning shadow-none"
+                className="register-button"
+              >
                 Register
               </Button>
             </Link>

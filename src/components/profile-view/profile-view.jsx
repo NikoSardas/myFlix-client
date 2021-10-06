@@ -1,8 +1,5 @@
-//TODO hide navbar
-
 import React from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
 
 import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -154,31 +151,40 @@ export class ProfileView extends React.Component {
     const { onBackClick } = this.props;
     return (
       <div className="profile-view">
+        <Link to="/">
+          <Button
+            className="back-to-main"
+            variant="outline-light shadow-none"
+          >
+            Back to main page
+          </Button>
+        </Link>
         <h2>User Profile</h2>
         <Form ref={this.form}>
           <Form.Group controlId="formUsername">
-            <Form.Label>Username:</Form.Label>
+            {/* <Form.Label>Username:</Form.Label> */}
             <Form.Control
               type="text"
               required
               pattern="[A-Za-z0-9_]{3,42}"
-              placeholder="Only letters, numbers, and underscore"
+              placeholder="Should only contain Only letters, numbers, and underscore"
+              title="Username should only contain Only letters, numbers, and underscore"
               value={username}
               onChange={(e) => this.setUsername(e.target.value)}
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
-            <Form.Label>Password:</Form.Label>
+            {/* <Form.Label>Password:</Form.Label> */}
             <Form.Control
               type="password"
               required
-              placeholder="Password Required"
+              placeholder="Update requires a password"
               value={password}
               onChange={(e) => this.setPassword(e.target.value)}
             />
           </Form.Group>
           <Form.Group controlId="formEmail">
-            <Form.Label>Email:</Form.Label>
+            {/* <Form.Label>Email:</Form.Label> */}
             <Form.Control
               type="email"
               required
@@ -187,7 +193,7 @@ export class ProfileView extends React.Component {
             />
           </Form.Group>
           <Form.Group controlId="formBirthday">
-            <Form.Label>Birthday:</Form.Label>
+            {/* <Form.Label>Birthday:</Form.Label> */}
             <Form.Control
               type="date"
               required
@@ -206,8 +212,18 @@ export class ProfileView extends React.Component {
               >
                 Update
               </Button>
-              <Button onClick={onBackClick} variant="outline-light shadow-none">
-                Back to main page
+              <Button
+                className="delete-user"
+                variant="danger shadow-none"
+                onClick={() => {
+                  if (confirm("Confirm user delete?")) {
+                    this.handleDeregister();
+                  } else {
+                    console.log("Cancelled.");
+                  }
+                }}
+              >
+                Delete User
               </Button>
             </div>
           </Form.Group>
@@ -239,24 +255,7 @@ export class ProfileView extends React.Component {
             })
           )}
         </ListGroup>
-        <Button
-          className="delete-user"
-          variant="danger shadow-none"
-          onClick={() => {
-            if (confirm("Confirm user delete?")) {
-              this.handleDeregister();
-            } else {
-              console.log("Cancelled.");
-            }
-          }}
-        >
-          Delete User
-        </Button>
       </div>
     );
   }
 }
-
-ProfileView.propTypes = {
-  onBackClick: PropTypes.func.isRequired,
-};

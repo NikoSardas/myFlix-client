@@ -4,18 +4,18 @@ import axios from "axios";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
+import  MoviesList  from "../movies-list/movies-list";
+
 import { LoginView } from "../login-view/login-view";
-import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { RegistrationView } from "../registration-view/registration-view";
 import { DirectorView } from "../director-view/director-view";
 import { GenreView } from "../genre-view/genre-view";
 import { NavView } from "../nav-view/nav-view";
 import { ProfileView } from "../profile-view/profile-view";
+
 import { connect } from "react-redux";
 import { setMovies } from "../../actions/actions";
-import MoviesList from "../movies-list/movies-list";
-import { ProfileView } from "../profile-view/profile-view";
 
 import "./main-view.scss";
 
@@ -39,18 +39,6 @@ class MainView extends React.Component {
       .catch(function (error) {
         console.log(error);
       });
-  }
-
-  // genre and director view links to movie page
-  gotoMovie(movieID) {
-    //TODO
-    alert(movieID); //TODO open movie from main
-    // <MovieView
-    //   onBackClick={() => {
-    //     history.goBack();
-    //   }}
-    //   movie={this.state.movies.find((m) => m._id === movieID)}
-    // />
   }
 
   // set logged state and localstorage, then send token to getMovies
@@ -91,14 +79,6 @@ class MainView extends React.Component {
 
     return (
       <Router>
-        <NavView
-          className="navigation"
-          // variant="hidden" //TODO
-          onLoggedOut={() => {
-            this.onLoggedOut();
-          }}
-        />
-
         <Row className="main-view">
           <Route
             path="/"
@@ -112,8 +92,19 @@ class MainView extends React.Component {
                     />
                   </Col>
                 );
+
               if (movies.length === 0) return <div className="main-view" />;
-              return <MoviesList movies={movies} />;
+              return (
+                <>
+                  <NavView
+                    className="navigation"
+                    onLoggedOut={() => {
+                      this.onLoggedOut();
+                    }}
+                  />
+                  <MoviesList movies={movies} />
+                </>
+              );
             }}
           />
           <Route
@@ -135,7 +126,7 @@ class MainView extends React.Component {
           <Route
             exact
             path="/users/:username"
-            render={({ history }) => {
+            render={() => {
               if (!loggedUsername)
                 return (
                   <Col>
@@ -146,12 +137,7 @@ class MainView extends React.Component {
                 );
               return (
                 <Col>
-                  <ProfileView
-                    onBackClick={() => {
-                      history.goBack();
-                    }}
-                    onLoggedOut={this.onLoggedOut}
-                  />
+                  <ProfileView onLoggedOut={this.onLoggedOut} />
                 </Col>
               );
             }}
@@ -193,11 +179,8 @@ class MainView extends React.Component {
                   </Col>
                 );
               return (
-                <Col md={8} className="director-view-wrapper">
+                <Col className="director-view-wrapper">
                   <DirectorView
-                    gotoMovie={(movieID) => {
-                      this.gotoMovie(movieID);
-                    }}
                     onBackClick={() => {
                       history.goBack();
                     }}
@@ -224,11 +207,8 @@ class MainView extends React.Component {
                   </Col>
                 );
               return (
-                <Col md={8} className="genre-view-wrapper">
+                <Col className="genre-view-wrapper">
                   <GenreView
-                    gotoMovie={(movieID) => {
-                      this.gotoMovie(movieID);
-                    }}
                     onBackClick={() => {
                       history.goBack();
                     }}

@@ -17,11 +17,14 @@
 }
 
 .login-view h1 {
-  //   position: absolute;
-  //   top: 25%;
+  margin: -5% 0 5% 0;
   text-decoration-line: underline;
 }
 
 .login-view input {
   color: $text-color;
+}
+
+.login-view input::placeholder {
+  color: darken($text-color, 30%)
 }

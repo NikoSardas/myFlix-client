@@ -7,8 +7,27 @@
 }
 
 .genre-movie-item {
-  margin: 1% 0 0 0 ;
+  margin: 1% 0 0 0;
+  // border: 1px solid $text-color;
+}
+.genre-movie-item:focus,
+.genre-movie-item:hover {
+  margin: 1% 0 0 0;
 }
 .genres-back {
-  margin: 2% 0 0 0 ;
+  margin: 0 0 0 90%;
+}
+.genre-link {
+  color: inherit;
+  text-decoration: none;
+  margin: 0 1%;
+  height:100%;
+}
+.genre-link button{
+  height:100%;
+}
+.genres-movie-list{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

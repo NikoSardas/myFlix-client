@@ -8,13 +8,17 @@
   height: 100%;
 }
 
+.profile-view h2 {
+  margin: 5% 0 10% 0;
+  text-decoration-line: underline;
+}
+
 .profile-view input {
   color: $text-color;
 }
 
 .favs-row {
   display: flex;
-  // flex-direction: column;
   width: 60%;
   text-align: center;
 }
@@ -27,16 +31,16 @@
   align-items: center;
 }
 
-.delete-user {
-  margin: 10% 0 5% 0;
-}
-
 .profile-buttons {
-  margin: 2% 0;
+  margin: 5% 0 15% 0;
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
+}
+
+.profile-view .back-to-main {
+  margin: 0 0 10% 0;
 }
 
 @media all and (max-width: 750px) {

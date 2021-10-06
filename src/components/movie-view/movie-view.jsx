@@ -84,6 +84,13 @@ export class MovieView extends React.Component {
       <Card border="light" bg="dark" text="white">
         <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
         <Card.Body>
+          <Button
+            className="movie-view-back"
+            variant="warning shadow-none"
+            onClick={onBackClick}
+          >
+            Back
+          </Button>
           <Card.Title className="text-center">{movie.Title}</Card.Title>
           <Card.Text>{movie.Description}</Card.Text>
           <Button
@@ -95,13 +102,6 @@ export class MovieView extends React.Component {
             }}
           >
             {isFavorite ? "Remove from favorites" : "Add to favorites"}
-          </Button>
-          <Button
-            className="movie-view-back"
-            variant="outline-warning shadow-none"
-            onClick={onBackClick}
-          >
-            Back
           </Button>
         </Card.Body>
       </Card>

@@ -7,8 +7,27 @@
 }
 
 .director-movie-item {
-  margin: 1% 0 0 0 ;
+  margin: 1% 0 0 0;
+  // border: 1px solid $text-color;
+}
+.director-movie-item:focus,
+.director-movie-item:hover {
+  margin: 1% 0 0 0;
 }
 .directors-back {
-  margin: 2% 0 0 0 ;
+  margin: 0 0 0 90%;
+}
+.director-link {
+  color: inherit;
+  text-decoration: none;
+  margin: 0 1%;
+  height:100%;
+}
+.director-link button{
+  height:100%;
+}
+.directors-movie-list{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
