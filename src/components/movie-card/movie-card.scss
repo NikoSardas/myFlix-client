@@ -3,12 +3,14 @@
 .movie-card {
   height: 100%;
   text-align: center;
+
 }
 
 .card-body {
   display: flex;
-  flex-flow: column wrap;
+  flex-direction: column;
   justify-content: space-between;
+  align-items: center;
 }
 
 .card-title {
@@ -22,7 +24,6 @@
 .card-links {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
 }
 
 .card-links button {
