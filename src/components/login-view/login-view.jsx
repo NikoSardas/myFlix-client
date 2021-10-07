@@ -22,7 +22,7 @@ export class LoginView extends React.Component {
     return this.form.current.reportValidity();
   }
 
-  handleSubmit(e) {
+  handleSubmit() {
     axios
       .post("https://nikosardas-myflixdb.herokuapp.com/login", {
         Username: this.state.username,

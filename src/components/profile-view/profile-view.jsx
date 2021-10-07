@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -28,11 +29,11 @@ export class ProfileView extends React.Component {
     return this.form.current.reportValidity();
   }
 
-  onLoggedOut() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    window.open("/", "_self");
-  }
+  // onLoggedOut() {
+  //   localStorage.removeItem("token");
+  //   localStorage.removeItem("username");
+  //   window.open("/", "_self");
+  // }
 
   getInitialStates() {
     axios
@@ -99,7 +100,7 @@ export class ProfileView extends React.Component {
         }
       )
       .then(() => {
-        this.onLoggedOut();
+        this.props.onLoggedOut();
       })
       .catch((error) => {
         console.log(error);
@@ -148,14 +149,10 @@ export class ProfileView extends React.Component {
 
   render() {
     const { username, password, email, birthday, favorites } = this.state;
-    const { onBackClick } = this.props;
     return (
       <div className="profile-view">
         <Link to="/">
-          <Button
-            className="back-to-main"
-            variant="outline-light shadow-none"
-          >
+          <Button className="back-to-main" variant="outline-light shadow-none">
             Back to main page
           </Button>
         </Link>
@@ -259,3 +256,7 @@ export class ProfileView extends React.Component {
     );
   }
 }
+
+ProfileView.propTypes = {
+  onLoggedOut: PropTypes.func.isRequired,
+};

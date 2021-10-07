@@ -1,12 +1,14 @@
 //TODO errors when refreshing director/genre/movie pages
+//TODO search bar centers on empty query
 
 import React from "react";
 import axios from "axios";
+import { connect } from "react-redux";
 
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
-import  MoviesList  from "../movies-list/movies-list";
+import MoviesList from "../movies-list/movies-list";
 
 import { LoginView } from "../login-view/login-view";
 import { MovieView } from "../movie-view/movie-view";
@@ -16,23 +18,16 @@ import { GenreView } from "../genre-view/genre-view";
 import { NavView } from "../nav-view/nav-view";
 import { ProfileView } from "../profile-view/profile-view";
 
-import { connect } from "react-redux";
-import { setMovies } from "../../actions/actions";
+import { setMovies, setUsername } from "../../actions/actions";
 
 import "./main-view.scss";
 
-class MainView extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      loggedUsername: null,
-    };
-  }
+const MOVIE_API = "https://nikosardas-myflixdb.herokuapp.com";
 
-  //gets movies from server and sets them as a prop
+class MainView extends React.Component {
   getMovies(token) {
     axios
-      .get("https://nikosardas-myflixdb.herokuapp.com/movies", {
+      .get(`${MOVIE_API}/movies`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -43,42 +38,34 @@ class MainView extends React.Component {
       });
   }
 
-  // set logged state and localstorage, then send token to getMovies
   onLoggedIn(authData) {
-    this.setState({
-      loggedUsername: authData.user.Username,
-    });
-
-    localStorage.setItem("token", authData.token);
-    localStorage.setItem("username", authData.user.Username);
+    console.log(authData)
+    console.log(this.props)
+    localStorage.getItem("token") = authData.token;
+    localStorage.getItem("username") = authData.user.Username;
+    this.props.setUsername(authData.user.Username);
     this.getMovies(authData.token);
-  }
-
-  //clear localstorage and user state then reopen root window
-  onLoggedOut() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    this.setState({
-      loggedUsername: null,
-    });
     window.open("/", "_self");
   }
 
-  // set user params from localstorage then send token to getMovies
+  onLoggedOut() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    this.props.setUsername("");
+    window.open("/", "_self");
+  }
+
   componentDidMount() {
-    let accessToken = localStorage.getItem("token");
-    if (accessToken !== null) {
-      this.setState({
-        loggedUsername: localStorage.getItem("username"),
-      });
-      this.getMovies(accessToken);
+    console.log(this.props)
+    localStorage.getItem("username") === null && this.props.setUsername("");
+    if (localStorage.getItem("token") !== null) {
+      this.props.setUsername(localStorage.getItem("username"));
+      this.getMovies(localStorage.getItem("token"));
     }
   }
 
   render() {
-    const { loggedUsername } = this.state;
-    const { movies } = this.props;
-
+    const { movies, loggedUsername } = this.props;
     return (
       <Router>
         <Row className="main-view">
@@ -94,7 +81,6 @@ class MainView extends React.Component {
                     />
                   </Col>
                 );
-
               if (movies.length === 0) return <div className="main-view" />;
               return (
                 <>
@@ -231,7 +217,10 @@ class MainView extends React.Component {
 }
 
 let mapStateToProps = (state) => {
-  return { movies: state.movies };
+  return {
+    movies: state.movies,
+    loggedUsername: state.loggedUsername
+  };
 };
 
-export default connect(mapStateToProps, { setMovies })(MainView);
+export default connect(mapStateToProps, { setMovies, setUsername })(MainView);
