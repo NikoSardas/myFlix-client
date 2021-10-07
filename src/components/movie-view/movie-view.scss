@@ -1,12 +1,23 @@
 .movie-view-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
   margin: auto;
+  text-align: center;
+  max-width: 50%;
+}
+
+@media all and (max-width: 750px) {
+  .movie-view-wrapper {
+    max-width: 100%;
+  }
+}
+.movie-view-wrapper img {
+  padding: 1%;
+  margin: 5% auto;
+  max-width: 50%;
 }
 
 .movie-view-back {
-  margin: 1% 0 0 90%;
+  position: absolute;
+  top: 1%;
+  right: 1%;
 }

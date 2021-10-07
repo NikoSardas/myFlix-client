@@ -39,6 +39,7 @@ function MoviesList(props) {
           sm={6}
           md={6}
           lg={4}
+          xl={3}
           className="movie-list-col"
           key={m._id}
         >

@@ -1,16 +1,22 @@
 @import "../../styles.scss";
 
 .profile-view {
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   justify-content: center;
   height: 100%;
 }
 
 .profile-view h2 {
-  margin: 5% 0 5% 0;
+  margin: 2% 0 5% 0;
   text-decoration-line: underline;
+}
+
+.profile-view h3 {
+  margin: 10% 0 2% 0;
 }
 
 .profile-view input {
@@ -18,9 +24,9 @@
 }
 
 .favs-row {
-  display: flex;
-  width: 60%;
-  text-align: center;
+  // display: flex;
+  // width: 60%;
+  // text-align: center;
 }
 
 .fav-item {
@@ -32,7 +38,7 @@
 }
 
 .profile-buttons {
-  margin: 5% 0 15% 0;
+  margin: 4% 0 0 0;
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -40,7 +46,7 @@
 }
 
 .profile-view .back-to-main {
-  margin: 0 0 10% 0;
+  margin: 0 0 4% 0;
 }
 
 @media all and (max-width: 750px) {

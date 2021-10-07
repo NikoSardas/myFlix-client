@@ -1,6 +1,8 @@
 @import "../../styles.scss";
 
 .registration-view {
+  margin: auto;
+  max-width: 740px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,21 +11,20 @@
 }
 
 .registration-view-buttons {
+  margin: 5% 0 0 0;
   display: flex;
   justify-content: space-between;
-  margin: 5% 0 0 0 ;
+}
+
+.registration-view h2 {
+  margin: -5% 0 5% 0;
+  text-decoration-line: underline;
 }
 
 .registration-view input {
   color: $text-color;
 }
 
-.registration-view h2 {
-  margin: -20% 0 10% 0;
-  text-decoration-line: underline;
-}
-
-
 .registration-view input::placeholder {
-  color: darken($text-color, 30%)
+  color: darken($text-color, 30%);
 }

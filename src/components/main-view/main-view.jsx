@@ -39,28 +39,27 @@ class MainView extends React.Component {
   }
 
   onLoggedIn(authData) {
-    console.log(authData)
-    console.log(this.props)
-    localStorage.getItem("token") = authData.token;
-    localStorage.getItem("username") = authData.user.Username;
+    localStorage.setItem("token", authData.token);
+    localStorage.setItem("username", authData.user.Username);
     this.props.setUsername(authData.user.Username);
     this.getMovies(authData.token);
-    window.open("/", "_self");
+    // window.open("/", "_self");
   }
 
   onLoggedOut() {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
-    this.props.setUsername("");
+    // this.props.setUsername("");
     window.open("/", "_self");
   }
 
   componentDidMount() {
-    console.log(this.props)
-    localStorage.getItem("username") === null && this.props.setUsername("");
-    if (localStorage.getItem("token") !== null) {
-      this.props.setUsername(localStorage.getItem("username"));
-      this.getMovies(localStorage.getItem("token"));
+    let accessToken = localStorage.getItem("token");
+    let userName = localStorage.getItem("username");
+    userName === null && this.props.setUsername("");
+    if (accessToken !== null) {
+      this.props.setUsername(userName);
+      this.getMovies(accessToken);
     }
   }
 
@@ -219,7 +218,7 @@ class MainView extends React.Component {
 let mapStateToProps = (state) => {
   return {
     movies: state.movies,
-    loggedUsername: state.loggedUsername
+    loggedUsername: state.loggedUsername,
   };
 };
 

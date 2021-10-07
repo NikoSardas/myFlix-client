@@ -81,30 +81,33 @@ export class MovieView extends React.Component {
     const { movie, onBackClick } = this.props;
     const { isFavorite } = this.state;
     return (
-      <Card border="light" bg="dark" text="white">
-        <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
-        <Card.Body>
-          <Button
-            className="movie-view-back"
-            variant="warning shadow-none"
-            onClick={onBackClick}
-          >
-            Back
-          </Button>
-          <Card.Title className="text-center">{movie.Title}</Card.Title>
-          <Card.Text>{movie.Description}</Card.Text>
-          <Button
-            variant="outline-light shadow-none"
-            onClick={() => {
-              isFavorite
-                ? this.removeFromFavorites(movie)
-                : this.addToFavorites(movie);
-            }}
-          >
-            {isFavorite ? "Remove from favorites" : "Add to favorites"}
-          </Button>
-        </Card.Body>
-      </Card>
+      <div className="movie-view-wrapper">
+        <Card border="light" bg="dark" text="white">
+        <Button
+              className="movie-view-back"
+              variant="warning shadow-none"
+              onClick={onBackClick}
+            >
+              Back
+            </Button>
+          <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
+          <Card.Body>
+         
+            <Card.Title className="text-center">{movie.Title}</Card.Title>
+            <Card.Text>{movie.Description}</Card.Text>
+            <Button
+              variant="outline-light shadow-none"
+              onClick={() => {
+                isFavorite
+                  ? this.removeFromFavorites(movie)
+                  : this.addToFavorites(movie);
+              }}
+            >
+              {isFavorite ? "Remove from favorites" : "Add to favorites"}
+            </Button>
+          </Card.Body>
+        </Card>
+      </div>
     );
   }
 }

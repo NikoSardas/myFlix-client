@@ -4,6 +4,13 @@
   display: flex;
   margin: auto;
   text-align: center;
+  max-width: 50%;
+}
+
+@media all and (max-width: 750px) {
+  .genre-view-wrapper {
+    max-width: 100%;
+  }
 }
 
 .genre-movie-item {
@@ -21,12 +28,12 @@
   color: inherit;
   text-decoration: none;
   margin: 0 1%;
-  height:100%;
+  height: 100%;
 }
-.genre-link button{
-  height:100%;
+.genre-link button {
+  height: 100%;
 }
-.genres-movie-list{
+.genres-movie-list {
   display: flex;
   justify-content: center;
   align-items: center;

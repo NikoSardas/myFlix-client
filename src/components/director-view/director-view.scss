@@ -4,6 +4,13 @@
   display: flex;
   margin: auto;
   text-align: center;
+  max-width: 50%;
+}
+
+@media all and (max-width: 750px) {
+  .director-view-wrapper {
+    max-width: 100%;
+  }
 }
 
 .director-movie-item {
