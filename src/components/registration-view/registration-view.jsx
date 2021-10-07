@@ -10,7 +10,7 @@ export class RegistrationView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
-    this.validate = this.validate.bind(this);
+    this.validate = this.validateForm.bind(this);
     this.state = {
       username: null,
       password: null,
@@ -18,27 +18,12 @@ export class RegistrationView extends React.Component {
       birthday: null,
     };
   }
-  setUsername(username) {
-    this.setState({
-      username,
-    });
+
+  validateForm() {
+    return this.form.current.reportValidity();
   }
-  setPassword(password) {
-    this.setState({
-      password,
-    });
-  }
-  setEmail(email) {
-    this.setState({
-      email,
-    });
-  }
-  setBirthday(birthday) {
-    this.setState({
-      birthday,
-    });
-  }
-  handleRegister = (e) => {
+
+  handleRegister = () => {
     axios
       .post("https://nikosardas-myflixdb.herokuapp.com/users", {
         Username: this.state.username,
@@ -54,11 +39,8 @@ export class RegistrationView extends React.Component {
         console.error("error registering the user", e);
       });
   };
-  validate() {
-    return this.form.current.reportValidity();
-  }
+
   render() {
-    const { username, password, email, birthday } = this.state;
     const { onBackClick } = this.props;
     return (
       <div className="registration-view">
@@ -72,7 +54,7 @@ export class RegistrationView extends React.Component {
               placeholder="Should only contain Only letters, numbers, and underscore"
               title="Username should only contain Only letters, numbers, and underscore"
               type="text"
-              onChange={(e) => this.setUsername(e.target.value)}
+              onChange={(e) => this.setState({ username: e.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
@@ -81,7 +63,7 @@ export class RegistrationView extends React.Component {
               required
               placeholder="Please set your password.."
               type="password"
-              onChange={(e) => this.setPassword(e.target.value)}
+              onChange={(e) => this.setState({ password: e.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formEmail">
@@ -90,7 +72,7 @@ export class RegistrationView extends React.Component {
               required
               placeholder="Please set your email address.."
               type="email"
-              onChange={(e) => this.setEmail(e.target.value)}
+              onChange={(e) => this.setState({ email: e.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formBirthday">
@@ -98,7 +80,7 @@ export class RegistrationView extends React.Component {
             <Form.Control
               required
               type="date"
-              onChange={(e) => this.setBirthday(e.target.value)}
+              onChange={(e) => this.setState({ birthday: e.target.value })}
             />
           </Form.Group>
           <div className="registration-view-buttons">
@@ -108,7 +90,7 @@ export class RegistrationView extends React.Component {
               type="submit"
               onClick={(e) => {
                 e.preventDefault();
-                this.validate() && this.handleRegister(e);
+                this.validateForm() && this.handleRegister(e);
               }}
             >
               Submit

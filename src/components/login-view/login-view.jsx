@@ -10,15 +10,16 @@ import "./login-view.scss";
 export class LoginView extends React.Component {
   constructor() {
     super();
+    //keeping as a class because of the form validation 'this'
     this.form = React.createRef();
-    this.validate = this.validate.bind(this);
+    this.validate = this.validateForm.bind(this);
     this.state = {
       username: null,
       password: null,
     };
   }
 
-  validate() {
+  validateForm() {
     return this.form.current.reportValidity();
   }
 
@@ -36,18 +37,6 @@ export class LoginView extends React.Component {
       });
   }
 
-  setUsername(username) {
-    this.setState({
-      username,
-    });
-  }
-
-  setPassword(password) {
-    this.setState({
-      password,
-    });
-  }
-
   render() {
     const { username, password } = this.state;
     return (
@@ -61,7 +50,7 @@ export class LoginView extends React.Component {
               required
               placeholder="Your Username.."
               pattern="[A-Za-z0-9_]{3,42}"
-              onChange={(e) => this.setUsername(e.target.value)}
+              onChange={(e) => this.setState({ username: e.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
@@ -70,7 +59,7 @@ export class LoginView extends React.Component {
               type="password"
               required
               placeholder="Your password.."
-              onChange={(e) => this.setPassword(e.target.value)}
+              onChange={(e) => this.setState({ password: e.target.value })}
             />
           </Form.Group>
           <div className="login-view-buttons">
@@ -79,7 +68,7 @@ export class LoginView extends React.Component {
               type="submit"
               onClick={(e) => {
                 e.preventDefault();
-                this.validate();
+                this.validateForm();
                 this.handleSubmit(e);
               }}
             >

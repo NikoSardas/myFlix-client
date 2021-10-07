@@ -6,23 +6,25 @@ import { Link } from "react-router-dom";
 
 import "./director-view.scss";
 
-export class DirectorView extends React.Component {
-  render() {
-    const { director, movies, onBackClick } = this.props;
+export function DirectorView(props) {
+    const { director, movies, onBackClick } = props;
     return (
       <div className="director-view-wrapper">
         <Card border="light" bg="dark" text="white">
           <Card.Body>
-            <Button
-              className="directors-back"
-              variant="warning shadow-none"
-              onClick={onBackClick}
-            >
-              Back
-            </Button>
+          <Button
+            className="director-exit"
+            onClick={onBackClick}
+            variant="warning shadow-none"
+          >
+            Back
+          </Button>
+          <Link to="/" className="director-back">
+            <Button variant="outline-light">Exit</Button>
+          </Link>
             <Card.Title className="text-center">{director.Name}</Card.Title>
             <Card.Text>{director.Bio}</Card.Text>
-            <div className="directors-movie-list">
+            <div className="director-movie-list">
               {movies.length === 0 ? (
                 <div>No Other Movies</div>
               ) : (
@@ -49,7 +51,6 @@ export class DirectorView extends React.Component {
         </Card>
       </div>
     );
-  }
 }
 
 DirectorView.propTypes = {

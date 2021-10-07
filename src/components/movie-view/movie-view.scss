@@ -2,7 +2,7 @@
   display: flex;
   margin: auto;
   text-align: center;
-  max-width: 50%;
+  max-width: 740px;
 }
 
 @media all and (max-width: 750px) {
@@ -10,6 +10,7 @@
     max-width: 100%;
   }
 }
+
 .movie-view-wrapper img {
   padding: 1%;
   margin: 5% auto;
@@ -18,6 +19,12 @@
 
 .movie-view-back {
   position: absolute;
-  top: 1%;
-  right: 1%;
+  top: 2%;
+  left: 2%;
+}
+
+.movie-view-exit {
+  position: absolute;
+  top: 2%;
+  right: 2%;
 }

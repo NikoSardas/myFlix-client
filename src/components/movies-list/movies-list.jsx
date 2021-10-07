@@ -4,7 +4,7 @@ import VisibilityFilterInput from "../visibility-filter-input/visibility-filter-
 
 import { Col } from "react-bootstrap";
 
-import { MovieCard } from "../movie-card/movie-card";
+import MovieCard from "../movie-card/movie-card";
 
 import "./movies-list.scss";
 
@@ -28,10 +28,7 @@ function MoviesList(props) {
   return (
     <>
       <Col md={12} className="movies-search-bar">
-        <VisibilityFilterInput
-          
-          visibilityFilter={visibilityFilter}
-        />
+        <VisibilityFilterInput visibilityFilter={visibilityFilter} />
       </Col>
       {filteredMovies.map((m) => (
         <Col

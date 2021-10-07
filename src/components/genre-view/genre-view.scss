@@ -15,14 +15,20 @@
 
 .genre-movie-item {
   margin: 1% 0 0 0;
-  // border: 1px solid $text-color;
 }
 .genre-movie-item:focus,
 .genre-movie-item:hover {
   margin: 1% 0 0 0;
 }
-.genres-back {
-  margin: 0 0 0 90%;
+.genre-back {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+}
+.genre-exit {
+  position: absolute;
+  top: 2%;
+  right: 2%;
 }
 .genre-link {
   color: inherit;
@@ -33,7 +39,7 @@
 .genre-link button {
   height: 100%;
 }
-.genres-movie-list {
+.genre-movie-list {
   display: flex;
   justify-content: center;
   align-items: center;

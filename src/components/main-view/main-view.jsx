@@ -1,5 +1,9 @@
-//TODO errors when refreshing director/genre/movie pages
-//TODO search bar centers on empty query
+// TODO errors/reset when refreshing director/genre/movie pages
+// TODO search bar centers on empty query
+// TODO eslint
+// TODO fav toggle is showing on page load
+// TODO get movies from store to movie-view (refresh error)
+// TODO remove blue border on focus in profile page 
 
 import React from "react";
 import axios from "axios";
@@ -9,6 +13,7 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
 import MoviesList from "../movies-list/movies-list";
+import ProfileView from "../profile-view/profile-view";
 
 import { LoginView } from "../login-view/login-view";
 import { MovieView } from "../movie-view/movie-view";
@@ -16,32 +21,25 @@ import { RegistrationView } from "../registration-view/registration-view";
 import { DirectorView } from "../director-view/director-view";
 import { GenreView } from "../genre-view/genre-view";
 import { NavView } from "../nav-view/nav-view";
-import { ProfileView } from "../profile-view/profile-view";
 
-import { setMovies, setUsername } from "../../actions/actions";
+import { setMovies, setUser } from "../../actions/actions";
 
 import "./main-view.scss";
 
-const MOVIE_API = "https://nikosardas-myflixdb.herokuapp.com";
-
 class MainView extends React.Component {
-  getMovies(token) {
-    axios
-      .get(`${MOVIE_API}/movies`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        this.props.setMovies(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  componentDidMount() {
+    const accessToken = localStorage.getItem("token");
+    localStorage.getItem("username") === null && this.props.setUser("");
+    if (accessToken !== null) {
+      this.props.setUser(this.props.user);
+      this.getMovies(accessToken);
+    }
   }
 
   onLoggedIn(authData) {
     localStorage.setItem("token", authData.token);
     localStorage.setItem("username", authData.user.Username);
-    this.props.setUsername(authData.user.Username);
+    this.props.setUser(authData.user);
     this.getMovies(authData.token);
     // window.open("/", "_self");
   }
@@ -53,18 +51,21 @@ class MainView extends React.Component {
     window.open("/", "_self");
   }
 
-  componentDidMount() {
-    let accessToken = localStorage.getItem("token");
-    let userName = localStorage.getItem("username");
-    userName === null && this.props.setUsername("");
-    if (accessToken !== null) {
-      this.props.setUsername(userName);
-      this.getMovies(accessToken);
-    }
+  getMovies(token) {
+    axios
+      .get("https://nikosardas-myflixdb.herokuapp.com/movies", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        this.props.setMovies(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   render() {
-    const { movies, loggedUsername } = this.props;
+    const { movies, user } = this.props;
     return (
       <Router>
         <Row className="main-view">
@@ -72,7 +73,7 @@ class MainView extends React.Component {
             path="/"
             exact
             render={() => {
-              if (!loggedUsername)
+              if (!user) {
                 return (
                   <Col>
                     <LoginView
@@ -80,6 +81,7 @@ class MainView extends React.Component {
                     />
                   </Col>
                 );
+              }
               if (movies.length === 0) return <div className="main-view" />;
               return (
                 <>
@@ -98,7 +100,6 @@ class MainView extends React.Component {
             exact
             path="/register"
             render={({ history }) => {
-              if (loggedUsername) return <Redirect to="/" />;
               return (
                 <Col>
                   <RegistrationView
@@ -114,7 +115,7 @@ class MainView extends React.Component {
             exact
             path="/users/:username"
             render={() => {
-              if (!loggedUsername)
+              if (!user) {
                 return (
                   <Col>
                     <LoginView
@@ -122,6 +123,7 @@ class MainView extends React.Component {
                     />
                   </Col>
                 );
+              }
               return (
                 <Col>
                   <ProfileView onLoggedOut={this.onLoggedOut} />
@@ -133,7 +135,7 @@ class MainView extends React.Component {
             exact
             path="/movies/:movieId"
             render={({ match, history }) => {
-              if (!loggedUsername)
+              if (!user) {
                 return (
                   <Col>
                     <LoginView
@@ -141,6 +143,7 @@ class MainView extends React.Component {
                     />
                   </Col>
                 );
+              }
               return (
                 <Col md={8} className="movie-view-wrapper">
                   <MovieView
@@ -157,7 +160,7 @@ class MainView extends React.Component {
             exact
             path="/directors/:name"
             render={({ match, history }) => {
-              if (!loggedUsername)
+              if (!user) {
                 return (
                   <Col>
                     <LoginView
@@ -165,6 +168,7 @@ class MainView extends React.Component {
                     />
                   </Col>
                 );
+              }
               return (
                 <Col className="director-view-wrapper">
                   <DirectorView
@@ -185,7 +189,7 @@ class MainView extends React.Component {
             exact
             path="/genres/:name"
             render={({ match, history }) => {
-              if (!loggedUsername)
+              if (!user) {
                 return (
                   <Col>
                     <LoginView
@@ -193,13 +197,14 @@ class MainView extends React.Component {
                     />
                   </Col>
                 );
+              }
               return (
                 <Col className="genre-view-wrapper">
                   <GenreView
+                    movies={movies}
                     onBackClick={() => {
                       history.goBack();
                     }}
-                    movies={movies}
                     genre={
                       movies.find((m) => m.Genre.Name === match.params.name)
                         .Genre
@@ -215,11 +220,9 @@ class MainView extends React.Component {
   }
 }
 
-let mapStateToProps = (state) => {
-  return {
-    movies: state.movies,
-    loggedUsername: state.loggedUsername,
-  };
-};
+const mapStateToProps = (state) => ({
+  movies: state.movies,
+  user: state.user,
+});
 
-export default connect(mapStateToProps, { setMovies, setUsername })(MainView);
+export default connect(mapStateToProps, { setMovies, setUser })(MainView);

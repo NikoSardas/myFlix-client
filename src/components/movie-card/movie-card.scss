@@ -3,9 +3,15 @@
 .movie-card {
   height: 100%;
   text-align: center;
-
 }
 
+.card-movie-image {
+  transition: padding 0.2s;
+}
+
+.card-movie-image:hover {
+  padding: 8%;;
+}
 .card-body {
   display: flex;
   flex-direction: column;
@@ -19,11 +25,12 @@
 
 .card-img-top {
   height: 300px;
+  padding: 10%;
 }
 
 .card-links {
   display: flex;
-  width:100%;
+  width: 100%;
   justify-content: space-between;
 }
 
