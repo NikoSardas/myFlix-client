@@ -1,78 +1,64 @@
-//TODO form validation
+/* eslint-disable no-console */
 
-import React from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
+import React from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 
-import { Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Button, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import "./login-view.scss";
+import './login-view.scss';
 
-export class LoginView extends React.Component {
+export default class LoginView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
-    this.validate = this.validate.bind(this);
-    this.state = {
-      username: null,
-      password: null,
-    };
+    this.validate = this.validateForm.bind(this);
   }
 
-  validate() {
-    return this.form.current.reportValidity();
-  }
-
-  handleSubmit(e) {
+  handleSubmit(username, password) {
+    const { onLoggedIn } = this.props;
     axios
-      .post("https://nikosardas-myflixdb.herokuapp.com/login", {
-        Username: this.state.username,
-        Password: this.state.password,
+      .post('https://nikosardas-myflixdb.herokuapp.com/login', {
+        Username: username,
+        Password: password,
       })
       .then((response) => {
-        console.log(response.data);
-        this.props.onLoggedIn(response.data);
+        onLoggedIn(response.data);
       })
       .catch((e) => {
-        console.log("no such user", e);
+        console.error('no such user', e);
       });
   }
 
-  setUsername(username) {
-    this.setState({
-      username,
-    });
-  }
-
-  setPassword(password) {
-    this.setState({
-      password,
-    });
+  validateForm() {
+    return this.form.current.reportValidity();
   }
 
   render() {
-    const { username, password } = this.state;
+    let username = '';
+    let password = '';
     return (
       <div className="login-view">
         <h1>MyFlix</h1>
         <Form ref={this.form}>
           <Form.Group controlId="formUsername">
-            <Form.Label>Username:</Form.Label>
+            {/* <Form.Label>Username:</Form.Label> */}
             <Form.Control
               type="text"
               required
               placeholder="Your Username.."
-              onChange={(e) => this.setUsername(e.target.value)}
+              pattern="[A-Za-z0-9_]{3,42}"
+              onChange={(e) => { username = e.target.value; }}
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
-            <Form.Label>Password:</Form.Label>
+            {/* <Form.Label>Password:</Form.Label> */}
             <Form.Control
               type="password"
               required
               placeholder="Your password.."
-              onChange={(e) => this.setPassword(e.target.value)}
+              onChange={(e) => { password = e.target.value; }}
             />
           </Form.Group>
           <div className="login-view-buttons">
@@ -81,14 +67,17 @@ export class LoginView extends React.Component {
               type="submit"
               onClick={(e) => {
                 e.preventDefault();
-                this.validate();
-                this.handleSubmit(e);
+                this.validateForm();
+                this.handleSubmit(username, password);
               }}
             >
               Submit
             </Button>
-            <Link to={`/register`}>
-              <Button  variant="outline-warning shadow-none" className="register-button">
+            <Link to="/register">
+              <Button
+                variant="outline-warning shadow-none"
+                className="register-button"
+              >
                 Register
               </Button>
             </Link>

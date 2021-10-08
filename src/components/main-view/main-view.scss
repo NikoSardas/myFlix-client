@@ -1,16 +1,7 @@
 @import "../../styles.scss";
 
-.card-wrapper {
-  padding: 5px !important;
-}
 
 .main-view {
   min-height: 100%;
   background-color: rgb(37, 37, 37);
-}
-
-@media all and (max-width: 500px) {
-  .signed-in-name {
-    display: none;
-  }
 }

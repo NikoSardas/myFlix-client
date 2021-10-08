@@ -2,33 +2,44 @@
 
 .movie-card {
   height: 100%;
-  padding: 0 !important;
-  margin:0 !important;
   text-align: center;
 }
 
-.card-body{
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: space-between;
-  
+.card-movie-image {
+  transition: padding 0.2s;
 }
 
-.card-title{
+.card-movie-image:hover {
+  padding: 8%;;
+}
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
   color: $secondary-color !important;
 }
 
-.card-img-top{
-  height:300px;
+.card-img-top {
+  height: 300px;
+  padding: 10%;
 }
 
-.card-links{
+.card-links {
   display: flex;
+  width: 100%;
   justify-content: space-between;
 }
 
+.card-links button {
+  height: 100%;
+}
+
 @media all and (max-width: 750px) {
-  .card-img-top{
-    height:400px;
-    }
+  .card-img-top {
+    height: 400px;
+  }
 }

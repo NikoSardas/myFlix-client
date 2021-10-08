@@ -1,0 +1,21 @@
+@import "../../styles.scss";
+
+.movies-search-bar {
+  margin: 1% 0 1% 0;
+}
+
+.movies-search-bar input {
+  color: $text-color;
+  background-color: transparent !important;
+  outline: none !important;
+}
+.movies-search-bar input:focus {
+  box-shadow: none !important;
+  color: $text-color;
+  border: 1px solid $text-color;
+  resize: none;
+  outline: none;
+}
+.movie-list-col {
+  padding: 1% !important;
+}

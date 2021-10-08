@@ -1,52 +1,60 @@
-//TODO link to movies
+/* eslint-disable no-underscore-dangle */
 
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import { Button, Card } from "react-bootstrap";
+import { Button, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import "./genre-view.scss";
+import './genre-view.scss';
 
-export class GenreView extends React.Component {
-  render() {
-    const { genre, movies, onBackClick, gotoMovie } = this.props;
-    return (
-      <div className="genre-view-wrapper">
-        <Card border="light" bg="dark" text="white">
-          <Card.Body>
-            <Card.Title className="text-center">{genre.Name}</Card.Title>
-            <Card.Text>{genre.Description}</Card.Text>
+export default function GenreView(props) {
+  const { genre, movies, onBackClick } = props;
+  return (
+    <div className="genre-view-wrapper">
+      <Card border="light" bg="dark" text="white">
+        <Card.Body>
+          <Button
+            className="genre-exit"
+            onClick={onBackClick}
+            variant="warning shadow-none"
+          >
+            Back
+          </Button>
+          <Link to="/" className="genre-back">
+            <Button variant="outline-light">Exit</Button>
+          </Link>
+          <Card.Title className="text-center">{genre.Name}</Card.Title>
+          <Card.Text>{genre.Description}</Card.Text>
+          <div className="genre-movie-list">
             {movies.length === 0 ? (
               <div>No Other Movies</div>
             ) : (
               movies.map((movie) => {
-                if (movie.Genre.Name === genre.Name)
+                if (movie.Genre.Name === genre.Name) {
                   return (
-                    <Button
-                      onClick={() => {
-                        gotoMovie(movie._id);
-                      }}
-                      className="genre-movie-item"
-                      variant="outline-light shadow-none"
+                    <Link
                       key={movie._id}
+                      className="genre-link"
+                      to={`/movies/${movie._id}`}
                     >
-                      {movie.Title}
-                    </Button>
+                      <Button
+                        className="genre-movie-item"
+                        variant="outline-light shadow-none"
+                      >
+                        {movie.Title}
+                      </Button>
+                    </Link>
                   );
+                }
+                return true;
               })
             )}
-            <Button
-              className="genres-back shadow-none"
-              variant="outline-warning"
-              onClick={onBackClick}
-            >
-              Back
-            </Button>
-          </Card.Body>
-        </Card>
-      </div>
-    );
-  }
+          </div>
+        </Card.Body>
+      </Card>
+    </div>
+  );
 }
 
 GenreView.propTypes = {
@@ -56,5 +64,4 @@ GenreView.propTypes = {
   }).isRequired,
   movies: PropTypes.array.isRequired,
   onBackClick: PropTypes.func.isRequired,
-  gotoMovie: PropTypes.func.isRequired,
 };

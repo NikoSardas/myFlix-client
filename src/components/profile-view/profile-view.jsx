@@ -1,51 +1,45 @@
-//TODO hide navbar
+import React from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 
-import React from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
+import { connect } from 'react-redux';
 
-import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {
+  Form, Button, ListGroup, ListGroupItem,
+} from 'react-bootstrap';
 
-import "./profile-view.scss";
+import { setUser, setMovies } from '../../actions/actions';
 
-export class ProfileView extends React.Component {
+import './profile-view.scss';
+
+class ProfileView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
     this.validate = this.validate.bind(this);
     this.state = {
-      username: "",
-      password: "",
-      email: "",
-      birthday: "",
+      username: '',
+      password: '',
+      email: '',
+      birthday: '',
       favorites: [],
     };
   }
 
   componentDidMount() {
+    console.log('componentDidMount', this.props);
     this.getInitialStates();
-  }
-
-  validate() {
-    return this.form.current.reportValidity();
-  }
-
-  onLoggedOut() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    window.open("/", "_self");
   }
 
   getInitialStates() {
     axios
       .get(
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          "username"
+          'username',
         )}`,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
       )
       .then((response) => {
         this.setState({
@@ -55,7 +49,7 @@ export class ProfileView extends React.Component {
           favorites: response.data.FavoriteMovies,
         });
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -64,7 +58,7 @@ export class ProfileView extends React.Component {
     axios
       .put(
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          "username"
+          'username',
         )}`,
         {
           Username: this.state.username,
@@ -74,19 +68,19 @@ export class ProfileView extends React.Component {
         },
         {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-        }
+        },
       )
       .then((res) => {
-        console.log(res);
         const userName = this.state.username;
-        localStorage.setItem("username", userName);
-        window.open(`/users/${userName}`, "_self");
+        localStorage.setItem('username', userName);
+        this.updateUserProps();
+        // window.open(`/users/${userName}`, '_self');
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -95,11 +89,11 @@ export class ProfileView extends React.Component {
     axios
       .delete(
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          "username"
+          'username',
         )}`,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
       )
       .then(() => {
         this.onLoggedOut();
@@ -109,21 +103,22 @@ export class ProfileView extends React.Component {
       });
   }
 
-  removeFromFavorites = (id, username) => {
+  removeFromFavorites(id, username) {
     axios
       .delete(
         `https://nikosardas-myflixdb.herokuapp.com/users/${username}/FavoriteMovies/${id}`,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
       )
       .then((res) => {
+        this.updateUserProps();
         this.componentDidMount();
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
-  };
+  }
 
   setUsername(username) {
     this.setState({
@@ -149,8 +144,27 @@ export class ProfileView extends React.Component {
     });
   }
 
+  updateUserProps() {
+    this.props.setUser(
+      {
+        Username: this.state.username,
+        Password: this.state.password,
+        Email: this.state.email,
+        Birthday: this.state.birthday,
+        FavoriteMovies: this.state.favorites,
+      },
+    );
+    console.log('updateUserProps', this.props.user);
+  }
+
+  validate() {
+    return this.form.current.reportValidity();
+  }
+
   render() {
-    const { username, password, email, birthday, favorites } = this.state;
+    const {
+      username, password, email, birthday, favorites,
+    } = this.state;
     const { onBackClick } = this.props;
     return (
       <div className="profile-view">
@@ -173,7 +187,6 @@ export class ProfileView extends React.Component {
               type="password"
               required
               placeholder="Password Required"
-              value={password}
               onChange={(e) => this.setPassword(e.target.value)}
             />
           </Form.Group>
@@ -201,7 +214,7 @@ export class ProfileView extends React.Component {
                 className="update-submit"
                 onClick={(e) => {
                   e.preventDefault();
-                  this.validate() && this.handleUpdate();
+                  if (this.validate()) this.handleUpdate();
                 }}
               >
                 Update
@@ -217,36 +230,34 @@ export class ProfileView extends React.Component {
           {favorites.length === 0 ? (
             <div>No Favorite Movies</div>
           ) : (
-            favorites.map((favMovie) => {
-              return (
-                <ListGroupItem
-                  className="fav-item"
-                  variant="Success"
-                  key={favMovie._id}
+            favorites.map((favMovie) => (
+              <ListGroupItem
+                className="fav-item"
+                variant="Success"
+                key={favMovie._id}
+              >
+                {favMovie.Title}
+                <Button
+                  variant="outline-danger shadow-none"
+                  className="remove-fav"
+                  onClick={() => {
+                    this.removeFromFavorites(favMovie._id, username);
+                  }}
                 >
-                  {favMovie.Title}
-                  <Button
-                    variant="outline-danger shadow-none"
-                    className="remove-fav"
-                    onClick={() => {
-                      this.removeFromFavorites(favMovie._id, username);
-                    }}
-                  >
-                    X
-                  </Button>
-                </ListGroupItem>
-              );
-            })
+                  X
+                </Button>
+              </ListGroupItem>
+            ))
           )}
         </ListGroup>
         <Button
           className="delete-user"
           variant="danger shadow-none"
           onClick={() => {
-            if (confirm("Confirm user delete?")) {
+            if (confirm('Confirm user delete?')) {
               this.handleDeregister();
             } else {
-              console.log("Cancelled.");
+              console.log('Cancelled.');
             }
           }}
         >
@@ -260,3 +271,10 @@ export class ProfileView extends React.Component {
 ProfileView.propTypes = {
   onBackClick: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  movies: state.movies,
+  user: state.user,
+});
+
+export default connect(mapStateToProps, { setMovies, setUser })(ProfileView);

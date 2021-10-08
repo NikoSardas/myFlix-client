@@ -4,11 +4,43 @@
   display: flex;
   margin: auto;
   text-align: center;
+  max-width: 50%;
+}
+
+@media all and (max-width: 750px) {
+  .genre-view-wrapper {
+    max-width: 100%;
+  }
 }
 
 .genre-movie-item {
-  margin: 1% 0 0 0 ;
+  margin: 1% 0 0 0;
 }
-.genres-back {
-  margin: 2% 0 0 0 ;
+.genre-movie-item:focus,
+.genre-movie-item:hover {
+  margin: 1% 0 0 0;
+}
+.genre-back {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+}
+.genre-exit {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+}
+.genre-link {
+  color: inherit;
+  text-decoration: none;
+  margin: 0 1%;
+  height: 100%;
+}
+.genre-link button {
+  height: 100%;
+}
+.genre-movie-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

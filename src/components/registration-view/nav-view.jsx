@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import './nav-view.scss';
-
-function NavView(props) {
+export default function NavView(props) {
   const { onLoggedOut } = props;
   const username = localStorage.getItem('username');
 
@@ -20,6 +17,7 @@ function NavView(props) {
       <Navbar.Collapse variant="shadow-none" className="nav-bar">
         <Navbar.Text>
           Signed in as:
+          {' '}
           <Link to={`/users/${username}`}>{username}</Link>
         </Navbar.Text>
         <Nav>
@@ -35,9 +33,3 @@ function NavView(props) {
 NavView.propTypes = {
   onLoggedOut: PropTypes.func.isRequired,
 };
-
-const mapStateToProps = (state) => ({
-  userName: state.userName,
-});
-
-export default connect(mapStateToProps)(NavView);

@@ -27,8 +27,6 @@ body {
 .app-container h4,
 .app-container h5 {
   color: $heading-color;
-  // text-align: center;
-  margin: 5%;
 }
 
 .container-fluid {
@@ -36,23 +34,24 @@ body {
 }
 
 form {
+  max-width: 740px;
   width: 60%;
 }
 
-@media all and (max-width: 750px) {
+@media all and (max-width: 768px) {
   form {
     width: 100%;
   }
 }
 
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
 input[type="text"],
 input[type="date"],
 input[type="email"],
 input[type="password"] {
   background-color: transparent;
+  color: $text-color;
 }
-
-*:active {
-  box-shadow: none;
-}
- 

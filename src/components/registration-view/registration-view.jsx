@@ -1,18 +1,19 @@
-//TODO onChange doesn't read auto-fill
+/* eslint-disable no-console */
 
-import React from "react";
-import axios from "axios";
+import React from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 
-import { Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Form, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import "./registration-view.scss";
+import './registration-view.scss';
 
-export class RegistrationView extends React.Component {
+export default class RegistrationView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
-    this.validate = this.validate.bind(this);
+    this.validate = this.validateForm.bind(this);
     this.state = {
       username: null,
       password: null,
@@ -20,48 +21,29 @@ export class RegistrationView extends React.Component {
       birthday: null,
     };
   }
-  setUsername(username) {
-    this.setState({
-      username,
-    });
-  }
-  setPassword(password) {
-    this.setState({
-      password,
-    });
-  }
-  setEmail(email) {
-    this.setState({
-      email,
-    });
-  }
-  setBirthday(birthday) {
-    this.setState({
-      birthday,
-    });
-  }
-  handleRegister = (e) => {
+
+  handleRegister() {
     axios
-      .post("https://nikosardas-myflixdb.herokuapp.com/users", {
+      .post('https://nikosardas-myflixdb.herokuapp.com/users', {
         Username: this.state.username,
         Password: this.state.password,
         Email: this.state.email,
         Birthday: this.state.birthday,
       })
       .then((response) => {
-        const data = response.data;
-        console.log(data);
-        window.open("/", "_self");
+        console.log(response);
+        window.open('/', '_self');
       })
       .catch((e) => {
-        console.log("error registering the user", e);
+        console.error('error registering the user', e);
       });
-  };
-  validate() {
+  }
+
+  validateForm() {
     return this.form.current.reportValidity();
   }
+
   render() {
-    const { username, password, email, birthday } = this.state;
     const { onBackClick } = this.props;
     return (
       <div className="registration-view">
@@ -72,27 +54,28 @@ export class RegistrationView extends React.Component {
             <Form.Control
               required
               pattern="[A-Za-z0-9_]{3,42}"
-              placeholder="Only letters, numbers, and underscore"
+              placeholder="Should only contain Only letters, numbers, and underscore"
+              title="Username should only contain Only letters, numbers, and underscore"
               type="text"
-              onChange={(e) => this.setUsername(e.target.value)}
+              onChange={(e) => this.setState({ username: e.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
             <Form.Label>Password:</Form.Label>
             <Form.Control
               required
-              placeholder="Password required"
+              placeholder="Please set your password.."
               type="password"
-              onChange={(e) => this.setPassword(e.target.value)}
+              onChange={(e) => this.setState({ password: e.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formEmail">
             <Form.Label>Email:</Form.Label>
             <Form.Control
               required
-              placeholder="Email required"
+              placeholder="Please set your email address.."
               type="email"
-              onChange={(e) => this.setEmail(e.target.value)}
+              onChange={(e) => this.setState({ email: e.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formBirthday">
@@ -100,7 +83,7 @@ export class RegistrationView extends React.Component {
             <Form.Control
               required
               type="date"
-              onChange={(e) => this.setBirthday(e.target.value)}
+              onChange={(e) => this.setState({ birthday: e.target.value })}
             />
           </Form.Group>
           <div className="registration-view-buttons">
@@ -110,12 +93,12 @@ export class RegistrationView extends React.Component {
               type="submit"
               onClick={(e) => {
                 e.preventDefault();
-                this.validate() && this.handleRegister(e);
+                if (this.validateForm()) this.handleRegister(e);
               }}
             >
               Submit
             </Button>
-            <Link to={`/`}>
+            <Link to="/">
               <Button variant="outline-warning" onClick={onBackClick}>
                 Cancel
               </Button>
@@ -126,3 +109,7 @@ export class RegistrationView extends React.Component {
     );
   }
 }
+
+RegistrationView.propTypes = {
+  onBackClick: PropTypes.func.isRequired,
+};
