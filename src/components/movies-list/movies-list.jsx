@@ -12,11 +12,6 @@ import MovieCard from '../movie-card/movie-card';
 
 import './movies-list.scss';
 
-const mapStateToProps = (state) => {
-  const { visibilityFilter } = state;
-  return { visibilityFilter };
-};
-
 function MoviesList(props) {
   const { movies, visibilityFilter } = props;
   let filteredMovies = movies;
@@ -51,11 +46,16 @@ function MoviesList(props) {
   );
 }
 
-export default connect(mapStateToProps)(MoviesList);
-
 MoviesList.propTypes = {
   visibilityFilter: PropTypes.string.isRequired,
   // movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
   movies: PropTypes.array.isRequired,
 
 };
+
+const mapStateToProps = (state) => {
+  const { visibilityFilter } = state;
+  return { visibilityFilter };
+};
+
+export default connect(mapStateToProps)(MoviesList);

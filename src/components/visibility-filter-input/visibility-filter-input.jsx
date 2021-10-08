@@ -7,10 +7,11 @@ import { Form } from 'react-bootstrap';
 import { setFilter } from '../../actions/actions';
 
 function VisibilityFilterInput(props) {
+  const { visibilityFilter } = props;
   return (
     <Form.Control
       onChange={(e) => props.setFilter(e.target.value)}
-      value={props.visibilityFilter}
+      value={visibilityFilter}
       placeholder="Search myFlix.."
     />
   );
@@ -19,5 +20,6 @@ function VisibilityFilterInput(props) {
 export default connect(null, { setFilter })(VisibilityFilterInput);
 
 VisibilityFilterInput.propTypes = {
+  visibilityFilter: PropTypes.string.isRequired,
   setFilter: PropTypes.func.isRequired,
 };

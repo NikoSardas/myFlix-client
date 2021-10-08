@@ -9,6 +9,7 @@
   background-color: transparent !important;
   outline: none !important;
 }
+
 .movies-search-bar input:focus {
   box-shadow: none !important;
   color: $text-color;
@@ -16,6 +17,7 @@
   resize: none;
   outline: none;
 }
+
 .movie-list-col {
   padding: 1% !important;
 }

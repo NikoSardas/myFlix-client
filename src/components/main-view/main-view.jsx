@@ -12,7 +12,6 @@ import { Row, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import MoviesList from '../movies-list/movies-list';
 import ProfileView from '../profile-view/profile-view';
-
 import LoginView from '../login-view/login-view';
 import MovieView from '../movie-view/movie-view';
 import RegistrationView from '../registration-view/registration-view';
@@ -59,6 +58,7 @@ class MainView extends React.Component {
     console.log(this.props);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   onLoggedOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
@@ -110,8 +110,8 @@ class MainView extends React.Component {
       <Router>
         <Row className="main-view">
           <Route
-            path="/"
             exact
+            path="/"
             render={() => {
               if (!userName) {
                 return (
@@ -168,7 +168,9 @@ class MainView extends React.Component {
                     onBackClick={() => {
                       history.goBack();
                     }}
-                    onLoggedOut={this.onLoggedOut}
+                    onLoggedOut={() => {
+                      this.onLoggedOut();
+                    }}
                   />
                 </Col>
               );
@@ -183,6 +185,7 @@ class MainView extends React.Component {
                   onBackClick={() => {
                     history.goBack();
                   }}
+                  // eslint-disable-next-line no-underscore-dangle
                   movie={movies.find((m) => m._id === match.params.movieId)}
                 />
               </Col>
@@ -252,9 +255,14 @@ export default connect(mapStateToProps, {
 })(MainView);
 
 MainView.propTypes = {
+  movies: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+  }).isRequired,
+  movies: PropTypes.array.isRequired,
   setUsername: PropTypes.func.isRequired,
   setUserPassword: PropTypes.func.isRequired,
   setUserEmail: PropTypes.func.isRequired,
   setUserBirthday: PropTypes.func.isRequired,
   setUserFavorites: PropTypes.func.isRequired,
+  userName: PropTypes.string.isRequired,
 };

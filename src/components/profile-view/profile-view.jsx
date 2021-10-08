@@ -8,7 +8,14 @@ import {
   Form, Button, ListGroup, ListGroupItem,
 } from 'react-bootstrap';
 
-import { setUser, setMovies } from '../../actions/actions';
+import {
+  setMovies,
+  setUsername,
+  setUserPassword,
+  setUserEmail,
+  setUserBirthday,
+  setUserFavorites,
+} from '../../actions/actions';
 
 import './profile-view.scss';
 
@@ -27,45 +34,34 @@ class ProfileView extends React.Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount', this.props);
-    this.getInitialStates();
+    this.setState({
+      username: this.props.userName,
+      email: this.props.userEmail,
+      birthday: this.props.userBirthday.substr(0, 10),
+      favorites: this.props.userFavorites,
+    });
   }
 
-  getInitialStates() {
-    axios
-      .get(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          'username',
-        )}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        },
-      )
-      .then((response) => {
-        this.setState({
-          username: response.data.Username,
-          email: response.data.Email,
-          birthday: response.data.Birthday.substr(0, 10),
-          favorites: response.data.FavoriteMovies,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  setStoredUserDetails(userData) {
+    this.props.setUserBirthday(userData.Birthday);
+    this.props.setUserEmail(userData.Email);
+    this.props.setUserPassword(userData.Password);
+    this.props.setUsername(userData.Username);
   }
 
   handleUpdate() {
+    const details = {
+      Username: this.state.username,
+      Password: this.state.password,
+      Email: this.state.email,
+      Birthday: this.state.birthday,
+    };
     axios
       .put(
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
           'username',
         )}`,
-        {
-          Username: this.state.username,
-          Password: this.state.password,
-          Email: this.state.email,
-          Birthday: this.state.birthday,
-        },
+        details,
         {
           headers: {
             Accept: 'application/json',
@@ -75,10 +71,8 @@ class ProfileView extends React.Component {
         },
       )
       .then((res) => {
-        const userName = this.state.username;
-        localStorage.setItem('username', userName);
-        this.updateUserProps();
-        // window.open(`/users/${userName}`, '_self');
+        this.setStoredUserDetails(details);
+        localStorage.setItem('username', this.props.userName);
       })
       .catch((error) => {
         console.log(error);
@@ -88,15 +82,13 @@ class ProfileView extends React.Component {
   handleDeregister() {
     axios
       .delete(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          'username',
-        )}`,
+        `https://nikosardas-myflixdb.herokuapp.com/users/${this.props.userName}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         },
       )
       .then(() => {
-        this.onLoggedOut();
+        this.props.onLoggedOut();
       })
       .catch((error) => {
         console.log(error);
@@ -111,9 +103,10 @@ class ProfileView extends React.Component {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         },
       )
-      .then((res) => {
-        this.updateUserProps();
-        this.componentDidMount();
+      .then(() => {
+        this.setState({
+          favorites: this.props.userFavorites,
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -142,19 +135,6 @@ class ProfileView extends React.Component {
     this.setState({
       birthday,
     });
-  }
-
-  updateUserProps() {
-    this.props.setUser(
-      {
-        Username: this.state.username,
-        Password: this.state.password,
-        Email: this.state.email,
-        Birthday: this.state.birthday,
-        FavoriteMovies: this.state.favorites,
-      },
-    );
-    console.log('updateUserProps', this.props.user);
   }
 
   validate() {
@@ -270,11 +250,23 @@ class ProfileView extends React.Component {
 
 ProfileView.propTypes = {
   onBackClick: PropTypes.func.isRequired,
+  onLoggedOut: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  movies: state.movies,
-  user: state.user,
-});
+const mapStateToProps = (state) => {
+  const {
+    movies, userName, userPassword, userEmail, userBirthday, userFavorites,
+  } = state;
+  return {
+    movies, userName, userPassword, userEmail, userBirthday, userFavorites,
+  };
+};
 
-export default connect(mapStateToProps, { setMovies, setUser })(ProfileView);
+export default connect(mapStateToProps, {
+  setMovies,
+  setUsername,
+  setUserPassword,
+  setUserEmail,
+  setUserBirthday,
+  setUserFavorites,
+})(ProfileView);

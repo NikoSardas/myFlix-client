@@ -36,8 +36,9 @@ NavView.propTypes = {
   onLoggedOut: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  userName: state.userName,
-});
+const mapStateToProps = (state) => {
+  const { userName } = state;
+  return { userName };
+};
 
 export default connect(mapStateToProps)(NavView);

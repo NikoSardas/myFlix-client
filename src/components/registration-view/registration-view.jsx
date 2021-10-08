@@ -22,13 +22,17 @@ export default class RegistrationView extends React.Component {
     };
   }
 
+  // eslint-disable-next-line class-methods-use-this
   handleRegister() {
+    const {
+      username, password, email, birthday,
+    } = this.state;
     axios
       .post('https://nikosardas-myflixdb.herokuapp.com/users', {
-        Username: this.state.username,
-        Password: this.state.password,
-        Email: this.state.email,
-        Birthday: this.state.birthday,
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday,
       })
       .then((response) => {
         console.log(response);

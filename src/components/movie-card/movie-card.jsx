@@ -16,6 +16,7 @@ import {
 import './movie-card.scss';
 
 const API_ADDRESS = 'https://nikosardas-myflixdb.herokuapp.com';
+
 class MovieCard extends React.Component {
   constructor() {
     super();
@@ -71,11 +72,10 @@ class MovieCard extends React.Component {
   checkIfFavorite() {
     const { userFavorites } = this.props;
     const { movie } = this.props;
-    const { _id } = movie;
 
     if (userFavorites.length > 0) {
       this.setState({
-        isFavorite: userFavorites.map((favMovie) => favMovie._id === _id),
+        isFavorite: userFavorites.map((favMovie) => favMovie._id === movie._id),
       });
     } else {
       console.log('User has no favorite movies');
@@ -124,6 +124,7 @@ MovieCard.propTypes = {
     Description: PropTypes.string.isRequired,
     ImagePath: PropTypes.string.isRequired,
   }).isRequired,
+  // userFavorites: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
   userFavorites: PropTypes.array.isRequired,
   userName: PropTypes.string.isRequired,
 };
