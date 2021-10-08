@@ -12,18 +12,11 @@ import './login-view.scss';
 export default class LoginView extends React.Component {
   constructor() {
     super();
-    // keeping as a class because of the form validation 'this'
     this.form = React.createRef();
     this.validate = this.validateForm.bind(this);
-    this.state = {
-      username: null,
-      password: null,
-    };
   }
 
-  handleSubmit() {
-    const { username } = this.state;
-    const { password } = this.state;
+  handleSubmit(username, password) {
     const { onLoggedIn } = this.props;
     axios
       .post('https://nikosardas-myflixdb.herokuapp.com/login', {
@@ -43,6 +36,8 @@ export default class LoginView extends React.Component {
   }
 
   render() {
+    let username = '';
+    let password = '';
     return (
       <div className="login-view">
         <h1>MyFlix</h1>
@@ -54,7 +49,7 @@ export default class LoginView extends React.Component {
               required
               placeholder="Your Username.."
               pattern="[A-Za-z0-9_]{3,42}"
-              onChange={(e) => this.setState({ username: e.target.value })}
+              onChange={(e) => { username = e.target.value; }}
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
@@ -63,7 +58,7 @@ export default class LoginView extends React.Component {
               type="password"
               required
               placeholder="Your password.."
-              onChange={(e) => this.setState({ password: e.target.value })}
+              onChange={(e) => { password = e.target.value; }}
             />
           </Form.Group>
           <div className="login-view-buttons">
@@ -73,7 +68,7 @@ export default class LoginView extends React.Component {
               onClick={(e) => {
                 e.preventDefault();
                 this.validateForm();
-                this.handleSubmit(e);
+                this.handleSubmit(username, password);
               }}
             >
               Submit

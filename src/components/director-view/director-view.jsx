@@ -30,25 +30,20 @@ export default function DirectorView(props) {
             {movies.length === 0 ? (
               <div>No Other Movies</div>
             ) : (
-              movies.map((movie) => {
-                if (movie.Director.Name === director.Name) {
-                  return (
-                    <Link
-                      key={movie._id}
-                      className="director-link"
-                      to={`/movies/${movie._id}`}
-                    >
-                      <Button
-                        className="director-movie-item"
-                        variant="outline-light shadow-none"
-                      >
-                        {movie.Title}
-                      </Button>
-                    </Link>
-                  );
-                }
-                return true;
-              })
+              movies.map((movie) => (
+                <Link
+                  key={movie._id}
+                  className="director-link"
+                  to={`/movies/${movie._id}`}
+                >
+                  <Button
+                    className="director-movie-item"
+                    variant="outline-light shadow-none"
+                  >
+                    {movie.Title}
+                  </Button>
+                </Link>
+              ))
             )}
           </div>
         </Card.Body>
@@ -62,6 +57,7 @@ DirectorView.propTypes = {
     Name: PropTypes.string.isRequired,
     Bio: PropTypes.string.isRequired,
   }).isRequired,
-  movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
+  // movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
+  movies: PropTypes.array.isRequired,
   onBackClick: PropTypes.func.isRequired,
 };

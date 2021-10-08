@@ -56,4 +56,6 @@ export default connect(mapStateToProps)(MoviesList);
 MoviesList.propTypes = {
   visibilityFilter: PropTypes.string.isRequired,
   // movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
+  movies: PropTypes.array.isRequired,
+
 };

@@ -251,7 +251,7 @@ class ProfileView extends React.Component {
           )}
         </ListGroup>
         <Button
-          className="sz"
+          className="delete-user"
           variant="danger shadow-none"
           onClick={() => {
             if (confirm('Confirm user delete?')) {

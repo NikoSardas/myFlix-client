@@ -9,8 +9,13 @@ import axios from 'axios';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+import {
+  setUserFavorites,
+} from '../../actions/actions';
+
 import './movie-card.scss';
 
+const API_ADDRESS = 'https://nikosardas-myflixdb.herokuapp.com';
 class MovieCard extends React.Component {
   constructor() {
     super();
@@ -24,11 +29,10 @@ class MovieCard extends React.Component {
   }
 
   removeFromFavorites(movie) {
+    const { userName } = this.props;
     axios
       .delete(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          'username',
-        )}/FavoriteMovies/${movie._id}`,
+        `${API_ADDRESS}/users/${userName}/FavoriteMovies/${movie._id}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         },
@@ -44,11 +48,11 @@ class MovieCard extends React.Component {
   }
 
   addToFavorites(movie) {
+    const { userName } = this.props;
+
     axios
       .post(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          'username',
-        )}/FavoriteMovies/${movie._id}`,
+        `${API_ADDRESS}/users/${userName}/FavoriteMovies/${movie._id}`,
         {},
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -65,13 +69,13 @@ class MovieCard extends React.Component {
   }
 
   checkIfFavorite() {
-    if (this.props.user.FavoriteMovies.length > 0) {
-      this.props.user.FavoriteMovies.map((favMovie) => {
-        if (favMovie === this.props.movie._id) {
-          this.setState({
-            isFavorite: true,
-          });
-        }
+    const { userFavorites } = this.props;
+    const { movie } = this.props;
+    const { _id } = movie;
+
+    if (userFavorites.length > 0) {
+      this.setState({
+        isFavorite: userFavorites.map((favMovie) => favMovie._id === _id),
       });
     } else {
       console.log('User has no favorite movies');
@@ -120,10 +124,15 @@ MovieCard.propTypes = {
     Description: PropTypes.string.isRequired,
     ImagePath: PropTypes.string.isRequired,
   }).isRequired,
+  userFavorites: PropTypes.array.isRequired,
+  userName: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const { user } = state;
-  return { user };
+  const { userFavorites, userName } = state;
+  return { userFavorites, userName };
 };
-export default connect(mapStateToProps)(MovieCard);
+
+export default connect(mapStateToProps, {
+  setUserFavorites,
+})(MovieCard);
