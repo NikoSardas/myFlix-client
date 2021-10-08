@@ -1,12 +1,12 @@
-import React from "react";
-import axios from "axios";
+import React from 'react';
+import axios from 'axios';
 
-import { Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Form, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import "./registration-view.scss";
+import './registration-view.scss';
 
-export class RegistrationView extends React.Component {
+export default class RegistrationView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
@@ -19,26 +19,26 @@ export class RegistrationView extends React.Component {
     };
   }
 
-  validateForm() {
-    return this.form.current.reportValidity();
-  }
-
-  handleRegister = () => {
+  handleRegister() {
     axios
-      .post("https://nikosardas-myflixdb.herokuapp.com/users", {
+      .post('https://nikosardas-myflixdb.herokuapp.com/users', {
         Username: this.state.username,
         Password: this.state.password,
         Email: this.state.email,
         Birthday: this.state.birthday,
       })
       .then((response) => {
-        const data = response.data;
-        window.open("/", "_self");
+        const { data } = response;
+        window.open('/', '_self');
       })
       .catch((e) => {
-        console.error("error registering the user", e);
+        console.error('error registering the user', e);
       });
-  };
+  }
+
+  validateForm() {
+    return this.form.current.reportValidity();
+  }
 
   render() {
     const { onBackClick } = this.props;
@@ -95,7 +95,7 @@ export class RegistrationView extends React.Component {
             >
               Submit
             </Button>
-            <Link to={`/`}>
+            <Link to="/">
               <Button variant="outline-warning" onClick={onBackClick}>
                 Cancel
               </Button>

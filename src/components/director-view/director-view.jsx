@@ -1,17 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import { Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Button, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import "./director-view.scss";
+import './director-view.scss';
 
-export function DirectorView(props) {
-    const { director, movies, onBackClick } = props;
-    return (
-      <div className="director-view-wrapper">
-        <Card border="light" bg="dark" text="white">
-          <Card.Body>
+export default function DirectorView(props) {
+  const { director, movies, onBackClick } = props;
+  return (
+    <div className="director-view-wrapper">
+      <Card border="light" bg="dark" text="white">
+        <Card.Body>
           <Button
             className="director-exit"
             onClick={onBackClick}
@@ -22,35 +22,36 @@ export function DirectorView(props) {
           <Link to="/" className="director-back">
             <Button variant="outline-light">Exit</Button>
           </Link>
-            <Card.Title className="text-center">{director.Name}</Card.Title>
-            <Card.Text>{director.Bio}</Card.Text>
-            <div className="director-movie-list">
-              {movies.length === 0 ? (
-                <div>No Other Movies</div>
-              ) : (
-                movies.map((movie) => {
-                  if (movie.Director.Name === director.Name)
-                    return (
-                      <Link
-                        key={movie._id}
-                        className="director-link"
-                        to={`/movies/${movie._id}`}
+          <Card.Title className="text-center">{director.Name}</Card.Title>
+          <Card.Text>{director.Bio}</Card.Text>
+          <div className="director-movie-list">
+            {movies.length === 0 ? (
+              <div>No Other Movies</div>
+            ) : (
+              movies.map((movie) => {
+                if (movie.Director.Name === director.Name) {
+                  return (
+                    <Link
+                      key={movie._id}
+                      className="director-link"
+                      to={`/movies/${movie._id}`}
+                    >
+                      <Button
+                        className="director-movie-item"
+                        variant="outline-light shadow-none"
                       >
-                        <Button
-                          className="director-movie-item"
-                          variant="outline-light shadow-none"
-                        >
-                          {movie.Title}
-                        </Button>
-                      </Link>
-                    );
-                })
-              )}
-            </div>
-          </Card.Body>
-        </Card>
-      </div>
-    );
+                        {movie.Title}
+                      </Button>
+                    </Link>
+                  );
+                }
+              })
+            )}
+          </div>
+        </Card.Body>
+      </Card>
+    </div>
+  );
 }
 
 DirectorView.propTypes = {
@@ -58,6 +59,6 @@ DirectorView.propTypes = {
     Name: PropTypes.string.isRequired,
     Bio: PropTypes.string.isRequired,
   }).isRequired,
-  movies: PropTypes.array.isRequired,
+  movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
   onBackClick: PropTypes.func.isRequired,
 };

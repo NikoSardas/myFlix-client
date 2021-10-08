@@ -1,12 +1,16 @@
-import React from "react";
-import { connect } from "react-redux";
-import VisibilityFilterInput from "../visibility-filter-input/visibility-filter-input";
+/* eslint-disable no-underscore-dangle */
 
-import { Col } from "react-bootstrap";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import MovieCard from "../movie-card/movie-card";
+import { connect } from 'react-redux';
+import { Col } from 'react-bootstrap';
 
-import "./movies-list.scss";
+import VisibilityFilterInput from '../visibility-filter-input/visibility-filter-input';
+
+import MovieCard from '../movie-card/movie-card';
+
+import './movies-list.scss';
 
 const mapStateToProps = (state) => {
   const { visibilityFilter } = state;
@@ -17,10 +21,10 @@ function MoviesList(props) {
   const { movies, visibilityFilter } = props;
   let filteredMovies = movies;
 
-  if (visibilityFilter !== "") {
-    filteredMovies = movies.filter((m) =>
-      m.Title.toLowerCase().includes(visibilityFilter.toLowerCase())
-    );
+  if (visibilityFilter !== '') {
+    filteredMovies = movies
+      .filter((m) => m.Title.toLowerCase()
+        .includes(visibilityFilter.toLowerCase()));
   }
 
   if (!movies) return <div className="main-view" />;
@@ -48,3 +52,15 @@ function MoviesList(props) {
 }
 
 export default connect(mapStateToProps)(MoviesList);
+
+MoviesList.propTypes = {
+  visibilityFilter: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    Username: PropTypes.string.isRequired,
+    Email: PropTypes.string.isRequired,
+    Password: PropTypes.string.isRequired,
+    Birthday: PropTypes.string.isRequired,
+    Bio: PropTypes.string.isRequired,
+  }).isRequired,
+  movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
+};

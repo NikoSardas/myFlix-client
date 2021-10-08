@@ -1,12 +1,15 @@
-import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import axios from "axios";
+/* eslint-disable no-console */
+/* eslint-disable no-underscore-dangle */
 
-import { Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import axios from 'axios';
 
-import "./movie-card.scss";
+import { Button, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
+import './movie-card.scss';
 
 class MovieCard extends React.Component {
   constructor() {
@@ -14,6 +17,51 @@ class MovieCard extends React.Component {
     this.state = {
       isFavorite: false,
     };
+  }
+
+  componentDidMount() {
+    this.checkIfFavorite();
+  }
+
+  removeFromFavorites(movie) {
+    axios
+      .delete(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+          'username',
+        )}/FavoriteMovies/${movie._id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
+      )
+      .then(() => {
+        this.setState({
+          isFavorite: false,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  addToFavorites(movie) {
+    axios
+      .post(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+          'username',
+        )}/FavoriteMovies/${movie._id}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
+      )
+      .then(() => {
+        this.setState({
+          isFavorite: true,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   checkIfFavorite() {
@@ -26,53 +74,8 @@ class MovieCard extends React.Component {
         }
       });
     } else {
-      console.log("User has no favorite movies");
+      console.log('User has no favorite movies');
     }
-  }
-
-  addToFavorites(movie) {
-    axios
-      .post(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          "username"
-        )}/FavoriteMovies/${movie._id}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      )
-      .then(() => {
-        this.setState({
-          isFavorite: true,
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
-  removeFromFavorites(movie) {
-    axios
-      .delete(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          "username"
-        )}/FavoriteMovies/${movie._id}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      )
-      .then(() => {
-        this.setState({
-          isFavorite: false,
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
-  componentDidMount() {
-    this.checkIfFavorite();
   }
 
   render() {
@@ -95,12 +98,14 @@ class MovieCard extends React.Component {
           <Button
             variant="outline-light shadow-none"
             onClick={() => {
-              isFavorite
-                ? this.removeFromFavorites(movie)
-                : this.addToFavorites(movie);
+              if (isFavorite) {
+                this.removeFromFavorites(movie);
+              } else {
+                this.addToFavorites(movie);
+              }
             }}
           >
-            {isFavorite ? "Remove from favorites" : "Add to favorites"}
+            {isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           </Button>
         </Card.Body>
       </Card>
@@ -110,6 +115,7 @@ class MovieCard extends React.Component {
 
 MovieCard.propTypes = {
   movie: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
     ImagePath: PropTypes.string.isRequired,

@@ -1,16 +1,18 @@
-import React from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
+/* eslint-disable no-console */
 
-import { Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 
-import "./login-view.scss";
+import { Button, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-export class LoginView extends React.Component {
+import './login-view.scss';
+
+export default class LoginView extends React.Component {
   constructor() {
     super();
-    //keeping as a class because of the form validation 'this'
+    // keeping as a class because of the form validation 'this'
     this.form = React.createRef();
     this.validate = this.validateForm.bind(this);
     this.state = {
@@ -19,13 +21,9 @@ export class LoginView extends React.Component {
     };
   }
 
-  validateForm() {
-    return this.form.current.reportValidity();
-  }
-
   handleSubmit() {
     axios
-      .post("https://nikosardas-myflixdb.herokuapp.com/login", {
+      .post('https://nikosardas-myflixdb.herokuapp.com/login', {
         Username: this.state.username,
         Password: this.state.password,
       })
@@ -33,12 +31,15 @@ export class LoginView extends React.Component {
         this.props.onLoggedIn(response.data);
       })
       .catch((e) => {
-        console.error("no such user", e);
+        console.error('no such user', e);
       });
   }
 
+  validateForm() {
+    return this.form.current.reportValidity();
+  }
+
   render() {
-    const { username, password } = this.state;
     return (
       <div className="login-view">
         <h1>MyFlix</h1>
@@ -74,7 +75,7 @@ export class LoginView extends React.Component {
             >
               Submit
             </Button>
-            <Link to={`/register`}>
+            <Link to="/register">
               <Button
                 variant="outline-warning shadow-none"
                 className="register-button"

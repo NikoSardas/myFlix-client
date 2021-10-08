@@ -1,15 +1,17 @@
-import React from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
+import React from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {
+  Form, Button, ListGroup, ListGroupItem,
+} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import { setUser } from "../../actions/actions";
+import { setUser } from '../../actions/actions';
 
-import "./profile-view.scss";
+import './profile-view.scss';
 
 class ProfileView extends React.Component {
   constructor() {
@@ -17,41 +19,23 @@ class ProfileView extends React.Component {
     this.form = React.createRef();
     this.validate = this.validate.bind(this);
     this.state = {
-      username: "",
-      password: "",
-      email: "",
-      birthday: "",
+      username: '',
+      password: '',
+      email: '',
+      birthday: '',
       favorites: [],
     };
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.getInitialStates();
-  }
-
-  validate() {
-    return this.form.current.reportValidity();
-  }
-
-  getInitialStates() {
-    const userData = this.props.user;
-    console.log(userData);
-    this.setState({
-      username: userData.Username,
-      email: userData.Email,
-      birthday: userData.Birthday.substr(0, 10),
-      favorites: userData.FavoriteMovies,
-    });
-    console.log(this.props.user.FavoriteMovies);
-    console.log(this.state.favorites);
   }
 
   handleUpdate() {
     axios
       .put(
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          "username"
+          'username',
         )}`,
         {
           Username: this.state.username,
@@ -61,11 +45,11 @@ class ProfileView extends React.Component {
         },
         {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-        }
+        },
       )
       .then(() => {
         const updatedUser = {
@@ -75,8 +59,8 @@ class ProfileView extends React.Component {
           Birthday: this.state.birthday,
         };
         this.props.setUser(updatedUser);
-        localStorage.setItem("username", this.props.username);
-        window.open(`/users/${this.props.username}`, "_self");
+        localStorage.setItem('username', this.props.username);
+        window.open(`/users/${this.props.username}`, '_self');
       })
       .catch((error) => {
         console.log(error);
@@ -87,11 +71,11 @@ class ProfileView extends React.Component {
     axios
       .delete(
         `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          "username"
+          'username',
         )}`,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
       )
       .then(() => {
         this.props.onLoggedOut();
@@ -101,20 +85,16 @@ class ProfileView extends React.Component {
       });
   }
 
-  removeFromFavorites(id, username) {
-    axios
-      .delete(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${username}/FavoriteMovies/${id}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      )
-      .then(() => {
-        this.componentDidMount();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  getInitialStates() {
+    const userData = this.props.user;
+    this.setState({
+      username: userData.Username,
+      email: userData.Email,
+      birthday: userData.Birthday.substr(0, 10),
+      favorites: userData.FavoriteMovies,
+    });
+    console.log(this.props.user.FavoriteMovies);
+    console.log(this.state.favorites);
   }
 
   setUsername(username) {
@@ -141,8 +121,30 @@ class ProfileView extends React.Component {
     });
   }
 
+  removeFromFavorites(id, username) {
+    axios
+      .delete(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${username}/FavoriteMovies/${id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
+      )
+      .then(() => {
+        this.componentDidMount();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  validate() {
+    return this.form.current.reportValidity();
+  }
+
   render() {
-    const { username, password, email, birthday, favorites } = this.state;
+    const {
+      username, password, email, birthday, favorites,
+    } = this.state;
     const { user, movies } = this.props;
     return (
       <div className="profile-view">
@@ -199,7 +201,7 @@ class ProfileView extends React.Component {
                 className="update-submit"
                 onClick={(e) => {
                   e.preventDefault();
-                  this.validate() && this.handleUpdate();
+                  if (this.validate()) { this.handleUpdate(); }
                 }}
               >
                 Update
@@ -208,10 +210,10 @@ class ProfileView extends React.Component {
                 className="delete-user"
                 variant="danger shadow-none"
                 onClick={() => {
-                  if (confirm("Confirm user delete?")) {
+                  if (confirm('Confirm user delete?')) {
                     this.handleDeregister();
                   } else {
-                    console.log("Cancelled.");
+                    console.log('Cancelled.');
                   }
                 }}
               >

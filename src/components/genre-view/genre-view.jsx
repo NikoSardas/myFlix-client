@@ -1,12 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+/* eslint-disable no-underscore-dangle */
 
-import { Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import "./genre-view.scss";
+import { Button, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-export function GenreView(props) {
+import './genre-view.scss';
+
+export default function GenreView(props) {
   const { genre, movies, onBackClick } = props;
   return (
     <div className="genre-view-wrapper">
@@ -29,7 +31,7 @@ export function GenreView(props) {
               <div>No Other Movies</div>
             ) : (
               movies.map((movie) => {
-                if (movie.Genre.Name === genre.Name)
+                if (movie.Genre.Name === genre.Name) {
                   return (
                     <Link
                       key={movie._id}
@@ -44,6 +46,8 @@ export function GenreView(props) {
                       </Button>
                     </Link>
                   );
+                }
+                return true;
               })
             )}
           </div>
@@ -58,6 +62,6 @@ GenreView.propTypes = {
     Name: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
   }).isRequired,
-  movies: PropTypes.array.isRequired,
+  movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
   onBackClick: PropTypes.func.isRequired,
 };
