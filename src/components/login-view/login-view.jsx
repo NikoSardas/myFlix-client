@@ -22,13 +22,16 @@ export default class LoginView extends React.Component {
   }
 
   handleSubmit() {
+    const { username } = this.state;
+    const { password } = this.state;
+    const { onLoggedIn } = this.props;
     axios
       .post('https://nikosardas-myflixdb.herokuapp.com/login', {
-        Username: this.state.username,
-        Password: this.state.password,
+        Username: username,
+        Password: password,
       })
       .then((response) => {
-        this.props.onLoggedIn(response.data);
+        onLoggedIn(response.data);
       })
       .catch((e) => {
         console.error('no such user', e);

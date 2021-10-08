@@ -54,13 +54,6 @@ function MoviesList(props) {
 export default connect(mapStateToProps)(MoviesList);
 
 MoviesList.propTypes = {
-  visibilityFilter: PropTypes.func.isRequired,
-  user: PropTypes.shape({
-    Username: PropTypes.string.isRequired,
-    Email: PropTypes.string.isRequired,
-    Password: PropTypes.string.isRequired,
-    Birthday: PropTypes.string.isRequired,
-    Bio: PropTypes.string.isRequired,
-  }).isRequired,
-  movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
+  visibilityFilter: PropTypes.string.isRequired,
+  // movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
 };

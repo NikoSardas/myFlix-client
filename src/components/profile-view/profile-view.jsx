@@ -7,9 +7,8 @@ import { connect } from 'react-redux';
 import {
   Form, Button, ListGroup, ListGroupItem,
 } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 
-import { setUser } from '../../actions/actions';
+import { setUser, setMovies } from '../../actions/actions';
 
 import './profile-view.scss';
 
@@ -28,7 +27,31 @@ class ProfileView extends React.Component {
   }
 
   componentDidMount() {
+    console.log('componentDidMount', this.props);
     this.getInitialStates();
+  }
+
+  getInitialStates() {
+    axios
+      .get(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
+          'username',
+        )}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
+      )
+      .then((response) => {
+        this.setState({
+          username: response.data.Username,
+          email: response.data.Email,
+          birthday: response.data.Birthday.substr(0, 10),
+          favorites: response.data.FavoriteMovies,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   handleUpdate() {
@@ -51,16 +74,11 @@ class ProfileView extends React.Component {
           },
         },
       )
-      .then(() => {
-        const updatedUser = {
-          Username: this.state.username,
-          Password: this.state.password,
-          Email: this.state.email,
-          Birthday: this.state.birthday,
-        };
-        this.props.setUser(updatedUser);
-        localStorage.setItem('username', this.props.username);
-        window.open(`/users/${this.props.username}`, '_self');
+      .then((res) => {
+        const userName = this.state.username;
+        localStorage.setItem('username', userName);
+        this.updateUserProps();
+        // window.open(`/users/${userName}`, '_self');
       })
       .catch((error) => {
         console.log(error);
@@ -78,23 +96,28 @@ class ProfileView extends React.Component {
         },
       )
       .then(() => {
-        this.props.onLoggedOut();
+        this.onLoggedOut();
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
-  getInitialStates() {
-    const userData = this.props.user;
-    this.setState({
-      username: userData.Username,
-      email: userData.Email,
-      birthday: userData.Birthday.substr(0, 10),
-      favorites: userData.FavoriteMovies,
-    });
-    console.log(this.props.user.FavoriteMovies);
-    console.log(this.state.favorites);
+  removeFromFavorites(id, username) {
+    axios
+      .delete(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${username}/FavoriteMovies/${id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
+      )
+      .then((res) => {
+        this.updateUserProps();
+        this.componentDidMount();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   setUsername(username) {
@@ -121,20 +144,17 @@ class ProfileView extends React.Component {
     });
   }
 
-  removeFromFavorites(id, username) {
-    axios
-      .delete(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${username}/FavoriteMovies/${id}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        },
-      )
-      .then(() => {
-        this.componentDidMount();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  updateUserProps() {
+    this.props.setUser(
+      {
+        Username: this.state.username,
+        Password: this.state.password,
+        Email: this.state.email,
+        Birthday: this.state.birthday,
+        FavoriteMovies: this.state.favorites,
+      },
+    );
+    console.log('updateUserProps', this.props.user);
   }
 
   validate() {
@@ -145,14 +165,9 @@ class ProfileView extends React.Component {
     const {
       username, password, email, birthday, favorites,
     } = this.state;
-    const { user, movies } = this.props;
+    const { onBackClick } = this.props;
     return (
       <div className="profile-view">
-        <Link to="/">
-          <Button className="back-to-main" variant="outline-light shadow-none">
-            Back to main page
-          </Button>
-        </Link>
         <h2>User Profile</h2>
         <Form ref={this.form}>
           <Form.Group controlId="formUsername">
@@ -161,8 +176,7 @@ class ProfileView extends React.Component {
               type="text"
               required
               pattern="[A-Za-z0-9_]{3,42}"
-              placeholder="Should only contain Only letters, numbers, and underscore"
-              title="Username should only contain Only letters, numbers, and underscore"
+              placeholder="Only letters, numbers, and underscore"
               value={username}
               onChange={(e) => this.setUsername(e.target.value)}
             />
@@ -172,8 +186,7 @@ class ProfileView extends React.Component {
             <Form.Control
               type="password"
               required
-              placeholder="Update requires a password"
-              value={password}
+              placeholder="Password Required"
               onChange={(e) => this.setPassword(e.target.value)}
             />
           </Form.Group>
@@ -201,23 +214,13 @@ class ProfileView extends React.Component {
                 className="update-submit"
                 onClick={(e) => {
                   e.preventDefault();
-                  if (this.validate()) { this.handleUpdate(); }
+                  if (this.validate()) this.handleUpdate();
                 }}
               >
                 Update
               </Button>
-              <Button
-                className="delete-user"
-                variant="danger shadow-none"
-                onClick={() => {
-                  if (confirm('Confirm user delete?')) {
-                    this.handleDeregister();
-                  } else {
-                    console.log('Cancelled.');
-                  }
-                }}
-              >
-                Delete User
+              <Button onClick={onBackClick} variant="outline-light shadow-none">
+                Back to main page
               </Button>
             </div>
           </Form.Group>
@@ -247,18 +250,31 @@ class ProfileView extends React.Component {
             ))
           )}
         </ListGroup>
+        <Button
+          className="sz"
+          variant="danger shadow-none"
+          onClick={() => {
+            if (confirm('Confirm user delete?')) {
+              this.handleDeregister();
+            } else {
+              console.log('Cancelled.');
+            }
+          }}
+        >
+          Delete User
+        </Button>
       </div>
     );
   }
 }
 
 ProfileView.propTypes = {
-  onLoggedOut: PropTypes.func.isRequired,
+  onBackClick: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  const { movies, user } = state;
-  return { movies, user };
-};
+const mapStateToProps = (state) => ({
+  movies: state.movies,
+  user: state.user,
+});
 
-export default connect(mapStateToProps, { setUser })(ProfileView);
+export default connect(mapStateToProps, { setMovies, setUser })(ProfileView);

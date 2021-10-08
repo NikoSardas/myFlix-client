@@ -50,7 +50,15 @@
   margin: 2% 0 2% 0;
 }
 
-@media all and (max-width: 750px) {
+.delete-user {
+  margin:20% 0 5% 0;
+  width:100%;
+  // position:absolute;
+  // top:1%;
+  // left:1%;
+}
+
+@media all and (max-width: 768px ) {
   .favs-row {
     width: 100%;
   }

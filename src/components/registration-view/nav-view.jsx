@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import './nav-view.scss';
-
 export default function NavView(props) {
   const { onLoggedOut } = props;
   const username = localStorage.getItem('username');
@@ -19,6 +17,7 @@ export default function NavView(props) {
       <Navbar.Collapse variant="shadow-none" className="nav-bar">
         <Navbar.Text>
           Signed in as:
+          {' '}
           <Link to={`/users/${username}`}>{username}</Link>
         </Navbar.Text>
         <Nav>

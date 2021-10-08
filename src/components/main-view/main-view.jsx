@@ -1,11 +1,9 @@
-/* eslint-disable no-underscore-dangle */
-
 // TODO errors/reset when refreshing director/genre/movie pages
 // TODO search bar centers on empty query
 // TODO eslint warnings
-// TODO fav toggle is showing on page load
-// TODO get movies from store to movie-view (refresh error)
-// TODO remove blue border on focus in profile page
+// TODO movie card fav is toggling after page load
+// TODO refresh goes to login
+// TODO props don't pass on pages refresh
 
 import React from 'react';
 import axios from 'axios';
@@ -32,8 +30,9 @@ import './main-view.scss';
 class MainView extends React.Component {
   componentDidMount() {
     const accessToken = localStorage.getItem('token');
-    if (localStorage.getItem('username') === null) { this.props.setUser(''); }
+    if (localStorage.getItem('username') === null) { setUser(''); }
     if (accessToken !== null) {
+      console.log(this.props.user);
       this.props.setUser(this.props.user);
       this.getMovies(accessToken);
     }
@@ -42,15 +41,14 @@ class MainView extends React.Component {
   onLoggedIn(authData) {
     localStorage.setItem('token', authData.token);
     localStorage.setItem('username', authData.user.Username);
+    // const { setUser } = this.props;
     this.props.setUser(authData.user);
     this.getMovies(authData.token);
-    // window.open("/", "_self");
   }
 
   onLoggedOut() {
-    this.localStorage.removeItem('token');
-    this.localStorage.removeItem('username');
-    // this.props.setUsername("");
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
     window.open('/', '_self');
   }
 
@@ -76,6 +74,7 @@ class MainView extends React.Component {
             path="/"
             exact
             render={() => {
+              console.log(!user);
               if (!user) {
                 return (
                   <Col>
@@ -115,7 +114,7 @@ class MainView extends React.Component {
           <Route
             exact
             path="/users/:username"
-            render={() => {
+            render={({ history }) => {
               if (!user) {
                 return (
                   <Col>
@@ -127,7 +126,12 @@ class MainView extends React.Component {
               }
               return (
                 <Col>
-                  <ProfileView onLoggedOut={this.onLoggedOut} />
+                  <ProfileView
+                    onBackClick={() => {
+                      history.goBack();
+                    }}
+                    onLoggedOut={this.onLoggedOut}
+                  />
                 </Col>
               );
             }}
@@ -229,12 +233,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, { setMovies, setUser })(MainView);
 
 MainView.propTypes = {
-  movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
-  user: PropTypes.shape({
-    Username: PropTypes.string.isRequired,
-    Email: PropTypes.string.isRequired,
-    Password: PropTypes.string.isRequired,
-    Birthday: PropTypes.string.isRequired,
-    Bio: PropTypes.string.isRequired,
-  }).isRequired,
+  setUser: PropTypes.func.isRequired,
+  // movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
 };

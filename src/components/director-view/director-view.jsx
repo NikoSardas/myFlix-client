@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -45,6 +47,7 @@ export default function DirectorView(props) {
                     </Link>
                   );
                 }
+                return true;
               })
             )}
           </div>

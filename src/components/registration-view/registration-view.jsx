@@ -1,5 +1,8 @@
+/* eslint-disable no-console */
+
 import React from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import { Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -28,7 +31,7 @@ export default class RegistrationView extends React.Component {
         Birthday: this.state.birthday,
       })
       .then((response) => {
-        const { data } = response;
+        console.log(response);
         window.open('/', '_self');
       })
       .catch((e) => {
@@ -90,7 +93,7 @@ export default class RegistrationView extends React.Component {
               type="submit"
               onClick={(e) => {
                 e.preventDefault();
-                this.validateForm() && this.handleRegister(e);
+                if (this.validateForm()) this.handleRegister(e);
               }}
             >
               Submit
@@ -106,3 +109,7 @@ export default class RegistrationView extends React.Component {
     );
   }
 }
+
+RegistrationView.propTypes = {
+  onBackClick: PropTypes.func.isRequired,
+};
