@@ -21,10 +21,20 @@
   text-decoration-line: underline;
 }
 
-.registration-view input {
-  color: $text-color;
-}
-
 .registration-view input::placeholder {
   color: darken($text-color, 30%);
+}
+
+.registration-view input {
+  color: $text-color;
+  background-color: transparent !important;
+  outline: none !important;
+}
+
+.registration-view input:focus {
+  box-shadow: none !important;
+  color: $text-color;
+  border: 1px solid $text-color;
+  resize: none;
+  outline: none;
 }

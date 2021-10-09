@@ -35,37 +35,42 @@ const API_ADDRESS = 'https://nikosardas-myflixdb.herokuapp.com';
 class MainView extends React.Component {
   componentDidMount() {
     const username = localStorage.getItem('username');
-    if (username === null) {
-      this.setStoredUserDetails({
-        Birthday: '',
-        Email: '',
-        Username: '',
-        Password: '',
-        FavoriteMovies: [],
-      });
+    if (!username) {
+      this.emptyUserProps();
     } else {
       const token = localStorage.getItem('token');
-      this.getUser(username, token);
       this.getMovies(token);
+      this.getUser(username, token);
     }
   }
 
   onLoggedIn(authData) {
     localStorage.setItem('token', authData.token);
     localStorage.setItem('username', authData.user.Username);
-    this.setStoredUserDetails(authData.user);
+    this.updateUserProps(authData.user);
     this.getMovies(authData.token);
     console.log(this.props);
+  }
+
+  emptyUserProps() {
+    this.updateUserProps({
+      Birthday: '',
+      Email: '',
+      Username: '',
+      Password: '',
+      FavoriteMovies: [],
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this
   onLoggedOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    this.emptyUserProps();
     window.open('/', '_self');
   }
 
-  setStoredUserDetails(userData) {
+  updateUserProps(userData) {
     this.props.setUserBirthday(userData.Birthday);
     this.props.setUserEmail(userData.Email);
     this.props.setUserPassword(userData.Password);
@@ -96,7 +101,7 @@ class MainView extends React.Component {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        this.setStoredUserDetails(response.data);
+        this.updateUserProps(response.data);
         return response.data;
       })
       .catch((error) => {
@@ -131,7 +136,7 @@ class MainView extends React.Component {
                       this.onLoggedOut();
                     }}
                   />
-                  <MoviesList movies={movies} />
+                  <MoviesList movies={movies} getUser={() => { this.getUser(userName, localStorage.getItem('token')); }} />
                 </>
               );
             }}
@@ -236,24 +241,6 @@ class MainView extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const {
-    movies, userName, userPassword, userEmail, userBirthday, userFavorites,
-  } = state;
-  return {
-    movies, userName, userPassword, userEmail, userBirthday, userFavorites,
-  };
-};
-
-export default connect(mapStateToProps, {
-  setMovies,
-  setUsername,
-  setUserPassword,
-  setUserEmail,
-  setUserBirthday,
-  setUserFavorites,
-})(MainView);
-
 MainView.propTypes = {
   movies: PropTypes.shape({
     _id: PropTypes.string.isRequired,
@@ -266,3 +253,31 @@ MainView.propTypes = {
   setUserFavorites: PropTypes.func.isRequired,
   userName: PropTypes.string.isRequired,
 };
+
+const mapStateToProps = (state) => {
+  const {
+    movies,
+    userName,
+    userPassword,
+    userEmail,
+    userBirthday,
+    userFavorites,
+  } = state;
+  return {
+    movies,
+    userName,
+    userPassword,
+    userEmail,
+    userBirthday,
+    userFavorites,
+  };
+};
+
+export default connect(mapStateToProps, {
+  setMovies,
+  setUsername,
+  setUserPassword,
+  setUserEmail,
+  setUserBirthday,
+  setUserFavorites,
+})(MainView);

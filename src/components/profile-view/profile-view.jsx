@@ -42,43 +42,6 @@ class ProfileView extends React.Component {
     });
   }
 
-  setStoredUserDetails(userData) {
-    this.props.setUserBirthday(userData.Birthday);
-    this.props.setUserEmail(userData.Email);
-    this.props.setUserPassword(userData.Password);
-    this.props.setUsername(userData.Username);
-  }
-
-  handleUpdate() {
-    const details = {
-      Username: this.state.username,
-      Password: this.state.password,
-      Email: this.state.email,
-      Birthday: this.state.birthday,
-    };
-    axios
-      .put(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${localStorage.getItem(
-          'username',
-        )}`,
-        details,
-        {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        },
-      )
-      .then((res) => {
-        this.setStoredUserDetails(details);
-        localStorage.setItem('username', this.props.userName);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
   handleDeregister() {
     axios
       .delete(
@@ -95,18 +58,29 @@ class ProfileView extends React.Component {
       });
   }
 
-  removeFromFavorites(id, username) {
+  handleUpdate() {
     axios
-      .delete(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${username}/FavoriteMovies/${id}`,
+      .put(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${this.props.userName}`,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+          Username: this.state.username,
+          Password: this.state.password,
+          Email: this.state.email,
+          Birthday: this.state.birthday,
+        },
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
         },
       )
       .then(() => {
-        this.setState({
-          favorites: this.props.userFavorites,
-        });
+        const userName = this.state.username;
+        localStorage.setItem('username', userName);
+        this.updateUserProps();
+        // window.open(`/users/${userName}`, '_self');
       })
       .catch((error) => {
         console.log(error);
@@ -135,6 +109,34 @@ class ProfileView extends React.Component {
     this.setState({
       birthday,
     });
+  }
+
+  removeFromFavorites(id, username) {
+    axios
+      .delete(
+        `https://nikosardas-myflixdb.herokuapp.com/users/${username}/FavoriteMovies/${id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
+      )
+      .then(() => {
+        const updatedUserFavs = this.props.userFavorites.filter((movie) => movie._id !== id);
+        this.props.setUserFavorites(updatedUserFavs.map((movie) => movie._id));
+        this.setState({
+          favorites: updatedUserFavs,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  updateUserProps() {
+    this.props.setUserBirthday(userData.Birthday);
+    this.props.setUserEmail(userData.Email);
+    this.props.setUserPassword(userData.Password);
+    this.props.setUsername(userData.Username);
+    this.props.setUserFavorites(userData.FavoriteMovies);
   }
 
   validate() {
@@ -251,6 +253,7 @@ class ProfileView extends React.Component {
 ProfileView.propTypes = {
   onBackClick: PropTypes.func.isRequired,
   onLoggedOut: PropTypes.func.isRequired,
+  movies: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => {

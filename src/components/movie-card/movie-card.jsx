@@ -1,10 +1,6 @@
-/* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
-
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -15,13 +11,11 @@ import {
 
 import './movie-card.scss';
 
-const API_ADDRESS = 'https://nikosardas-myflixdb.herokuapp.com';
-
 class MovieCard extends React.Component {
   constructor() {
     super();
     this.state = {
-      isFavorite: false,
+      isFavorite: null,
     };
   }
 
@@ -29,62 +23,21 @@ class MovieCard extends React.Component {
     this.checkIfFavorite();
   }
 
-  removeFromFavorites(movie) {
-    const { userName } = this.props;
-    axios
-      .delete(
-        `${API_ADDRESS}/users/${userName}/FavoriteMovies/${movie._id}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        },
-      )
-      .then(() => {
-        this.setState({
-          isFavorite: false,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  addToFavorites(movie) {
-    const { userName } = this.props;
-
-    axios
-      .post(
-        `${API_ADDRESS}/users/${userName}/FavoriteMovies/${movie._id}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        },
-      )
-      .then(() => {
-        this.setState({
-          isFavorite: true,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
   checkIfFavorite() {
-    const { userFavorites } = this.props;
-    const { movie } = this.props;
-
-    if (userFavorites.length > 0) {
-      this.setState({
-        isFavorite: userFavorites.map((favMovie) => favMovie._id === movie._id),
+    if (this.props.userFavorites.length > 0) {
+      this.props.userFavorites.map((favMovieId) => {
+        if (favMovieId === this.props.movie._id) {
+          this.setState({
+            isFavorite: true,
+          });
+        }
       });
-    } else {
-      console.log('User has no favorite movies');
     }
   }
 
   render() {
     const { isFavorite } = this.state;
-    const { movie } = this.props;
+    const { movie, removeFromFavorites, addToFavorites } = this.props;
     return (
       <Card className="movie-card" border="light" bg="dark">
         <Link to={`/movies/${movie._id}`}>
@@ -103,9 +56,15 @@ class MovieCard extends React.Component {
             variant="outline-light shadow-none"
             onClick={() => {
               if (isFavorite) {
-                this.removeFromFavorites(movie);
+                removeFromFavorites(movie);
+                this.setState({
+                  isFavorite: false,
+                });
               } else {
-                this.addToFavorites(movie);
+                addToFavorites(movie);
+                this.setState({
+                  isFavorite: true,
+                });
               }
             }}
           >
@@ -125,8 +84,9 @@ MovieCard.propTypes = {
     ImagePath: PropTypes.string.isRequired,
   }).isRequired,
   // userFavorites: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
-  userFavorites: PropTypes.array.isRequired,
-  userName: PropTypes.string.isRequired,
+  // userFavorites: PropTypes.array.isRequired,
+  removeFromFavorites: PropTypes.func.isRequired,
+  addToFavorites: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {

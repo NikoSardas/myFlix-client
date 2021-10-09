@@ -21,10 +21,20 @@
   text-decoration-line: underline;
 }
 
-.login-view input {
-  color: $text-color;
-}
-
 .login-view input::placeholder {
   color: darken($text-color, 30%);
+}
+
+.login-view input {
+  color: $text-color;
+  background-color: transparent !important;
+  outline: none !important;
+}
+
+.login-view input:focus {
+  box-shadow: none !important;
+  color: $text-color;
+  border: 1px solid $text-color;
+  resize: none;
+  outline: none;
 }
