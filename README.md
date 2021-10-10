@@ -22,4 +22,5 @@ Prettier / Eslint
 ## Live app
  
 [![Netlify Status](https://api.netlify.com/api/v1/badges/58da50b2-bc74-4674-adad-0579836f2b25/deploy-status)](https://app.netlify.com/sites/epic-poincare-7db5aa/deploys)
+
 https://myflix-client-nikosardas.netlify.app/
