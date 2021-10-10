@@ -1,5 +1,6 @@
 $font-family: "Yaldevi", sans-serif;
-$background-color: rgb(37, 37, 37);
-$text-color: rgb(216, 216, 216);
-$heading-color: white;
-$secondary-color: #ffc107;
+$background-color: rgb(24, 24, 24);
+$text-color: lighten($background-color, 80%);
+$heading-color:lighten($background-color, 90%);
+$border-color:lighten($background-color, 50%);
+$secondary-color: #f0b400;

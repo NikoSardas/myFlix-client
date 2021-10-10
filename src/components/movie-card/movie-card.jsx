@@ -35,20 +35,19 @@ export default class MovieCard extends React.Component {
     const { isFavorite } = this.state;
     const { movie, removeFromFavorites, addToFavorites } = this.props;
     return (
-      <Card className="movie-card" border="light" bg="dark">
-        <Link to={`/movies/${movie._id}`}>
-          <Card.Img
-            className="card-movie-image"
-            onClick={() => movie}
-            draggable="false"
-            variant="top"
-            src={movie.ImagePath}
-            alt={movie.Title}
-            // src={`${config.API_ADDRESS}/img/${movie.Title}.jpg`}
-          />
-        </Link>
-        <Card.Title>{movie.Title}</Card.Title>
+      <Card className="movie-card">
         <Card.Body>
+          <Link to={`/movies/${movie._id}`}>
+            <Card.Img
+              className="card-movie-image"
+              onClick={() => movie}
+              draggable="false"
+              variant="top"
+              src={movie.ImagePath}
+              alt={movie.Title}
+            />
+          </Link>
+          <Card.Title>{movie.Title}</Card.Title>
           <Card.Text>{movie.Description}</Card.Text>
           <Button
             variant="outline-light shadow-none"

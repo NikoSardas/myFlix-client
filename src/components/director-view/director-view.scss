@@ -7,7 +7,12 @@
   max-width: 50%;
 }
 
-@media all and (max-width: 750px) {
+.director-view-wrapper .card-body{
+  background-color: lighten($background-color,5%) !important;
+  border-color: darken($border-color,20%) !important;
+}
+
+@media all and (max-width: 992px ) {
   .director-view-wrapper {
     max-width: 100%;
   }
@@ -27,8 +32,7 @@
 
 .director-movie-item {
   margin: 1% 0 0 0;
-  // border: 1px solid $text-color;
-}
+ }
 
 .director-movie-item:focus,
 .director-movie-item:hover {

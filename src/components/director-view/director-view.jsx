@@ -12,12 +12,12 @@ export default function DirectorView(props) {
   const { director, movies, onBackClick } = props;
   return (
     <div className="director-view-wrapper">
-      <Card border="light" bg="dark" text="white">
+      <Card>
         <Card.Body>
           <Button
             className="director-exit"
             onClick={onBackClick}
-            variant="warning shadow-none"
+            variant="outline-light shadow-none"
           >
             Back
           </Button>
@@ -38,7 +38,7 @@ export default function DirectorView(props) {
                 >
                   <Button
                     className="director-movie-item"
-                    variant="outline-light shadow-none"
+                    variant="outline-warning shadow-none"
                   >
                     {movie.Title}
                   </Button>

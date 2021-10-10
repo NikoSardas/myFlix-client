@@ -12,12 +12,12 @@ export default function GenreView(props) {
   const { genre, movies, onBackClick } = props;
   return (
     <div className="genre-view-wrapper">
-      <Card border="light" bg="dark" text="white">
+      <Card>
         <Card.Body>
           <Button
             className="genre-exit"
             onClick={onBackClick}
-            variant="warning shadow-none"
+            variant="outline-light shadow-none"
           >
             Back
           </Button>
@@ -40,7 +40,7 @@ export default function GenreView(props) {
                     >
                       <Button
                         className="genre-movie-item"
-                        variant="outline-light shadow-none"
+                        variant="outline-warning shadow-none"
                       >
                         {movie.Title}
                       </Button>

@@ -3,6 +3,8 @@
 .movie-card {
   height: 100%;
   text-align: center;
+  background-color: lighten($background-color,5%) !important;
+  border-color: darken($border-color,20%) !important;
 }
 
 .card-movie-image {
@@ -39,7 +41,7 @@
   height: 100%;
 }
 
-@media all and (max-width: 750px) {
+@media all and (max-width: 992px ) {
   .card-img-top {
     height: 400px;
   }

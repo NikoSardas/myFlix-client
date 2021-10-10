@@ -10,29 +10,30 @@ export default function MovieView(props) {
   const { movie, onBackClick } = props;
   return (
     <div className="movie-view-wrapper">
-      <Card border="light" bg="dark" text="white">
-        <Button
-          className="movie-view-exit"
-          onClick={onBackClick}
-          variant="warning shadow-none"
-        >
-          Back
-        </Button>
-        <Link to="/" className="movie-view-back">
-          <Button variant="outline-light">Exit</Button>
-        </Link>
+      <Card>
+
         <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
         <Card.Body>
+          <Button
+            className="movie-view-exit"
+            onClick={onBackClick}
+            variant="outline-light shadow-none"
+          >
+            Back
+          </Button>
+          <Link to="/" className="movie-view-back">
+            <Button variant="outline-light">Exit</Button>
+          </Link>
           <Card.Title className="text-center">{movie.Title}</Card.Title>
           <Card.Text>{movie.Description}</Card.Text>
           <div className="card-links">
             <Link to={`/directors/${movie.Director.Name}`}>
-              <Button variant="outline-light shadow-none">
+              <Button variant="outline-warning shadow-none">
                 {movie.Director.Name}
               </Button>
             </Link>
             <Link to={`/genres/${movie.Genre.Name}`}>
-              <Button variant="outline-light shadow-none">
+              <Button variant="outline-warning shadow-none">
                 {movie.Genre.Name}
               </Button>
             </Link>
