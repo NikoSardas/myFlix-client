@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 
 import './login-view.scss';
 
+const config = require('../../config');
+
 export default class LoginView extends React.Component {
   constructor() {
     super();
@@ -19,7 +21,7 @@ export default class LoginView extends React.Component {
   handleSubmit(username, password) {
     const { onLoggedIn } = this.props;
     axios
-      .post('https://nikosardas-myflixdb.herokuapp.com/login', {
+      .post(`${config.API_ADDRESS}/login`, {
         Username: username,
         Password: password,
       })

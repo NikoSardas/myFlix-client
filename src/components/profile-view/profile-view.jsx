@@ -1,25 +1,19 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-console */
+/* eslint-disable no-restricted-globals */
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-
-import { connect } from 'react-redux';
 
 import {
   Form, Button, ListGroup, ListGroupItem,
 } from 'react-bootstrap';
 
-import {
-  setMovies,
-  setUsername,
-  setUserPassword,
-  setUserEmail,
-  setUserBirthday,
-  setUserFavorites,
-} from '../../actions/actions';
-
 import './profile-view.scss';
 
-class ProfileView extends React.Component {
+const config = require('../../config');
+
+export default class ProfileView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
@@ -34,24 +28,44 @@ class ProfileView extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      username: this.props.userName,
-      email: this.props.userEmail,
-      birthday: this.props.userBirthday.substr(0, 10),
-      favorites: this.props.userFavorites,
-    });
+    const { getUser } = this.props;
+    axios
+      .get(
+        `${config.API_ADDRESS}/users/${localStorage.getItem(
+          'username',
+        )}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
+      )
+      .then((response) => {
+        this.setState({
+          username: response.data.Username,
+          password: response.data.Password,
+          email: response.data.Email,
+          birthday: response.data.Birthday.substr(0, 10),
+          favorites: response.data.FavoriteMovies,
+        });
+        getUser();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   handleDeregister() {
     axios
       .delete(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${this.props.userName}`,
+        `${config.API_ADDRESS}/users/${localStorage.getItem(
+          'username',
+        )}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         },
       )
       .then(() => {
-        this.props.onLoggedOut();
+        const { onLoggedOut } = this.props;
+        onLoggedOut();
       })
       .catch((error) => {
         console.log(error);
@@ -59,14 +73,19 @@ class ProfileView extends React.Component {
   }
 
   handleUpdate() {
+    const {
+      username, password, email, birthday,
+    } = this.state;
     axios
       .put(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${this.props.userName}`,
+        `${config.API_ADDRESS}/users/${localStorage.getItem(
+          'username',
+        )}`,
         {
-          Username: this.state.username,
-          Password: this.state.password,
-          Email: this.state.email,
-          Birthday: this.state.birthday,
+          Username: username,
+          Password: password,
+          Email: email,
+          Birthday: birthday,
         },
         {
           headers: {
@@ -77,10 +96,8 @@ class ProfileView extends React.Component {
         },
       )
       .then(() => {
-        const userName = this.state.username;
-        localStorage.setItem('username', userName);
-        this.updateUserProps();
-        // window.open(`/users/${userName}`, '_self');
+        localStorage.setItem('username', username);
+        window.open(`/users/${username}`, '_self');
       })
       .catch((error) => {
         console.log(error);
@@ -114,29 +131,18 @@ class ProfileView extends React.Component {
   removeFromFavorites(id, username) {
     axios
       .delete(
-        `https://nikosardas-myflixdb.herokuapp.com/users/${username}/FavoriteMovies/${id}`,
+        `${config.API_ADDRESS}/users/${username}/FavoriteMovies/${id}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         },
       )
       .then(() => {
-        const updatedUserFavs = this.props.userFavorites.filter((movie) => movie._id !== id);
-        this.props.setUserFavorites(updatedUserFavs.map((movie) => movie._id));
-        this.setState({
-          favorites: updatedUserFavs,
-        });
+        console.log(id, username);
+        this.componentDidMount();
       })
       .catch((error) => {
         console.log(error);
       });
-  }
-
-  updateUserProps() {
-    this.props.setUserBirthday(userData.Birthday);
-    this.props.setUserEmail(userData.Email);
-    this.props.setUserPassword(userData.Password);
-    this.props.setUsername(userData.Username);
-    this.props.setUserFavorites(userData.FavoriteMovies);
   }
 
   validate() {
@@ -145,9 +151,8 @@ class ProfileView extends React.Component {
 
   render() {
     const {
-      username, password, email, birthday, favorites,
+      username, email, birthday, favorites,
     } = this.state;
-    const { onBackClick } = this.props;
     return (
       <div className="profile-view">
         <h2>User Profile</h2>
@@ -201,7 +206,7 @@ class ProfileView extends React.Component {
               >
                 Update
               </Button>
-              <Button onClick={onBackClick} variant="outline-light shadow-none">
+              <Button onClick={() => { window.open('/', '_self'); }} variant="outline-light shadow-none">
                 Back to main page
               </Button>
             </div>
@@ -236,6 +241,7 @@ class ProfileView extends React.Component {
           className="delete-user"
           variant="danger shadow-none"
           onClick={() => {
+            // eslint-disable-next-line no-alert
             if (confirm('Confirm user delete?')) {
               this.handleDeregister();
             } else {
@@ -251,25 +257,6 @@ class ProfileView extends React.Component {
 }
 
 ProfileView.propTypes = {
-  onBackClick: PropTypes.func.isRequired,
   onLoggedOut: PropTypes.func.isRequired,
-  movies: PropTypes.array.isRequired,
+  getUser: PropTypes.func.isRequired,
 };
-
-const mapStateToProps = (state) => {
-  const {
-    movies, userName, userPassword, userEmail, userBirthday, userFavorites,
-  } = state;
-  return {
-    movies, userName, userPassword, userEmail, userBirthday, userFavorites,
-  };
-};
-
-export default connect(mapStateToProps, {
-  setMovies,
-  setUsername,
-  setUserPassword,
-  setUserEmail,
-  setUserBirthday,
-  setUserFavorites,
-})(ProfileView);

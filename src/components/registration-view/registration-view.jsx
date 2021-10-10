@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 
 import './registration-view.scss';
 
+const config = require('../../config');
+
 export default class RegistrationView extends React.Component {
   constructor() {
     super();
@@ -22,13 +24,12 @@ export default class RegistrationView extends React.Component {
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this
   handleRegister() {
     const {
       username, password, email, birthday,
     } = this.state;
     axios
-      .post('https://nikosardas-myflixdb.herokuapp.com/users', {
+      .post(`${config.API_ADDRESS}/users`, {
         Username: username,
         Password: password,
         Email: email,

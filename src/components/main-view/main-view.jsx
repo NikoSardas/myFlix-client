@@ -1,6 +1,10 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-console */
+
 // TODO director/genre/movie view errors when refreshing pages (with or without propTypes)
 // TODO search bar centers on empty query
 // TODO eslint errors
+// TODO user propType
 
 import React from 'react';
 import axios from 'axios';
@@ -21,22 +25,18 @@ import NavView from '../nav-view/nav-view';
 
 import {
   setMovies,
-  setUsername,
-  setUserPassword,
-  setUserEmail,
-  setUserBirthday,
-  setUserFavorites,
+  setUser,
 } from '../../actions/actions';
 
 import './main-view.scss';
 
-const API_ADDRESS = 'https://nikosardas-myflixdb.herokuapp.com';
+const config = require('../../config');
 
 class MainView extends React.Component {
   componentDidMount() {
     const username = localStorage.getItem('username');
     if (!username) {
-      this.emptyUserProps();
+      this.emptyUser();
     } else {
       const token = localStorage.getItem('token');
       this.getMovies(token);
@@ -44,43 +44,26 @@ class MainView extends React.Component {
     }
   }
 
+  // store user details, save user details to prop store, get movies from API
   onLoggedIn(authData) {
     localStorage.setItem('token', authData.token);
     localStorage.setItem('username', authData.user.Username);
-    this.updateUserProps(authData.user);
+    this.props.setUser(authData.user);
     this.getMovies(authData.token);
-    console.log(this.props);
   }
 
-  emptyUserProps() {
-    this.updateUserProps({
-      Birthday: '',
-      Email: '',
-      Username: '',
-      Password: '',
-      FavoriteMovies: [],
-    });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
+  // remove user details from storage, empty user details from prop store, open new window
   onLoggedOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
-    this.emptyUserProps();
+    this.emptyUser();
     window.open('/', '_self');
   }
 
-  updateUserProps(userData) {
-    this.props.setUserBirthday(userData.Birthday);
-    this.props.setUserEmail(userData.Email);
-    this.props.setUserPassword(userData.Password);
-    this.props.setUsername(userData.Username);
-    this.props.setUserFavorites(userData.FavoriteMovies);
-  }
-
+  // get movies from API and save to prop store
   getMovies(token) {
     axios
-      .get(`${API_ADDRESS}/movies`, {
+      .get(`${config.API_ADDRESS}/movies`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -95,22 +78,34 @@ class MainView extends React.Component {
       });
   }
 
+  // get user details from API and save to prop store
   getUser(username, token) {
     axios
-      .get(`${API_ADDRESS}/users/${username}`, {
+      .get(`${config.API_ADDRESS}/users/${username}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        this.updateUserProps(response.data);
-        return response.data;
+        this.props.setUser(response.data);
+        // return response.data;
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
+  // send empty user details to prop store
+  emptyUser() {
+    this.props.setUser({
+      Birthday: '',
+      Email: '',
+      Username: '',
+      Password: '',
+      FavoriteMovies: [],
+    });
+  }
+
   render() {
-    const { movies, userName } = this.props;
+    const { movies, user } = this.props;
     return (
       <Router>
         <Row className="main-view">
@@ -118,7 +113,7 @@ class MainView extends React.Component {
             exact
             path="/"
             render={() => {
-              if (!userName) {
+              if (!localStorage.getItem('username')) {
                 return (
                   <Col>
                     <LoginView
@@ -136,7 +131,7 @@ class MainView extends React.Component {
                       this.onLoggedOut();
                     }}
                   />
-                  <MoviesList movies={movies} getUser={() => { this.getUser(userName, localStorage.getItem('token')); }} />
+                  <MoviesList movies={movies} user={user} getUser={() => { this.getUser(localStorage.getItem('username'), localStorage.getItem('token')); }} />
                 </>
               );
             }}
@@ -157,8 +152,8 @@ class MainView extends React.Component {
           <Route
             exact
             path="/users/:username"
-            render={({ history }) => {
-              if (!userName) {
+            render={() => {
+              if (!localStorage.getItem('username')) {
                 return (
                   <Col>
                     <LoginView
@@ -170,9 +165,7 @@ class MainView extends React.Component {
               return (
                 <Col>
                   <ProfileView
-                    onBackClick={() => {
-                      history.goBack();
-                    }}
+                    getUser={() => { this.getUser(localStorage.getItem('username'), localStorage.getItem('token')); }}
                     onLoggedOut={() => {
                       this.onLoggedOut();
                     }}
@@ -242,42 +235,34 @@ class MainView extends React.Component {
 }
 
 MainView.propTypes = {
-  movies: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-  }).isRequired,
-  movies: PropTypes.array.isRequired,
-  setUsername: PropTypes.func.isRequired,
-  setUserPassword: PropTypes.func.isRequired,
-  setUserEmail: PropTypes.func.isRequired,
-  setUserBirthday: PropTypes.func.isRequired,
-  setUserFavorites: PropTypes.func.isRequired,
-  userName: PropTypes.string.isRequired,
+  // user: PropTypes.shape({
+  //   Username: PropTypes.string.isRequired,
+  //   Email: PropTypes.string.isRequired,
+  //   Password: PropTypes.string.isRequired,
+  //   Birthday: PropTypes.string.isRequired,
+  //   FavoriteMovies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  // }).isRequired,
+  // user: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // user: PropTypes.shape({}).isRequired,
+  // user: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // user: PropTypes.string.isRequired,
+  setUser: PropTypes.func.isRequired,
+  setMovies: PropTypes.func.isRequired,
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => {
   const {
     movies,
-    userName,
-    userPassword,
-    userEmail,
-    userBirthday,
-    userFavorites,
+    user,
   } = state;
   return {
     movies,
-    userName,
-    userPassword,
-    userEmail,
-    userBirthday,
-    userFavorites,
+    user,
   };
 };
 
 export default connect(mapStateToProps, {
   setMovies,
-  setUsername,
-  setUserPassword,
-  setUserEmail,
-  setUserBirthday,
-  setUserFavorites,
+  setUser,
 })(MainView);

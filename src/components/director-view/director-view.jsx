@@ -57,7 +57,6 @@ DirectorView.propTypes = {
     Name: PropTypes.string.isRequired,
     Bio: PropTypes.string.isRequired,
   }).isRequired,
-  // movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
-  movies: PropTypes.array.isRequired,
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
   onBackClick: PropTypes.func.isRequired,
 };

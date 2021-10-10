@@ -1,17 +1,16 @@
+/* eslint-disable no-console */
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import {
-  setUserFavorites,
-} from '../../actions/actions';
-
 import './movie-card.scss';
 
-class MovieCard extends React.Component {
+// const config = require('../../config');
+
+export default class MovieCard extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -20,19 +19,16 @@ class MovieCard extends React.Component {
   }
 
   componentDidMount() {
-    this.checkIfFavorite();
+    const { movie, user } = this.props;
+    this.checkIfFavorite(movie, user.FavoriteMovies);
   }
 
-  checkIfFavorite() {
-    if (this.props.userFavorites.length > 0) {
-      this.props.userFavorites.map((favMovieId) => {
-        if (favMovieId === this.props.movie._id) {
-          this.setState({
-            isFavorite: true,
-          });
-        }
-      });
-    }
+  checkIfFavorite(movie, userFavs) {
+    const movieID = movie._id;
+    const isFavorite = (userFavs.find((m) => movieID === m._id) !== undefined);
+    this.setState({
+      isFavorite,
+    });
   }
 
   render() {
@@ -47,6 +43,8 @@ class MovieCard extends React.Component {
             draggable="false"
             variant="top"
             src={movie.ImagePath}
+            alt={movie.Title}
+            // src={`${config.API_ADDRESS}/img/${movie.Title}.jpg`}
           />
         </Link>
         <Card.Title>{movie.Title}</Card.Title>
@@ -69,6 +67,7 @@ class MovieCard extends React.Component {
             }}
           >
             {isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            {/* {isFavorite ? 'Remove from favorites' : 'Add to favorites'} */}
           </Button>
         </Card.Body>
       </Card>
@@ -77,23 +76,14 @@ class MovieCard extends React.Component {
 }
 
 MovieCard.propTypes = {
+  // user: PropTypes.shape({}).isRequired,
+  // user: PropTypes.string.isRequired,
   movie: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
     ImagePath: PropTypes.string.isRequired,
   }).isRequired,
-  // userFavorites: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
-  // userFavorites: PropTypes.array.isRequired,
   removeFromFavorites: PropTypes.func.isRequired,
   addToFavorites: PropTypes.func.isRequired,
 };
-
-const mapStateToProps = (state) => {
-  const { userFavorites, userName } = state;
-  return { userFavorites, userName };
-};
-
-export default connect(mapStateToProps, {
-  setUserFavorites,
-})(MovieCard);

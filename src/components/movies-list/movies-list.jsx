@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import { Col } from 'react-bootstrap';
@@ -11,41 +12,25 @@ import VisibilityFilterInput from '../visibility-filter-input/visibility-filter-
 
 import MovieCard from '../movie-card/movie-card';
 
-import {
-  setMovies,
-  setUsername,
-  setUserPassword,
-  setUserEmail,
-  setUserBirthday,
-  setUserFavorites,
-} from '../../actions/actions';
-
 import './movies-list.scss';
 
-const API_ADDRESS = 'https://nikosardas-myflixdb.herokuapp.com';
+const config = require('../../config');
 
 function MoviesList(props) {
   const {
-    movies, visibilityFilter, userName, userFavorites, getUser,
+    movies, visibilityFilter, getUser, user,
   } = props;
   let filteredMovies = movies;
 
   const removeFromFavorites = (movie) => {
     axios
       .delete(
-        `${API_ADDRESS}/users/${userName}/FavoriteMovies/${movie._id}`,
+        `${config.API_ADDRESS}/users/${localStorage.getItem('username')}/FavoriteMovies/${movie._id}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         },
       )
       .then(() => {
-        const updatedFavsList = [];
-        // updatedFavsList = props.userFavorites.filter(
-        //   (favId) => favId !== id,
-        // );
-        // console.log(updatedFavsList);
-        // props.setUserFavorites(updatedFavsList);
-        // console.log(props.userFavorites);
         getUser();
       })
       .catch((error) => {
@@ -56,18 +41,13 @@ function MoviesList(props) {
   const addToFavorites = (movie) => {
     axios
       .post(
-        `${API_ADDRESS}/users/${userName}/FavoriteMovies/${movie._id}`,
+        `${config.API_ADDRESS}/users/${localStorage.getItem('username')}/FavoriteMovies/${movie._id}`,
         {},
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         },
       )
       .then(() => {
-        // let updatedFavsList = props.userFavorites;
-        // updatedFavsList.push(id);
-        // console.log(updatedFavsList);
-        // props.setUserFavorites(updatedFavsList);
-        // console.log(props.userFavorites);
         getUser();
       })
       .catch((error) => {
@@ -99,6 +79,7 @@ function MoviesList(props) {
           key={m._id}
         >
           <MovieCard
+            user={user}
             movie={m}
             addToFavorites={() => {
               addToFavorites(m);
@@ -113,29 +94,28 @@ function MoviesList(props) {
 
 MoviesList.propTypes = {
   getUser: PropTypes.func.isRequired,
-  setUserFavorites: PropTypes.func.isRequired,
-  // userFavorites: PropTypes.array.isRequired,
-  userName: PropTypes.string.isRequired,
   visibilityFilter: PropTypes.string.isRequired,
-  // movies: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
-  movies: PropTypes.array.isRequired,
-
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  // user: PropTypes.shape({
+  //   Username: PropTypes.string.isRequired,
+  //   Email: PropTypes.string.isRequired,
+  //   Password: PropTypes.string.isRequired,
+  //   Birthday: PropTypes.string.isRequired,
+  //   FavoriteMovies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  // }).isRequired,
+  // user: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // user: PropTypes.shape({}).isRequired,
+  // user: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // user: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => {
   const {
-    movies, userName, userPassword, userEmail, userBirthday, userFavorites, visibilityFilter,
+    visibilityFilter,
   } = state;
   return {
-    movies, userName, userPassword, userEmail, userBirthday, userFavorites, visibilityFilter,
+    visibilityFilter,
   };
 };
 
-export default connect(mapStateToProps, {
-  setMovies,
-  setUsername,
-  setUserPassword,
-  setUserEmail,
-  setUserBirthday,
-  setUserFavorites,
-})(MoviesList);
+export default connect(mapStateToProps)(MoviesList);

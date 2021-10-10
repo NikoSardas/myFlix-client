@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import './nav-view.scss';
 
-function NavView(props) {
+export default function NavView(props) {
   const { onLoggedOut } = props;
   const username = localStorage.getItem('username');
 
@@ -35,10 +34,3 @@ function NavView(props) {
 NavView.propTypes = {
   onLoggedOut: PropTypes.func.isRequired,
 };
-
-const mapStateToProps = (state) => {
-  const { userName } = state;
-  return { userName };
-};
-
-export default connect(mapStateToProps)(NavView);
