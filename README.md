@@ -12,7 +12,7 @@ personal information, and create a list of their favorite movies.
 React / Redux
 
 ## Tools
-
+Netlify
 
 ## Formatting / Validations
 Prettier / Eslint
