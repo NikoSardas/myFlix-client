@@ -105,7 +105,7 @@ class MainView extends React.Component {
   }
 
   render() {
-    const { movies, user } = this.props;
+    const { movies } = this.props;
     return (
       <Router>
         <Row className="main-view">
