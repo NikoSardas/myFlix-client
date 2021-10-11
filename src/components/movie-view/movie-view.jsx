@@ -1,19 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { Button, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-import './movie-view.scss';
+import "./movie-view.scss";
 
 export default function MovieView(props) {
   const { movie, onBackClick } = props;
   return (
     <div className="movie-view-wrapper">
       <Card>
-
-        <Card.Img draggable="false" variant="top" src={movie.ImagePath} />
         <Card.Body>
+          <Card.Img
+            draggable="false"
+            variant="top"
+            src={`/movie_img/${movie.Title}.jpg`}
+          />
           <Button
             className="movie-view-exit"
             onClick={onBackClick}
@@ -43,20 +46,3 @@ export default function MovieView(props) {
     </div>
   );
 }
-
-MovieView.propTypes = {
-  movie: PropTypes.shape({
-    Director: PropTypes.shape({
-      Name: PropTypes.string.isRequired,
-      Bio: PropTypes.string.isRequired,
-    }).isRequired,
-    Genre: PropTypes.shape({
-      Name: PropTypes.string.isRequired,
-      Description: PropTypes.string.isRequired,
-    }).isRequired,
-    Title: PropTypes.string.isRequired,
-    Description: PropTypes.string.isRequired,
-    ImagePath: PropTypes.string.isRequired,
-  }).isRequired,
-  onBackClick: PropTypes.func.isRequired,
-};

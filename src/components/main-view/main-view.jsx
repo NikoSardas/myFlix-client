@@ -131,7 +131,7 @@ class MainView extends React.Component {
                       this.onLoggedOut();
                     }}
                   />
-                  <MoviesList movies={movies} user={user} getUser={() => { this.getUser(localStorage.getItem('username'), localStorage.getItem('token')); }} />
+                  <MoviesList getUser={() => { this.getUser(localStorage.getItem('username'), localStorage.getItem('token')); }} />
                 </>
               );
             }}
@@ -233,23 +233,6 @@ class MainView extends React.Component {
     );
   }
 }
-
-MainView.propTypes = {
-  // user: PropTypes.shape({
-  //   Username: PropTypes.string.isRequired,
-  //   Email: PropTypes.string.isRequired,
-  //   Password: PropTypes.string.isRequired,
-  //   Birthday: PropTypes.string.isRequired,
-  //   FavoriteMovies: PropTypes.arrayOf(PropTypes.object).isRequired,
-  // }).isRequired,
-  // user: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // user: PropTypes.shape({}).isRequired,
-  // user: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // user: PropTypes.string.isRequired,
-  setUser: PropTypes.func.isRequired,
-  setMovies: PropTypes.func.isRequired,
-  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
 
 const mapStateToProps = (state) => {
   const {

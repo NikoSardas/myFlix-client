@@ -1,21 +1,20 @@
 /* eslint-disable no-console */
 
-import React from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
+import React from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
 
-import { Form, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-import './registration-view.scss';
+import "./registration-view.scss";
 
-const config = require('../../config');
+const config = require("../../config");
 
 export default class RegistrationView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
-    this.validate = this.validateForm.bind(this);
     this.state = {
       username: null,
       password: null,
@@ -25,9 +24,7 @@ export default class RegistrationView extends React.Component {
   }
 
   handleRegister() {
-    const {
-      username, password, email, birthday,
-    } = this.state;
+    const { username, password, email, birthday } = this.state;
     axios
       .post(`${config.API_ADDRESS}/users`, {
         Username: username,
@@ -37,16 +34,16 @@ export default class RegistrationView extends React.Component {
       })
       .then((response) => {
         console.log(response);
-        window.open('/', '_self');
+        window.open("/", "_self");
       })
       .catch((e) => {
-        console.error('error registering the user', e);
+        console.error("error registering the user", e);
       });
   }
 
-  validateForm() {
+  validateForm = () => {
     return this.form.current.reportValidity();
-  }
+  };
 
   render() {
     const { onBackClick } = this.props;
@@ -114,7 +111,3 @@ export default class RegistrationView extends React.Component {
     );
   }
 }
-
-RegistrationView.propTypes = {
-  onBackClick: PropTypes.func.isRequired,
-};

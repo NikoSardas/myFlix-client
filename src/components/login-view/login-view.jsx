@@ -1,21 +1,19 @@
 /* eslint-disable no-console */
 
-import React from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
+import React from "react";
+import axios from "axios";
 
-import { Button, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Button, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-import './login-view.scss';
+import "./login-view.scss";
 
-const config = require('../../config');
+const config = require("../../config");
 
 export default class LoginView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
-    this.validate = this.validateForm.bind(this);
   }
 
   handleSubmit(username, password) {
@@ -29,17 +27,17 @@ export default class LoginView extends React.Component {
         onLoggedIn(response.data);
       })
       .catch((e) => {
-        console.error('no such user', e);
+        console.error("no such user", e);
       });
   }
 
-  validateForm() {
+  validateForm = () => {
     return this.form.current.reportValidity();
-  }
+  };
 
   render() {
-    let username = '';
-    let password = '';
+    let username = "";
+    let password = "";
     return (
       <div className="login-view">
         <h1>MyFlix</h1>
@@ -51,7 +49,9 @@ export default class LoginView extends React.Component {
               required
               placeholder="Your Username.."
               pattern="[A-Za-z0-9_]{3,42}"
-              onChange={(e) => { username = e.target.value; }}
+              onChange={(e) => {
+                username = e.target.value;
+              }}
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
@@ -60,7 +60,9 @@ export default class LoginView extends React.Component {
               type="password"
               required
               placeholder="Your password.."
-              onChange={(e) => { password = e.target.value; }}
+              onChange={(e) => {
+                password = e.target.value;
+              }}
             />
           </Form.Group>
           <div className="login-view-buttons">
@@ -89,7 +91,3 @@ export default class LoginView extends React.Component {
     );
   }
 }
-
-LoginView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired,
-};

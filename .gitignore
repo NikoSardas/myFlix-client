@@ -4,3 +4,5 @@ dist
 node_modules
 .vscode
 eslintrc.json
+parcelrc
+static

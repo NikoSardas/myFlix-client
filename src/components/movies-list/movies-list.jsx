@@ -1,34 +1,34 @@
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import axios from 'axios';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import axios from "axios";
 
-import { Col } from 'react-bootstrap';
+import { Col } from "react-bootstrap";
 
-import VisibilityFilterInput from '../visibility-filter-input/visibility-filter-input';
+import VisibilityFilterInput from "../visibility-filter-input/visibility-filter-input";
 
-import MovieCard from '../movie-card/movie-card';
+import MovieCard from "../movie-card/movie-card";
 
-import './movies-list.scss';
+import "./movies-list.scss";
 
-const config = require('../../config');
+const config = require("../../config");
 
 function MoviesList(props) {
-  const {
-    movies, visibilityFilter, getUser, user,
-  } = props;
+  const { movies, visibilityFilter, getUser, user } = props;
   let filteredMovies = movies;
 
   const removeFromFavorites = (movie) => {
     axios
       .delete(
-        `${config.API_ADDRESS}/users/${localStorage.getItem('username')}/FavoriteMovies/${movie._id}`,
+        `${config.API_ADDRESS}/users/${localStorage.getItem(
+          "username"
+        )}/FavoriteMovies/${movie._id}`,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       )
       .then(() => {
         getUser();
@@ -41,11 +41,13 @@ function MoviesList(props) {
   const addToFavorites = (movie) => {
     axios
       .post(
-        `${config.API_ADDRESS}/users/${localStorage.getItem('username')}/FavoriteMovies/${movie._id}`,
+        `${config.API_ADDRESS}/users/${localStorage.getItem(
+          "username"
+        )}/FavoriteMovies/${movie._id}`,
         {},
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       )
       .then(() => {
         getUser();
@@ -55,10 +57,10 @@ function MoviesList(props) {
       });
   };
 
-  if (visibilityFilter !== '') {
-    filteredMovies = movies
-      .filter((m) => m.Title.toLowerCase()
-        .includes(visibilityFilter.toLowerCase()));
+  if (visibilityFilter !== "") {
+    filteredMovies = movies.filter((m) =>
+      m.Title.toLowerCase().includes(visibilityFilter.toLowerCase())
+    );
   }
 
   if (!movies) return <div className="main-view" />;
@@ -84,7 +86,9 @@ function MoviesList(props) {
             addToFavorites={() => {
               addToFavorites(m);
             }}
-            removeFromFavorites={() => { removeFromFavorites(m); }}
+            removeFromFavorites={() => {
+              removeFromFavorites(m);
+            }}
           />
         </Col>
       ))}
@@ -92,29 +96,12 @@ function MoviesList(props) {
   );
 }
 
-MoviesList.propTypes = {
-  getUser: PropTypes.func.isRequired,
-  visibilityFilter: PropTypes.string.isRequired,
-  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
-  // user: PropTypes.shape({
-  //   Username: PropTypes.string.isRequired,
-  //   Email: PropTypes.string.isRequired,
-  //   Password: PropTypes.string.isRequired,
-  //   Birthday: PropTypes.string.isRequired,
-  //   FavoriteMovies: PropTypes.arrayOf(PropTypes.object).isRequired,
-  // }).isRequired,
-  // user: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // user: PropTypes.shape({}).isRequired,
-  // user: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // user: PropTypes.string.isRequired,
-};
-
 const mapStateToProps = (state) => {
-  const {
-    visibilityFilter,
-  } = state;
+  const { visibilityFilter, user, movies } = state;
   return {
     visibilityFilter,
+    movies,
+    user
   };
 };
 

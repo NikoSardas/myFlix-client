@@ -51,12 +51,3 @@ export default function DirectorView(props) {
     </div>
   );
 }
-
-DirectorView.propTypes = {
-  director: PropTypes.shape({
-    Name: PropTypes.string.isRequired,
-    Bio: PropTypes.string.isRequired,
-  }).isRequired,
-  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onBackClick: PropTypes.func.isRequired,
-};

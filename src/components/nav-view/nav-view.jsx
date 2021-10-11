@@ -30,7 +30,3 @@ export default function NavView(props) {
     </Navbar>
   );
 }
-
-NavView.propTypes = {
-  onLoggedOut: PropTypes.func.isRequired,
-};

@@ -1,31 +1,26 @@
 @import "../../styles.scss";
 
 .movie-view-wrapper {
-  display: flex;
   margin: auto;
   text-align: center;
   max-width: 740px;
 }
 
-@media all and (max-width: 992px ) {
+.movie-view-wrapper img {
+  width: 160px;
+  height: 220px;
+  margin: 5% auto;
+}
+
+@media all and (max-width: 992px) {
   .movie-view-wrapper {
     max-width: 100%;
   }
 }
-.card{
-  background-color: lighten($background-color,5%) !important;
-  border: 2px solid darken($border-color,40%) !important;
-}
 
-.movie-view-wrapper img {
-  padding: 1%;
-  margin: 5% auto;
-  max-width: 60%;
-}
-
-.movie-view-wrapper .card-body{
-  background-color: lighten($background-color,5%) !important;
-  border-color: darken($border-color,20%) !important;
+.movie-view-wrapper .card-body {
+  background-color: lighten($background-color, 5%) !important;
+  border-color: darken($border-color, 20%) !important;
 }
 
 .movie-view-back {

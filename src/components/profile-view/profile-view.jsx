@@ -1,28 +1,25 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 /* eslint-disable no-restricted-globals */
-import React from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
+import React from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
 
-import {
-  Form, Button, ListGroup, ListGroupItem,
-} from 'react-bootstrap';
+import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 
-import './profile-view.scss';
+import "./profile-view.scss";
 
-const config = require('../../config');
+const config = require("../../config");
 
 export default class ProfileView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
-    this.validate = this.validate.bind(this);
     this.state = {
-      username: '',
-      password: '',
-      email: '',
-      birthday: '',
+      username: "",
+      password: "",
+      email: "",
+      birthday: "",
       favorites: [],
     };
   }
@@ -30,14 +27,9 @@ export default class ProfileView extends React.Component {
   componentDidMount() {
     const { getUser } = this.props;
     axios
-      .get(
-        `${config.API_ADDRESS}/users/${localStorage.getItem(
-          'username',
-        )}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        },
-      )
+      .get(`${config.API_ADDRESS}/users/${localStorage.getItem("username")}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
       .then((response) => {
         this.setState({
           username: response.data.Username,
@@ -56,12 +48,10 @@ export default class ProfileView extends React.Component {
   handleDeregister() {
     axios
       .delete(
-        `${config.API_ADDRESS}/users/${localStorage.getItem(
-          'username',
-        )}`,
+        `${config.API_ADDRESS}/users/${localStorage.getItem("username")}`,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       )
       .then(() => {
         const { onLoggedOut } = this.props;
@@ -73,14 +63,10 @@ export default class ProfileView extends React.Component {
   }
 
   handleUpdate() {
-    const {
-      username, password, email, birthday,
-    } = this.state;
+    const { username, password, email, birthday } = this.state;
     axios
       .put(
-        `${config.API_ADDRESS}/users/${localStorage.getItem(
-          'username',
-        )}`,
+        `${config.API_ADDRESS}/users/${localStorage.getItem("username")}`,
         {
           Username: username,
           Password: password,
@@ -89,53 +75,32 @@ export default class ProfileView extends React.Component {
         },
         {
           headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        },
+        }
       )
       .then(() => {
-        localStorage.setItem('username', username);
-        window.open(`/users/${username}`, '_self');
+        localStorage.setItem("username", username);
+        window.open(`/users/${username}`, "_self");
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
-  setUsername(username) {
+  setStateVal(state) {
     this.setState({
-      username,
-    });
-  }
-
-  setPassword(password) {
-    this.setState({
-      password,
-    });
-  }
-
-  setEmail(email) {
-    this.setState({
-      email,
-    });
-  }
-
-  setBirthday(birthday) {
-    this.setState({
-      birthday,
+      state,
     });
   }
 
   removeFromFavorites(id, username) {
     axios
-      .delete(
-        `${config.API_ADDRESS}/users/${username}/FavoriteMovies/${id}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        },
-      )
+      .delete(`${config.API_ADDRESS}/users/${username}/FavoriteMovies/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
       .then(() => {
         console.log(id, username);
         this.componentDidMount();
@@ -145,14 +110,12 @@ export default class ProfileView extends React.Component {
       });
   }
 
-  validate() {
+  validate = () => {
     return this.form.current.reportValidity();
-  }
+  };
 
   render() {
-    const {
-      username, email, birthday, favorites,
-    } = this.state;
+    const { username, email, birthday, favorites } = this.state;
     return (
       <div className="profile-view">
         <h2>User Profile</h2>
@@ -165,7 +128,7 @@ export default class ProfileView extends React.Component {
               pattern="[A-Za-z0-9_]{3,42}"
               placeholder="Only letters, numbers, and underscore"
               value={username}
-              onChange={(e) => this.setUsername(e.target.value)}
+              onChange={(e) => this.setStateVal(e.target.value)}
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
@@ -174,7 +137,7 @@ export default class ProfileView extends React.Component {
               type="password"
               required
               placeholder="Password Required"
-              onChange={(e) => this.setPassword(e.target.value)}
+              onChange={(e) => this.setStateVal(e.target.value)}
             />
           </Form.Group>
           <Form.Group controlId="formEmail">
@@ -183,7 +146,7 @@ export default class ProfileView extends React.Component {
               type="email"
               required
               value={email}
-              onChange={(e) => this.setEmail(e.target.value)}
+              onChange={(e) => this.setStateVal(e.target.value)}
             />
           </Form.Group>
           <Form.Group controlId="formBirthday">
@@ -192,7 +155,7 @@ export default class ProfileView extends React.Component {
               type="date"
               required
               value={birthday}
-              onChange={(e) => this.setBirthday(e.target.value)}
+              onChange={(e) => this.setStateVal(e.target.value)}
             />
             <div className="profile-buttons">
               <Button
@@ -206,7 +169,12 @@ export default class ProfileView extends React.Component {
               >
                 Update
               </Button>
-              <Button onClick={() => { window.open('/', '_self'); }} variant="outline-light shadow-none">
+              <Button
+                onClick={() => {
+                  window.open("/", "_self");
+                }}
+                variant="outline-light shadow-none"
+              >
                 Back to main page
               </Button>
             </div>
@@ -242,10 +210,10 @@ export default class ProfileView extends React.Component {
           variant="danger shadow-none"
           onClick={() => {
             // eslint-disable-next-line no-alert
-            if (confirm('Confirm user delete?')) {
+            if (confirm("Confirm user delete?")) {
               this.handleDeregister();
             } else {
-              console.log('Cancelled.');
+              console.log("Cancelled.");
             }
           }}
         >
@@ -255,8 +223,3 @@ export default class ProfileView extends React.Component {
     );
   }
 }
-
-ProfileView.propTypes = {
-  onLoggedOut: PropTypes.func.isRequired,
-  getUser: PropTypes.func.isRequired,
-};

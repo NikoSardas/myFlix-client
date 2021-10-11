@@ -1,34 +1,34 @@
 @import "../../styles.scss";
 
-.movie-card {
+.movie-card{
   height: 100%;
   text-align: center;
   background-color: lighten($background-color,5%) !important;
   border-color: darken($border-color,20%) !important;
 }
 
-.card-movie-image {
+.movie-card-image {
   transition: padding 0.2s;
 }
 
-.card-movie-image:hover {
-  padding: 8%;;
+.movie-card-image:hover {
+  padding: 0;
+}
+
+.movie-card img {
+  width: 160px;
+  height: 220px;
+  margin: 5% auto;
 }
 
 .card-body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
 }
 
 .card-title {
   color: $secondary-color !important;
-}
-
-.card-img-top {
-  height: 300px;
-  padding: 10%;
 }
 
 .card-links {
@@ -39,10 +39,4 @@
 
 .card-links button {
   height: 100%;
-}
-
-@media all and (max-width: 992px ) {
-  .card-img-top {
-    height: 400px;
-  }
 }
