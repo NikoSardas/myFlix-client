@@ -4,7 +4,8 @@
 // TODO director/genre/movie view errors when refreshing pages (with or without propTypes)
 // TODO search bar centers on empty query
 // TODO eslint errors
-// TODO user propType
+// TODO propTypes
+// TODO loader while waiting for .get movies
 
 import React from 'react';
 import axios from 'axios';
