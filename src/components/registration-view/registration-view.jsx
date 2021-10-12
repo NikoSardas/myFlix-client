@@ -2,7 +2,6 @@
 
 import React from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
 
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -25,6 +24,8 @@ export default class RegistrationView extends React.Component {
 
   handleRegister() {
     const { username, password, email, birthday } = this.state;
+    const { goToMainView } = this.props;
+    
     axios
       .post(`${config.API_ADDRESS}/users`, {
         Username: username,
@@ -32,9 +33,8 @@ export default class RegistrationView extends React.Component {
         Email: email,
         Birthday: birthday,
       })
-      .then((response) => {
-        console.log(response);
-        window.open("/", "_self");
+      .then(() => {
+        goToMainView();
       })
       .catch((e) => {
         console.error("error registering the user", e);
@@ -101,9 +101,7 @@ export default class RegistrationView extends React.Component {
               Submit
             </Button>
             <Link to="/">
-              <Button variant="outline-warning" onClick={onBackClick}>
-                Cancel
-              </Button>
+              <Button variant="outline-warning">Cancel</Button>
             </Link>
           </div>
         </Form>

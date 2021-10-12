@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import './genre-view.scss';
 
 export default function GenreView(props) {
+  console.log(this.props);
   const { genre, movies, onBackClick } = props;
   return (
     <div className="genre-view-wrapper">

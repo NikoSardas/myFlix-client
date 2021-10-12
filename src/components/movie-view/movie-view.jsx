@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import "./movie-view.scss";
 
 export default function MovieView(props) {
+  console.log(this.props);
   const { movie, onBackClick } = props;
   return (
     <div className="movie-view-wrapper">

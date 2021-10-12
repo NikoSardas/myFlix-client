@@ -3,9 +3,9 @@
 /* eslint-disable no-restricted-globals */
 import React from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
 
 import { Form, Button, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import "./profile-view.scss";
 
@@ -25,6 +25,7 @@ export default class ProfileView extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     const { getUser } = this.props;
     axios
       .get(`${config.API_ADDRESS}/users/${localStorage.getItem("username")}`, {
@@ -82,18 +83,13 @@ export default class ProfileView extends React.Component {
         }
       )
       .then(() => {
-        localStorage.setItem("username", username);
-        window.open(`/users/${username}`, "_self");
+        const { reloadScreen } = this.props;
+         localStorage.setItem("username", username);
+         reloadScreen();
       })
       .catch((error) => {
         console.log(error);
       });
-  }
-
-  setStateVal(state) {
-    this.setState({
-      state,
-    });
   }
 
   removeFromFavorites(id, username) {
@@ -128,7 +124,7 @@ export default class ProfileView extends React.Component {
               pattern="[A-Za-z0-9_]{3,42}"
               placeholder="Only letters, numbers, and underscore"
               value={username}
-              onChange={(e) => this.setStateVal(e.target.value)}
+              onChange={(e) => this.setState({ username: e.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
@@ -137,7 +133,7 @@ export default class ProfileView extends React.Component {
               type="password"
               required
               placeholder="Password Required"
-              onChange={(e) => this.setStateVal(e.target.value)}
+              onChange={(e) => this.setState({ password: e.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formEmail">
@@ -146,7 +142,7 @@ export default class ProfileView extends React.Component {
               type="email"
               required
               value={email}
-              onChange={(e) => this.setStateVal(e.target.value)}
+              onChange={(e) => this.setState({ email: e.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formBirthday">
@@ -155,7 +151,7 @@ export default class ProfileView extends React.Component {
               type="date"
               required
               value={birthday}
-              onChange={(e) => this.setStateVal(e.target.value)}
+              onChange={(e) => this.setState({ birthday: e.target.value })}
             />
             <div className="profile-buttons">
               <Button
@@ -169,14 +165,11 @@ export default class ProfileView extends React.Component {
               >
                 Update
               </Button>
-              <Button
-                onClick={() => {
-                  window.open("/", "_self");
-                }}
-                variant="outline-light shadow-none"
-              >
-                Back to main page
-              </Button>
+              <Link to="/">
+                <Button variant="outline-light shadow-none">
+                  Back to main page
+                </Button>
+              </Link>
             </div>
           </Form.Group>
         </Form>
