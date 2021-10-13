@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -51,4 +50,3 @@ export default function DirectorView(props) {
     </div>
   );
 }
-

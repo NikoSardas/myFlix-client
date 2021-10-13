@@ -1,10 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
-import { Form } from "react-bootstrap";
+import { Form } from 'react-bootstrap';
 
-import { setFilter } from "../../actions/actions";
+import { setFilter } from '../../actions/actions';
 
 function VisibilityFilterInput(props) {
   const { visibilityFilter } = props;

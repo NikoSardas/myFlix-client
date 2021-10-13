@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -9,7 +8,6 @@ import { Link } from 'react-router-dom';
 import './genre-view.scss';
 
 export default function GenreView(props) {
-  console.log(this.props);
   const { genre, movies, onBackClick } = props;
   return (
     <div className="genre-view-wrapper">

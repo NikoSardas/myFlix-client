@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
-import React from "react";
+import React from 'react';
 
-import { Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Button, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import "./movie-card.scss";
+import './movie-card.scss';
 
 export default class MovieCard extends React.Component {
   constructor() {
@@ -32,41 +32,41 @@ export default class MovieCard extends React.Component {
     const { isFavorite } = this.state;
     const { movie, removeFromFavorites, addToFavorites } = this.props;
     return (
-        <Card className="movie-card">
-          <Card.Body>
-            <Link to={`/movies/${movie._id}`}>
-              <Card.Img
-                className="movie-card-image"
-                onClick={() => movie}
-                draggable="false"
-                variant="top"
-                src={`/movie_img/${movie.Title}.jpg`}
-                alt={movie.Title}
-              />
-            </Link>
-            <Card.Title>{movie.Title}</Card.Title>
-            <Card.Text>{movie.Description}</Card.Text>
-            <Button
-              variant="outline-light shadow-none"
-              onClick={() => {
-                if (isFavorite) {
-                  removeFromFavorites(movie);
-                  this.setState({
-                    isFavorite: false,
-                  });
-                } else {
-                  addToFavorites(movie);
-                  this.setState({
-                    isFavorite: true,
-                  });
-                }
-              }}
-            >
-              {isFavorite ? "Remove from favorites" : "Add to favorites"}
-              {/* {isFavorite ? 'Remove from favorites' : 'Add to favorites'} */}
-            </Button>
-          </Card.Body>
-        </Card>
+      <Card className="movie-card">
+        <Card.Body>
+          <Link to={`/movies/${movie._id}`}>
+            <Card.Img
+              className="movie-card-image"
+              onClick={() => movie}
+              draggable="false"
+              variant="top"
+              src={`/movie_img/${movie.Title}.jpg`}
+              alt={movie.Title}
+            />
+          </Link>
+          <Card.Title>{movie.Title}</Card.Title>
+          <Card.Text>{movie.Description}</Card.Text>
+          <Button
+            variant="outline-light shadow-none"
+            onClick={() => {
+              if (isFavorite) {
+                removeFromFavorites(movie);
+                this.setState({
+                  isFavorite: false,
+                });
+              } else {
+                addToFavorites(movie);
+                this.setState({
+                  isFavorite: true,
+                });
+              }
+            }}
+          >
+            {isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            {/* {isFavorite ? 'Remove from favorites' : 'Add to favorites'} */}
+          </Button>
+        </Card.Body>
+      </Card>
     );
   }
 }

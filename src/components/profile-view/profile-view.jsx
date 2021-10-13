@@ -61,7 +61,7 @@ export default class ProfileView extends React.Component {
       .catch((error) => {
         console.log(error);
       });
-  }
+  } 
 
   handleUpdate() {
     const { username, password, email, birthday } = this.state;
@@ -98,7 +98,6 @@ export default class ProfileView extends React.Component {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       .then(() => {
-        console.log(id, username);
         this.componentDidMount();
       })
       .catch((error) => {

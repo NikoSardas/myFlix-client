@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 
-import React from "react";
-import axios from "axios";
+import React from 'react';
+import axios from 'axios';
 
-import { Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Form, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import "./registration-view.scss";
+import './registration-view.scss';
 
-const config = require("../../config");
+const config = require('../../config');
 
 export default class RegistrationView extends React.Component {
   constructor() {
@@ -23,9 +23,11 @@ export default class RegistrationView extends React.Component {
   }
 
   handleRegister() {
-    const { username, password, email, birthday } = this.state;
+    const {
+      username, password, email, birthday,
+    } = this.state;
     const { goToMainView } = this.props;
-    
+
     axios
       .post(`${config.API_ADDRESS}/users`, {
         Username: username,
@@ -37,16 +39,15 @@ export default class RegistrationView extends React.Component {
         goToMainView();
       })
       .catch((e) => {
-        console.error("error registering the user", e);
+        console.error('error registering the user', e);
       });
   }
 
-  validateForm = () => {
-    return this.form.current.reportValidity();
-  };
+  validateForm() {
+    return () => this.form.current.reportValidity();
+  }
 
   render() {
-    const { onBackClick } = this.props;
     return (
       <div className="registration-view">
         <h2>User Registration</h2>

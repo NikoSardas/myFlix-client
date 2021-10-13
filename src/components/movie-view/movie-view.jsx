@@ -1,13 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
 
-import { Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Button, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import "./movie-view.scss";
+import './movie-view.scss';
 
 export default function MovieView(props) {
-  console.log(this.props);
   const { movie, onBackClick } = props;
   return (
     <div className="movie-view-wrapper">

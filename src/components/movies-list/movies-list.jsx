@@ -1,34 +1,35 @@
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 
-import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import axios from "axios";
+import React from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
 
-import { Col } from "react-bootstrap";
+import { Col } from 'react-bootstrap';
 
-import VisibilityFilterInput from "../visibility-filter-input/visibility-filter-input";
+import VisibilityFilterInput from '../visibility-filter-input/visibility-filter-input';
 
-import MovieCard from "../movie-card/movie-card";
+import MovieCard from '../movie-card/movie-card';
 
-import "./movies-list.scss";
+import './movies-list.scss';
 
-const config = require("../../config");
+const config = require('../../config');
 
 function MoviesList(props) {
-  const { movies, visibilityFilter, getUser, user } = props;
+  const {
+    movies, visibilityFilter, getUser, user,
+  } = props;
   let filteredMovies = movies;
 
   const removeFromFavorites = (movie) => {
     axios
       .delete(
         `${config.API_ADDRESS}/users/${localStorage.getItem(
-          "username"
+          'username',
         )}/FavoriteMovies/${movie._id}`,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
       )
       .then(() => {
         getUser();
@@ -42,12 +43,12 @@ function MoviesList(props) {
     axios
       .post(
         `${config.API_ADDRESS}/users/${localStorage.getItem(
-          "username"
+          'username',
         )}/FavoriteMovies/${movie._id}`,
         {},
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        },
       )
       .then(() => {
         getUser();
@@ -57,9 +58,10 @@ function MoviesList(props) {
       });
   };
 
-  if (visibilityFilter !== "") {
-    filteredMovies = movies.filter((m) =>
-      m.Title.toLowerCase().includes(visibilityFilter.toLowerCase())
+  if (visibilityFilter !== '') {
+    filteredMovies = movies.filter(
+      (m) => m.Title.toLowerCase()
+        .includes(visibilityFilter.toLowerCase()),
     );
   }
 
@@ -101,7 +103,7 @@ const mapStateToProps = (state) => {
   return {
     visibilityFilter,
     movies,
-    user
+    user,
   };
 };
 
