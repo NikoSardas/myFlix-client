@@ -3,6 +3,8 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-console */
 
+// TODO message component
+
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -32,6 +34,7 @@ class MainView extends React.Component {
   }
 
   componentDidMount() {
+    console.log('mainview componentDidMount');
     const username = localStorage.getItem('username');
     if (!username) {
       this.emptyUser();
@@ -44,10 +47,15 @@ class MainView extends React.Component {
 
   // store user details, save user details to prop store, get movies from API
   onLoggedIn(authData) {
+    this.props.setUser(authData.user);
     localStorage.setItem('token', authData.token);
     localStorage.setItem('username', authData.user.Username);
-    this.props.setUser(authData.user);
-    this.getMovies(authData.token);
+    this.componentDidMount();
+    // console.log('onLoggedIn', authData);
+    // localStorage.setItem('token', authData.token);
+    // localStorage.setItem('username', authData.user.Username);
+    // this.props.setUser(authData.user);
+    // this.getMovies(authData.token);
   }
 
   // remove user details from storage, empty user details from prop store, open new window
@@ -82,6 +90,7 @@ class MainView extends React.Component {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
+        console.log('getUser', response);
         this.props.setUser(response.data);
       })
       .catch((error) => {

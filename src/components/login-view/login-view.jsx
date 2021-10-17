@@ -16,32 +16,25 @@ export default class LoginView extends React.Component {
     super();
     this.form = React.createRef();
     this.state = {
-      errorMessage: "",
-      successMessage: "",
+      username: "",
+      password: "",
     };
   }
 
-  handleSubmit(username, password) {
+  handleSubmit() {
+    console.log("handleSubmit", arguments);
     const { onLoggedIn } = this.props;
+    const { username, password } = this.state;
     axios
       .post(`${config.API_ADDRESS}/login`, {
         Username: username,
         Password: password,
       })
       .then((response) => {
-        <h5 className="message text-success">
-          {this.setState({
-            successMessage: "Login succeeded",
-          })}
-        </h5>;
         onLoggedIn(response.data);
       })
       .catch((e) => {
-        <h5 className="message text-danger">
-          {this.setState({
-            errorMessage: "Failed to login",
-          })}
-        </h5>;
+        console.log(e);
       });
   }
 
@@ -50,8 +43,7 @@ export default class LoginView extends React.Component {
   };
 
   render() {
-    let username = "";
-    let password = "";
+    const { username, password } = this.state;
     return (
       <div className="login-view">
         <h1>MyFlix</h1>
@@ -59,30 +51,36 @@ export default class LoginView extends React.Component {
           <Form.Group controlId="formUsername">
             {/* <Form.Label>Username:</Form.Label> */}
             <Form.Control
+              value={username}
               type="text"
               required
               placeholder="Your Username.."
               pattern="[A-Za-z0-9_]{3,42}"
               onChange={(e) => {
-                username = e.target.value;
+                this.setState({
+                  username:e.target.value
+                });
               }}
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
             {/* <Form.Label>Password:</Form.Label> */}
             <Form.Control
+              value={password}
               type="password"
               required
               placeholder="Your password.."
               onChange={(e) => {
-                password = e.target.value;
+                this.setState({
+                  password:e.target.value
+                });
               }}
             />
           </Form.Group>
           <div className="login-view-buttons">
             <Button
-                variant="outline-secondary text-light shadow-none"
-                type="submit"
+              variant="outline-secondary text-light shadow-none"
+              type="submit"
               onClick={(e) => {
                 e.preventDefault();
                 this.validateForm();

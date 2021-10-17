@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
+
 import React from 'react';
 
 import { Button, Card } from 'react-bootstrap';
@@ -22,8 +23,8 @@ export default class MovieCard extends React.Component {
   }
 
   checkIfFavorite(movie, userFavs) {
-    const movieID = movie._id;
-    const isFavorite = userFavs.find((m) => movieID === m._id) !== undefined;
+    console.log(userFavs);
+    const isFavorite = userFavs.find((m) => movie._id === m._id) !== undefined;
     this.setState({
       isFavorite,
     });
@@ -35,17 +36,19 @@ export default class MovieCard extends React.Component {
     return (
       <Card className="movie-card">
         <Card.Body>
-          <Link to={`/movies/${movie._id}`}>
-            <Card.Img
-              className="movie-card-image"
-              onClick={() => movie}
-              draggable="false"
-              variant="top"
-              src={`/movie_img/${movie.Title}.jpg`}
-              alt={movie.Title}
-            />
-          </Link>
-          <Card.Title>{movie.Title}</Card.Title>
+          <div>
+            <Link to={`/movies/${movie._id}`}>
+              <Card.Img
+                className="movie-card-image"
+                onClick={() => movie}
+                draggable="false"
+                variant="top"
+                src={`/movie_img/${movie.Title}.jpg`}
+                alt={movie.Title}
+              />
+            </Link>
+            <Card.Title>{movie.Title}</Card.Title>
+          </div>
           <Card.Text>{movie.Description}</Card.Text>
           <Button
             className="favorite"
@@ -64,8 +67,7 @@ export default class MovieCard extends React.Component {
               }
             }}
           >
-            {isFavorite ? <img className="favImage " src="favorite.svg" alt="Remove from favorites" /> : <img className="favImage" src="favorite_border.svg" alt="Add to favorites" />}
-            {/* {isFavorite ? 'Remove from favorites' : 'Add to favorites'} */}
+            {isFavorite ? <img className="favImage" src="favorite.svg" alt="Remove from favorites" /> : <img className="favImage" src="favorite_border.svg" alt="Add to favorites" />}
           </Button>
         </Card.Body>
       </Card>

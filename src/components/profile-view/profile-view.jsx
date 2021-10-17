@@ -21,8 +21,6 @@ export default class ProfileView extends React.Component {
       email: "",
       birthday: "",
       favorites: [],
-      errorMessage: "",
-      successMessage: "",
     };
   }
 
@@ -39,8 +37,6 @@ export default class ProfileView extends React.Component {
           email: response.data.Email,
           birthday: response.data.Birthday.substr(0, 10),
           favorites: response.data.FavoriteMovies,
-          errorMessage: "",
-          successMessage: "",
         });
         getUser();
       })
@@ -48,7 +44,6 @@ export default class ProfileView extends React.Component {
         console.log(error);
       });
   }
-
   handleDeregister() {
     axios
       .delete(
@@ -59,17 +54,10 @@ export default class ProfileView extends React.Component {
       )
       .then(() => {
         const { onLoggedOut } = this.props;
-        <h5 className="message text-success">{this.setState({
-          successMessage:"User Updated"
-       })}</h5>
         onLoggedOut();
       })
-      .catch(() => {
-        <h5 className="message text-danger">
-        {this.setState({
-          errorMessage: "Failed to login",
-        })}
-      </h5>;
+      .catch((error) => {
+        console.error(error);
       });
   }
 
@@ -126,7 +114,7 @@ export default class ProfileView extends React.Component {
         <h2>User Profile</h2>
         <Form ref={this.form}>
           <Form.Group controlId="formUsername">
-            <Form.Label>Username:</Form.Label>
+            {/* <Form.Label>Username:</Form.Label> */}
             <Form.Control
               type="text"
               required
@@ -137,7 +125,7 @@ export default class ProfileView extends React.Component {
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
-            <Form.Label>Password:</Form.Label>
+            {/* <Form.Label>Password:</Form.Label> */}
             <Form.Control
               type="password"
               required
@@ -146,7 +134,7 @@ export default class ProfileView extends React.Component {
             />
           </Form.Group>
           <Form.Group controlId="formEmail">
-            <Form.Label>Email:</Form.Label>
+            {/* <Form.Label>Email:</Form.Label> */}
             <Form.Control
               type="email"
               required
@@ -155,7 +143,7 @@ export default class ProfileView extends React.Component {
             />
           </Form.Group>
           <Form.Group controlId="formBirthday">
-            <Form.Label>Birthday:</Form.Label>
+            {/* <Form.Label>Birthday:</Form.Label> */}
             <Form.Control
               type="date"
               required
@@ -175,9 +163,7 @@ export default class ProfileView extends React.Component {
                 Update
               </Button>
               <Link to="/">
-                <Button
-                variant="outline-secondary text-light shadow-none"
-                >
+                <Button variant="outline-secondary text-light shadow-none">
                   Back to main page
                 </Button>
               </Link>

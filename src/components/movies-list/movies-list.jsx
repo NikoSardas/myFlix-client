@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 
@@ -6,8 +7,6 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 import { Col } from 'react-bootstrap';
-
-import VisibilityFilterInput from '../visibility-filter-input/visibility-filter-input';
 
 import MovieCard from '../movie-card/movie-card';
 
@@ -69,9 +68,6 @@ function MoviesList(props) {
 
   return (
     <>
-      <Col md={12} className="movies-search-bar">
-        <VisibilityFilterInput visibilityFilter={visibilityFilter} />
-      </Col>
       {filteredMovies.map((m) => (
         <Col
           xs={12}
