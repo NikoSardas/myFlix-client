@@ -15,27 +15,33 @@ export default class LoginView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
+    this.state = {
+      errorMessage: "",
+      successMessage: "",
+    };
   }
 
   handleSubmit(username, password) {
-    const { onLoggedIn, setMessage } = this.props;
+    const { onLoggedIn } = this.props;
     axios
       .post(`${config.API_ADDRESS}/login`, {
         Username: username,
         Password: password,
       })
       .then((response) => {
-        setMessage({
-          type: "success",
-          body: "Login succeeded",
-        });
+        <h5 className="message text-success">
+          {this.setState({
+            successMessage: "Login succeeded",
+          })}
+        </h5>;
         onLoggedIn(response.data);
       })
       .catch((e) => {
-        setMessage({
-          type: "error",
-          body: "Failed to login",
-        });
+        <h5 className="message text-danger">
+          {this.setState({
+            errorMessage: "Failed to login",
+          })}
+        </h5>;
       });
   }
 
@@ -75,8 +81,8 @@ export default class LoginView extends React.Component {
           </Form.Group>
           <div className="login-view-buttons">
             <Button
-              variant="outline-light shadow-none"
-              type="submit"
+                variant="outline-secondary text-light shadow-none"
+                type="submit"
               onClick={(e) => {
                 e.preventDefault();
                 this.validateForm();

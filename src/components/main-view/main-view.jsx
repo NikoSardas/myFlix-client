@@ -3,8 +3,6 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-console */
 
-// TODO error message
-
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -31,10 +29,6 @@ class MainView extends React.Component {
   constructor() {
     super();
     this.form = React.createRef();
-    this.state = {
-      errorMessage: '',
-      successMessage: '',
-    };
   }
 
   componentDidMount() {
@@ -63,30 +57,6 @@ class MainView extends React.Component {
     this.emptyUser();
   }
 
-  setMessage(message) {
-    if (message.type === 'success') {
-      this.setState({
-        successMessage: message.body,
-      });
-    } else if (message.type === 'error') {
-      this.setState({
-        errorMessage: message.body,
-      });
-    }
-    const removeMessage = () => {
-      if (message.type === 'success') {
-        this.setState({
-          successMessage: '',
-        });
-      } else if (message.type === 'error') {
-        this.setState({
-          errorMessage: '',
-        });
-      }
-    };
-    setTimeout(removeMessage, 2000);
-  }
-
   // get movies from API and save to prop store
   getMovies(token) {
     axios
@@ -113,7 +83,6 @@ class MainView extends React.Component {
       })
       .then((response) => {
         this.props.setUser(response.data);
-        // return response.data;
       })
       .catch((error) => {
         console.log(error);
@@ -144,8 +113,6 @@ class MainView extends React.Component {
     }
     return (
       <Router>
-        <h5 className="message text-danger">{this.state.errorMessage}</h5>
-        <h5 className="message text-success">{this.state.successMessage}</h5>
         <Row className="main-view">
           <Route
             exact
@@ -155,9 +122,6 @@ class MainView extends React.Component {
                 return (
                   <Col>
                     <LoginView
-                      setMessage={(msg) => {
-                        this.setMessage(msg);
-                      }}
                       onLoggedIn={(authData) => this.onLoggedIn(authData)}
                     />
                   </Col>
@@ -213,9 +177,6 @@ class MainView extends React.Component {
               return (
                 <Col>
                   <ProfileView
-                    setMessage={(msg) => {
-                      this.setMessage(msg);
-                    }}
                     getUser={() => {
                       this.getUser(
                         localStorage.getItem('username'),

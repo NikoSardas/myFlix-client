@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
@@ -47,7 +48,8 @@ export default class MovieCard extends React.Component {
           <Card.Title>{movie.Title}</Card.Title>
           <Card.Text>{movie.Description}</Card.Text>
           <Button
-            variant="outline-light shadow-none"
+            className="favorite"
+            variant="outline-secondary shadow-none"
             onClick={() => {
               if (isFavorite) {
                 removeFromFavorites(movie);
@@ -62,7 +64,7 @@ export default class MovieCard extends React.Component {
               }
             }}
           >
-            {isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            {isFavorite ? <img className="favImage " src="favorite.svg" alt="Remove from favorites" /> : <img className="favImage" src="favorite_border.svg" alt="Add to favorites" />}
             {/* {isFavorite ? 'Remove from favorites' : 'Add to favorites'} */}
           </Button>
         </Card.Body>

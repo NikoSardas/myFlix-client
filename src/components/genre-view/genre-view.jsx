@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
 
 import React from 'react';
@@ -16,12 +17,16 @@ export default function GenreView(props) {
           <Button
             className="genre-exit"
             onClick={onBackClick}
-            variant="outline-light shadow-none"
+            variant="outline-secondary text-light shadow-none"
           >
             Back
           </Button>
           <Link to="/" className="genre-back">
-            <Button variant="outline-light">Exit</Button>
+            <Button
+              variant="outline-secondary text-light shadow-none"
+            >
+              Exit
+            </Button>
           </Link>
           <Card.Title className="text-center">{genre.Name}</Card.Title>
           <Card.Text>{genre.Description}</Card.Text>
@@ -39,7 +44,7 @@ export default function GenreView(props) {
                     >
                       <Button
                         className="genre-movie-item"
-                        variant="outline-warning shadow-none"
+                        variant="outline-secondary text-light shadow-none"
                       >
                         {movie.Title}
                       </Button>

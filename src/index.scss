@@ -60,3 +60,11 @@ input[type="password"] {
   width: 100px;
   height: 100px;
 }
+
+.message {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}

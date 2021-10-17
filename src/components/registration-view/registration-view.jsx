@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 
 import React from 'react';
@@ -91,7 +92,7 @@ export default class RegistrationView extends React.Component {
           </Form.Group>
           <div className="registration-view-buttons">
             <Button
-              variant="outline-light"
+              variant="outline-secondary text-light shadow-none"
               className="register-submit"
               type="submit"
               onClick={(e) => {
@@ -102,7 +103,11 @@ export default class RegistrationView extends React.Component {
               Submit
             </Button>
             <Link to="/">
-              <Button variant="outline-warning">Cancel</Button>
+              <Button
+                variant="outline-secondary text-light shadow-none"
+              >
+                Cancel
+              </Button>
             </Link>
           </div>
         </Form>

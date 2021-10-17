@@ -1,10 +1,10 @@
 @import "../../styles.scss";
 
-.movie-card{
+.movie-card {
   height: 100%;
   text-align: center;
-  background-color: lighten($background-color,5%) !important;
-  border-color: darken($border-color,20%) !important;
+  background-color: lighten($background-color, 5%) !important;
+  border-color: darken($border-color, 20%) !important;
 }
 
 .movie-card-image {
@@ -40,3 +40,15 @@
 .card-links button {
   height: 100%;
 }
+
+.favorite {
+  height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.favImage {
+  height:100% !important;
+  width: 100% !important;
+}
+

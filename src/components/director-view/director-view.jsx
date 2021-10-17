@@ -16,12 +16,17 @@ export default function DirectorView(props) {
           <Button
             className="director-exit"
             onClick={onBackClick}
-            variant="outline-light shadow-none"
+            variant="outline-secondary text-light shadow-none"
           >
             Back
           </Button>
           <Link to="/" className="director-back">
-            <Button variant="outline-light">Exit</Button>
+            <Button
+              variant="outline-secondary text-light shadow-none"
+            >
+              Exit
+
+            </Button>
           </Link>
           <Card.Title className="text-center">{director.Name}</Card.Title>
           <Card.Text>{director.Bio}</Card.Text>
@@ -37,7 +42,7 @@ export default function DirectorView(props) {
                 >
                   <Button
                     className="director-movie-item"
-                    variant="outline-warning shadow-none"
+                    variant="outline-secondary text-light shadow-none"
                   >
                     {movie.Title}
                   </Button>
