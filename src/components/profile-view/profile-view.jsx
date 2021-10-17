@@ -25,7 +25,6 @@ export default class ProfileView extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     const { getUser } = this.props;
     axios
       .get(`${config.API_ADDRESS}/users/${localStorage.getItem("username")}`, {
@@ -61,7 +60,7 @@ export default class ProfileView extends React.Component {
       .catch((error) => {
         console.log(error);
       });
-  } 
+  }
 
   handleUpdate() {
     const { username, password, email, birthday } = this.state;
@@ -83,9 +82,10 @@ export default class ProfileView extends React.Component {
         }
       )
       .then(() => {
-        const { reloadScreen } = this.props;
-         localStorage.setItem("username", username);
-         reloadScreen();
+        const { reloadScreen, setMessage } = this.props;
+        localStorage.setItem("username", username);
+        reloadScreen();
+        setMessage({type:"success",body:"User Updated"})
       })
       .catch((error) => {
         console.log(error);

@@ -1,5 +1,9 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-console */
+
+// TODO error message
 
 import React from 'react';
 import axios from 'axios';
@@ -24,6 +28,15 @@ import './main-view.scss';
 const config = require('../../config');
 
 class MainView extends React.Component {
+  constructor() {
+    super();
+    this.form = React.createRef();
+    this.state = {
+      errorMessage: '',
+      successMessage: '',
+    };
+  }
+
   componentDidMount() {
     const username = localStorage.getItem('username');
     if (!username) {
@@ -48,6 +61,30 @@ class MainView extends React.Component {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     this.emptyUser();
+  }
+
+  setMessage(message) {
+    if (message.type === 'success') {
+      this.setState({
+        successMessage: message.body,
+      });
+    } else if (message.type === 'error') {
+      this.setState({
+        errorMessage: message.body,
+      });
+    }
+    const removeMessage = () => {
+      if (message.type === 'success') {
+        this.setState({
+          successMessage: '',
+        });
+      } else if (message.type === 'error') {
+        this.setState({
+          errorMessage: '',
+        });
+      }
+    };
+    setTimeout(removeMessage, 2000);
   }
 
   // get movies from API and save to prop store
@@ -107,6 +144,8 @@ class MainView extends React.Component {
     }
     return (
       <Router>
+        <h5 className="message text-danger">{this.state.errorMessage}</h5>
+        <h5 className="message text-success">{this.state.successMessage}</h5>
         <Row className="main-view">
           <Route
             exact
@@ -116,6 +155,9 @@ class MainView extends React.Component {
                 return (
                   <Col>
                     <LoginView
+                      setMessage={(msg) => {
+                        this.setMessage(msg);
+                      }}
                       onLoggedIn={(authData) => this.onLoggedIn(authData)}
                     />
                   </Col>
@@ -171,6 +213,9 @@ class MainView extends React.Component {
               return (
                 <Col>
                   <ProfileView
+                    setMessage={(msg) => {
+                      this.setMessage(msg);
+                    }}
                     getUser={() => {
                       this.getUser(
                         localStorage.getItem('username'),
@@ -178,7 +223,9 @@ class MainView extends React.Component {
                       );
                     }}
                     reloadScreen={() => {
-                      history.push(`/users/${localStorage.getItem('username')}`);
+                      history.push(
+                        `/users/${localStorage.getItem('username')}`,
+                      );
                     }}
                     onLoggedOut={() => {
                       this.onLoggedOut();

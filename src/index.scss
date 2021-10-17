@@ -33,15 +33,9 @@ body {
   height: 100%;
 }
 
-form {
-  max-width: 740px;
-  width: 60%;
-}
-
-@media all and (max-width: 992px) {
-  form {
-    width: 100%;
-  }
+form, .favs-row {
+  max-width: 480px;
+  width: 100%;
 }
 
 input[type="text"]:focus,

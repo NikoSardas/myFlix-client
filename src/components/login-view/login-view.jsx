@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 
 import React from "react";
@@ -17,17 +18,24 @@ export default class LoginView extends React.Component {
   }
 
   handleSubmit(username, password) {
-    const { onLoggedIn } = this.props;
+    const { onLoggedIn, setMessage } = this.props;
     axios
       .post(`${config.API_ADDRESS}/login`, {
         Username: username,
         Password: password,
       })
       .then((response) => {
+        setMessage({
+          type: "success",
+          body: "Login succeeded",
+        });
         onLoggedIn(response.data);
       })
       .catch((e) => {
-        console.error("no such user", e);
+        setMessage({
+          type: "error",
+          body: "Failed to login",
+        });
       });
   }
 

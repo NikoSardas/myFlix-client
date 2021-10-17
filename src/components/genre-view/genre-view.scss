@@ -18,6 +18,13 @@
   }
 }
 
+@media all and (max-width: 768px  ) {
+  .genre-movie-list {
+    flex-direction: column;
+    justify-content: space-around;
+  }
+}
+
 .genre-movie-item {
   margin: 1% 0 0 0;
 }

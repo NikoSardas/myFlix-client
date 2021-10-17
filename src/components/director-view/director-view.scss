@@ -16,6 +16,13 @@
   .director-view-wrapper {
     max-width: 100%;
   }
+  
+}
+
+@media all and (max-width: 768px  ) {
+.director-movie-list {
+  flex-direction: column;
+}
 }
 
 .director-back {
