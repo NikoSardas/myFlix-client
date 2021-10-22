@@ -34,7 +34,6 @@ class MainView extends React.Component {
   }
 
   componentDidMount() {
-    console.log('mainview componentDidMount');
     const username = localStorage.getItem('username');
     if (!username) {
       this.emptyUser();
@@ -51,11 +50,6 @@ class MainView extends React.Component {
     localStorage.setItem('token', authData.token);
     localStorage.setItem('username', authData.user.Username);
     this.componentDidMount();
-    // console.log('onLoggedIn', authData);
-    // localStorage.setItem('token', authData.token);
-    // localStorage.setItem('username', authData.user.Username);
-    // this.props.setUser(authData.user);
-    // this.getMovies(authData.token);
   }
 
   // remove user details from storage, empty user details from prop store, open new window
@@ -90,7 +84,6 @@ class MainView extends React.Component {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log('getUser', response);
         this.props.setUser(response.data);
       })
       .catch((error) => {

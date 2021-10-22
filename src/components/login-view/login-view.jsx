@@ -22,7 +22,6 @@ export default class LoginView extends React.Component {
   }
 
   handleSubmit() {
-    console.log("handleSubmit", arguments);
     const { onLoggedIn } = this.props;
     const { username, password } = this.state;
     axios

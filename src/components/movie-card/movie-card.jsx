@@ -23,7 +23,6 @@ export default class MovieCard extends React.Component {
   }
 
   checkIfFavorite(movie, userFavs) {
-    console.log(userFavs);
     const isFavorite = userFavs.find((m) => movie._id === m._id) !== undefined;
     this.setState({
       isFavorite,
