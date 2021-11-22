@@ -16,11 +16,10 @@ personal information, and create a list of their favorite movies.
 ```bash
 npm install parcel -g
 npm install
-parcel src/index.html
 ```
 
 ```bash
-ng serve --open```
+parcel src/index.html
 ```
 ---
 
