@@ -1,5 +1,5 @@
 # myFlix-client
-https://careerfoundry.com full stack web developer course project.
+https://careerfoundry.com full stack web developer course project.<br>
 
 A Movie API web client.
 
