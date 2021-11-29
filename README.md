@@ -3,7 +3,7 @@ https://careerfoundry.com full stack web developer course project.<br>
 
 A Movie API web client.
 
-![3](https://user-images.githubusercontent.com/89710667/142880905-ad506c12-0fc3-400a-8936-2039301df6ed.gif)
+![myflix-react](https://user-images.githubusercontent.com/89710667/143929510-6b3f6110-1ac7-485c-8f4c-583dbabb6765.gif)
 
 ## Description
 The web application will provide users with access to information about different
