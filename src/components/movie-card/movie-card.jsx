@@ -2,12 +2,12 @@
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 
-import React from 'react';
+import React from "react";
 
-import { Button, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-import './movie-card.scss';
+import "./movie-card.scss";
 
 export default class MovieCard extends React.Component {
   constructor() {
@@ -19,11 +19,15 @@ export default class MovieCard extends React.Component {
 
   componentDidMount() {
     const { movie, user } = this.props;
-    this.checkIfFavorite(movie, user.FavoriteMovies);
+    user.FavoriteMovies !== undefined &&
+      this.checkIfFavorite(movie, user.FavoriteMovies);
   }
 
   checkIfFavorite(movie, userFavs) {
-    const isFavorite = userFavs.find((m) => movie._id === m._id) !== undefined;
+    if (userFavs) {
+      const isFavorite =
+        userFavs.find((m) => movie._id === m._id) !== undefined;
+    }
     this.setState({
       isFavorite,
     });
@@ -66,7 +70,19 @@ export default class MovieCard extends React.Component {
               }
             }}
           >
-            {isFavorite ? <img className="favImage" src="favorite.svg" alt="Remove from favorites" /> : <img className="favImage" src="favorite_border.svg" alt="Add to favorites" />}
+            {isFavorite ? (
+              <img
+                className="favImage"
+                src="favorite.svg"
+                alt="Remove from favorites"
+              />
+            ) : (
+              <img
+                className="favImage"
+                src="favorite_border.svg"
+                alt="Add to favorites"
+              />
+            )}
           </Button>
         </Card.Body>
       </Card>
