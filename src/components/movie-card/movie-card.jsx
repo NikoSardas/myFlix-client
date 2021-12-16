@@ -19,7 +19,7 @@ export default class MovieCard extends React.Component {
 
   componentDidMount() {
     const { movie, user } = this.props;
-    user.FavoriteMovies !== undefined &&
+    user.FavoriteMovies.length > 0 &&
       this.checkIfFavorite(movie, user.FavoriteMovies);
   }
 
