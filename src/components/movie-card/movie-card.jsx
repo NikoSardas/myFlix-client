@@ -17,8 +17,40 @@ export default class MovieCard extends React.Component {
     };
   }
 
+  // getMovies(token) {
+  //   axios
+  //     .get(`${config.API_ADDRESS}/movies`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     })
+  //     .then((response) => {
+  //       if (response.data) {
+  //         this.props.setMovies(response.data);
+  //       } else {
+  //         console.log('Error retrieving movies');
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
+  // // get user details from API and save to prop store
+  // getUser(username, token) {
+  //   axios
+  //     .get(`${config.API_ADDRESS}/users/${username}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     })
+  //     .then((response) => {
+  //       this.props.setUser(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
   componentDidMount() {
     const { movie, user } = this.props;
+    console.log(movie,user);
     user.FavoriteMovies.length > 0 &&
       this.checkIfFavorite(movie, user.FavoriteMovies);
   }
@@ -27,10 +59,10 @@ export default class MovieCard extends React.Component {
     if (userFavs) {
       const isFavorite =
         userFavs.find((m) => movie._id === m._id) !== undefined;
+      this.setState({
+        isFavorite,
+      });
     }
-    this.setState({
-      isFavorite,
-    });
   }
 
   render() {

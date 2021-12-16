@@ -64,7 +64,7 @@ function MoviesList(props) {
     );
   }
 
-  if (!movies) return <div className="main-view" />;
+  if (!movies || !user) return <div className="main-view" />;
 
   return (
     <>
