@@ -1,7 +1,7 @@
 # myFlix-client
 https://careerfoundry.com full stack web developer course project.<br>
 
-A Movie API web client.
+A [Movie API](https://github.com/NikoSardas/myFlix) web client.
 
 ![myflix-react](https://user-images.githubusercontent.com/89710667/143929510-6b3f6110-1ac7-485c-8f4c-583dbabb6765.gif)
 
